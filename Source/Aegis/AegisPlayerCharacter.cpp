@@ -159,6 +159,7 @@ void AAegisPlayerCharacter::OnMeleeAttackPressed()
 		else if (!IsInSuperMode() && !IsInAir())
 		{
 			UE_LOG(AegisLog, Log, TEXT("Normal Ground Neutral Melee Pressed"));
+			bIsInGroundMeleeChargeUp = true; 
 		}
 	}
 
@@ -166,10 +167,12 @@ void AAegisPlayerCharacter::OnMeleeAttackPressed()
 
 void AAegisPlayerCharacter::OnMeleeAttackReleased()
 {
+	bIsInGroundMeleeChargeUp = false; 
 	if (!CanUseMeleeAttack())
 	{
 		return;
 	}
+	bIsInGroundMeleeAttack = true; 
 	if (IsInLockOn() && IsInputDirectionTowardLockOnTarget())
 	{
 		if (IsInSuperMode() && IsInAir())

@@ -27,26 +27,6 @@ public:
 	/*Called to bind functionality to input*/
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	bool IsInAir() const
-	{
-		if (GetCharacterMovement())
-		{
-			return GetCharacterMovement()->IsFlying(); 
-		}
-		return false; 
-	}
-	bool IsInSuperMode() const
-	{
-		return bIsInSuperMode; 
-	}
-	bool IsInLockOn() const
-	{
-		return bIsInLockOn; 
-	}
-	bool CanUseMeleeAttack() const
-	{
-		return true; 
-	}
 private: 
 	void MoveForward(float Value); 
 	void MoveRight(float Value); 
@@ -65,10 +45,6 @@ private:
 	float CalculateAngleBetweenInputDirectionAndLockOnTarget();
 
 	float GetMeleeAttackInputTimeDown();
-
-	bool bIsInLockOn = false;
-	bool bIsInSuperMode = false;
-	bool bIsInHitStun = false; 
 
 	float InputDirectionToLockOnTargetAngleTolerance = 20.0f; 
 	

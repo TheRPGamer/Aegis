@@ -45,10 +45,50 @@ public:
 		return MaxHP; 
 	}
 
+
+	bool IsInAir() const
+	{
+		if (GetCharacterMovement())
+		{
+			return GetCharacterMovement()->IsFalling();
+			
+		}
+		return false;
+	}
+	bool IsInSuperMode() const
+	{
+		return bIsInSuperMode;
+	}
+	FORCEINLINE bool IsInLockOn() const
+	{
+		return bIsInLockOn;
+	}
+
+	FORCEINLINE bool CanUseMeleeAttack() const
+	{
+		return !bIsInHitStun && !bIsInGroundMeleeChargeUp && bIsInGroundMeleeAttack;
+	}
+
+	FORCEINLINE void ResetGroundMeleeAttackState()
+	{
+		bIsInGroundMeleeAttack = false; 
+		bIsInGroundMeleeChargeUp = false; 
+	}
 protected: 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "HP", meta = (AllowPrivateAccess = "true"))
 	float MaxHP = 0.0f; 
 	
 	float CurrentHP = 0.0f;
+
+
+	bool bIsInLockOn = false;
+	bool bIsInSuperMode = false;
+	bool bIsInHitStun = false;
+	
+	bool bIsInGroundMeleeChargeUp = false; 
+	bool bIsInGroundMeleeAttack = false; 
+	bool bIsInAirMeleeChargeUp = false; 
+	bool bIsInAirMeleeAttack = false; 
+
 
 };

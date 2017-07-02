@@ -16,6 +16,7 @@ AAegisCharacter::AAegisCharacter()
 void AAegisCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
 	
 }
 
