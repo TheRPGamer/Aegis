@@ -17,7 +17,10 @@ public:
 	virtual ~UAegisCharacterAnimInstance();
 	
 	UFUNCTION(BlueprintCallable)
-		void ResetCharacterGroundMeleeState();
+	void ResetCharacterGroundMeleeState();
+
+	UFUNCTION(BlueprintCallable)
+	void ResetCharacterGroundGuardState(); 
 protected: 
 	void NativeUpdateAnimation(float DeltaSeconds) override; 
 private: 
@@ -28,9 +31,15 @@ private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
 	bool bCanUseMeleeAttack = false; 
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
 	bool bIsInMelee = false; 
 
-	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
+	bool bCanUseGuard = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
+	bool bIsInGuard = false;
+
 	
 };

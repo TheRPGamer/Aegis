@@ -277,6 +277,19 @@ void AAegisPlayerCharacter::OnSuperModeReleased()
 	}
 }
 
+void AAegisPlayerCharacter::OnGuardPressed()
+{
+	if (CanUseGuard())
+	{
+		bIsInGroundGuard = true; 
+	}
+}
+
+void AAegisPlayerCharacter::OnGuardReleased()
+{
+	bIsInGroundGuard = false; 
+}
+
 bool AAegisPlayerCharacter::IsInputDirectionTowardLockOnTarget()
 {
 	float inputDirectionToTargetAngle = CalculateAngleBetweenInputDirectionAndLockOnTarget(); 

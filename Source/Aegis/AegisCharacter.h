@@ -64,9 +64,25 @@ public:
 		return bIsInLockOn;
 	}
 
+	FORCEINLINE bool IsInGroundGuard() const
+	{
+		return bIsInGroundGuard; 
+	}
+
+
+	FORCEINLINE bool IsInAirGuard() const
+	{
+		return bIsInAirGuard; 
+	}
+
 	FORCEINLINE bool CanUseMeleeAttack() const
 	{
 		return !bIsInHitStun && !bIsInGroundMeleeChargeUp && bIsInGroundMeleeAttack;
+	}
+
+	FORCEINLINE bool CanUseGuard() const
+	{
+		return !bIsInHitStun && !CanUseMeleeAttack(); 
 	}
 
 	FORCEINLINE void ResetGroundMeleeAttackState()
@@ -74,6 +90,14 @@ public:
 		bIsInGroundMeleeAttack = false; 
 		bIsInGroundMeleeChargeUp = false; 
 	}
+
+	FORCEINLINE void ResetGroundGuardState()
+	{
+
+	}
+
+	
+	
 protected: 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "HP", meta = (AllowPrivateAccess = "true"))
 	float MaxHP = 0.0f; 
@@ -89,6 +113,9 @@ protected:
 	bool bIsInGroundMeleeAttack = false; 
 	bool bIsInAirMeleeChargeUp = false; 
 	bool bIsInAirMeleeAttack = false; 
+
+	bool bIsInGroundGuard = false; 
+	bool bIsInAirGuard = false; 
 
 
 };

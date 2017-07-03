@@ -40,6 +40,9 @@ private:
 	void OnSuperModePressed(); 
 	void OnSuperModeReleased(); 
 	
+	void OnGuardPressed();
+	void OnGuardReleased(); 
+
 	bool IsInputDirectionTowardLockOnTarget(); 
 	bool IsInputDirectionOppositeLockOnTarget(); 
 	float CalculateAngleBetweenInputDirectionAndLockOnTarget();

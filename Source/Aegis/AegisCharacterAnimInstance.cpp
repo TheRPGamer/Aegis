@@ -27,6 +27,7 @@ void UAegisCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		MovementSpeed = character->GetVelocity().Size();
 
 		bCanUseMeleeAttack = character->CanUseMeleeAttack();
+		bCanUseGuard = character->CanUseGuard(); 
 	}
 }
 
@@ -37,4 +38,14 @@ void UAegisCharacterAnimInstance::ResetCharacterGroundMeleeState()
 	{
 		character->ResetGroundMeleeAttackState(); 
 	}
+}
+
+void UAegisCharacterAnimInstance::ResetCharacterGroundGuardState()
+{
+	auto character = Cast<AAegisCharacter>(TryGetPawnOwner());
+	if (character)
+	{
+		character->ResetGroundGuardState(); 
+	}
+
 }
