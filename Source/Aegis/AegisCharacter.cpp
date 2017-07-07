@@ -34,3 +34,12 @@ void AAegisCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 }
 
+float AAegisCharacter::TakeDamage(float DamageAmount, const struct FDamageEvent& DamageEvent,
+	AController* EventInstigagor, AActor* DamageCauser)
+{
+	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigagor, DamageCauser); 
+	SetCurrentHP(GetCurrentHP() - DamageAmount);  
+	bIsInHitStun = true; 
+	UE_LOG(AegisLog, Log, TEXT("Character took damage")); 
+	return DamageAmount; 
+}

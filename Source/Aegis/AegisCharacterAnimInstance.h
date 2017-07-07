@@ -23,9 +23,11 @@ public:
 	void ResetCharacterGroundGuardState(); 
 protected: 
 	void NativeUpdateAnimation(float DeltaSeconds) override; 
+
 private: 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true") )
 	bool bIsFalling = false;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
 	float MovementSpeed = 0.0f; 
 	
@@ -40,6 +42,10 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
 	bool bIsInGuard = false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
+	bool bIsInHitStun = false;
+	bool bIsDead = false; 
 
 	
 };

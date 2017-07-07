@@ -30,12 +30,15 @@ public:
 	/*Called to bind functionality to input*/
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	virtual float TakeDamage(float DamageAmount, const struct FDamageEvent& DamageEvent,
+		AController* EventInstigagor, AActor* DamageCauser) override; 
+	
 	FORCEINLINE float GetCurrentHP() const
 	{
 		return CurrentHP; 
 	}
 
-	void SetCurrentHP(float newValue)
+	FORCEINLINE void SetCurrentHP(float newValue)
 	{
 		CurrentHP = newValue; 
 	}
@@ -46,7 +49,7 @@ public:
 	}
 
 
-	bool IsInAir() const
+	FORCEINLINE bool IsInAir() const
 	{
 		if (GetCharacterMovement())
 		{
@@ -55,13 +58,19 @@ public:
 		}
 		return false;
 	}
-	bool IsInSuperMode() const
+
+	FORCEINLINE bool IsInSuperMode() const
 	{
 		return bIsInSuperMode;
 	}
 	FORCEINLINE bool IsInLockOn() const
 	{
 		return bIsInLockOn;
+	}
+
+	FORCEINLINE bool IsInHitStun() const
+	{
+		return bIsInHitStun; 
 	}
 
 	FORCEINLINE bool IsInGroundGuard() const
@@ -75,6 +84,10 @@ public:
 		return bIsInAirGuard; 
 	}
 
+	FORCEINLINE bool IsDead() const
+	{
+		return (CurrentHP <= 0.0f); 
+	}
 	FORCEINLINE bool CanUseMeleeAttack() const
 	{
 		return !bIsInHitStun && !bIsInGroundMeleeChargeUp && bIsInGroundMeleeAttack;

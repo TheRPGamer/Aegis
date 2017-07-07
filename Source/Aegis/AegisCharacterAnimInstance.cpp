@@ -20,14 +20,12 @@ void UAegisCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	auto character = Cast<AAegisCharacter>(TryGetPawnOwner());
 	if (character)
 	{
-		if (character->GetCharacterMovement())
-		{
-			bIsFalling = character->GetCharacterMovement()->IsFalling();
-		}
+		bIsFalling = character->IsInAir(); 
 		MovementSpeed = character->GetVelocity().Size();
-
 		bCanUseMeleeAttack = character->CanUseMeleeAttack();
 		bCanUseGuard = character->CanUseGuard(); 
+		bIsInHitStun = character->IsInHitStun(); 
+		bIsDead = character->IsDead(); 
 	}
 }
 
