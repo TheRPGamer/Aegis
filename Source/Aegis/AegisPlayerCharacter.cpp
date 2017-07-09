@@ -79,17 +79,18 @@ void AAegisPlayerCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 void AAegisPlayerCharacter::MoveForward(float Value)
 {
-	if ((Value != 0.0f) && ThirdPersonCamera)
+	if ((Value != 0.0f) && !IsInGroundMeleeAttack() && !IsInAirMeleeAttack() && ThirdPersonCamera)
 	{
 		FVector charForwward = ThirdPersonCamera->GetForwardVector(); 
 		charForwward.Z = 0.0f; 
+
 		charForwward.Normalize(); 
 		AddMovementInput(charForwward, Value); 
 	}
 }
 void AAegisPlayerCharacter::MoveRight(float Value)
 {
-	if ((Value != 0.0f) && ThirdPersonCamera)
+	if ((Value != 0.0f) && !IsInGroundMeleeAttack() && !IsInAirMeleeAttack() && ThirdPersonCamera)
 	{
 		FVector charRight = ThirdPersonCamera->GetRightVector(); 
 		charRight.Z = 0.0f;

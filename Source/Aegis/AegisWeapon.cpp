@@ -22,8 +22,7 @@ AAegisWeapon::AAegisWeapon()
 void AAegisWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-	//FIGURE OUT HOW TO USE PHYSICS ASSET COLLISION
-	//RootComponent->OnComponentBeginOverlap.AddDynamic(this, &AAegisWeapon::OnWeaponOverlapBegin); 
+	OnActorBeginOverlap.AddDynamic(this, &AAegisWeapon::OnWeaponBeginOverlap); 
 }
 
 // Called every frame
@@ -40,11 +39,9 @@ void AAegisWeapon::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 }
 
-void AAegisWeapon::OnWeaponOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
-	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AAegisWeapon::OnWeaponBeginOverlap(AActor* MyOverlappedActor, AActor* OtherActor)
 {
-	if (!bCanDamageTargets || (OtherActor == this) || (OtherActor == Owner) ||
-		(OtherComponent == nullptr) || (OtherActor == nullptr) )
+	if (!bCanDamageTargets || (OtherActor == this) || (OtherActor == Owner) )
 	{
 		return; 
 	}

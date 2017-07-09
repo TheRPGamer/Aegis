@@ -32,19 +32,18 @@ public:
 		return bCanDamageTargets; 
 	}
 
-	FORCEINLINE AAegisCharacter* GetOwner() const
+	FORCEINLINE AAegisCharacter* GetWeaponOwner() const
 	{
 		return Owner; 
 	}
-	FORCEINLINE void SetOwner(AAegisCharacter* owner)
+	FORCEINLINE void SetWeaponOwner(AAegisCharacter* owner)
 	{
 		Owner = owner; 
 	}
 
 protected:
 	UFUNCTION(BlueprintCallable)
-	void OnWeaponOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
-		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult); 
+	void OnWeaponBeginOverlap(AActor* MyOverlappedActor, AActor* OtherActor); 
 	
 	bool bCanDamageTargets = false; 
 	
