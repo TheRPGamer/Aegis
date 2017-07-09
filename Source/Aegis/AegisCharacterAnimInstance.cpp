@@ -23,7 +23,9 @@ void UAegisCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		bIsFalling = character->IsInAir(); 
 		MovementSpeed = character->GetVelocity().Size();
 		bCanUseMeleeAttack = character->CanUseMeleeAttack();
+		bIsInGroundMeleeAttack = character->IsInGroundMeleeAttack(); 
 		bCanUseGuard = character->CanUseGuard(); 
+		bIsInGroundGuard = character->IsInGroundGuard(); 
 		bIsInHitStun = character->IsInHitStun(); 
 		bIsDead = character->IsDead(); 
 	}
@@ -44,6 +46,17 @@ void UAegisCharacterAnimInstance::ResetCharacterGroundGuardState()
 	if (character)
 	{
 		character->ResetGroundGuardState(); 
+	}
+
+}
+
+
+void UAegisCharacterAnimInstance::OnIdleStateReset()
+{
+	auto character = Cast<AAegisCharacter>(TryGetPawnOwner());
+	if (character)
+	{
+		character->IdleStateReset();
 	}
 
 }

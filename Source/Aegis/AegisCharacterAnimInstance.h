@@ -21,6 +21,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ResetCharacterGroundGuardState(); 
+	
+	UFUNCTION(BlueprintCallable)
+	void OnIdleStateReset(); 
 protected: 
 	void NativeUpdateAnimation(float DeltaSeconds) override; 
 
@@ -35,16 +38,18 @@ private:
 	bool bCanUseMeleeAttack = false; 
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
-	bool bIsInMelee = false; 
+	bool bIsInGroundMeleeAttack = false; 
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
 	bool bCanUseGuard = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
-	bool bIsInGuard = false;
+	bool bIsInGroundGuard = false;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
 	bool bIsInHitStun = false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
 	bool bIsDead = false; 
 
 	

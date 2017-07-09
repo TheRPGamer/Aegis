@@ -33,20 +33,9 @@ public:
 	virtual float TakeDamage(float DamageAmount, const struct FDamageEvent& DamageEvent,
 		AController* EventInstigagor, AActor* DamageCauser) override; 
 	
-	FORCEINLINE float GetCurrentHP() const
-	{
-		return CurrentHP; 
-	}
-
-	FORCEINLINE void SetCurrentHP(float newValue)
-	{
-		CurrentHP = newValue; 
-	}
-
-	FORCEINLINE float GetMaxHP() const
-	{
-		return MaxHP; 
-	}
+	FORCEINLINE float GetCurrentHP() const { return CurrentHP; }
+	FORCEINLINE void SetCurrentHP(float newValue) { CurrentHP = newValue; }
+	FORCEINLINE float GetMaxHP() const { return MaxHP; }
 
 
 	FORCEINLINE bool IsInAir() const
@@ -59,44 +48,16 @@ public:
 		return false;
 	}
 
-	FORCEINLINE bool IsInSuperMode() const
-	{
-		return bIsInSuperMode;
-	}
-	FORCEINLINE bool IsInLockOn() const
-	{
-		return bIsInLockOn;
-	}
-
-	FORCEINLINE bool IsInHitStun() const
-	{
-		return bIsInHitStun; 
-	}
-
-	FORCEINLINE bool IsInGroundGuard() const
-	{
-		return bIsInGroundGuard; 
-	}
-
-
-	FORCEINLINE bool IsInAirGuard() const
-	{
-		return bIsInAirGuard; 
-	}
-
-	FORCEINLINE bool IsDead() const
-	{
-		return (CurrentHP <= 0.0f); 
-	}
-	FORCEINLINE bool CanUseMeleeAttack() const
-	{
-		return !bIsInHitStun && !bIsInGroundMeleeChargeUp && bIsInGroundMeleeAttack;
-	}
-
-	FORCEINLINE bool CanUseGuard() const
-	{
-		return !bIsInHitStun && !CanUseMeleeAttack(); 
-	}
+	FORCEINLINE bool IsInSuperMode() const { return bIsInSuperMode; }
+	FORCEINLINE bool IsInLockOn() const { return bIsInLockOn;}
+	FORCEINLINE bool IsInHitStun() const{	return bIsInHitStun; }
+	FORCEINLINE bool IsInGroundMeleeAttack() const { return bIsInGroundMeleeAttack; }
+	FORCEINLINE bool IsInAirMeleeAttack() const { return bIsInAirMeleeAttack; }
+	FORCEINLINE bool IsInGroundGuard() const { return bIsInGroundGuard; }
+	FORCEINLINE bool IsInAirGuard() const { return bIsInAirGuard; }
+	FORCEINLINE bool IsDead() const { return (CurrentHP <= 0.0f); }
+	FORCEINLINE bool CanUseMeleeAttack() const { return !bIsInHitStun && !bIsInGroundMeleeChargeUp && !bIsInGroundMeleeAttack;}
+	FORCEINLINE bool CanUseGuard() const { return !bIsInHitStun && !CanUseMeleeAttack(); }
 
 	FORCEINLINE void ResetGroundMeleeAttackState()
 	{
@@ -106,7 +67,13 @@ public:
 
 	FORCEINLINE void ResetGroundGuardState()
 	{
+		bIsInGroundGuard = false; 
+	}
 
+	FORCEINLINE void IdleStateReset()
+	{
+		ResetGroundMeleeAttackState(); 
+		ResetGroundGuardState(); 
 	}
 
 	
