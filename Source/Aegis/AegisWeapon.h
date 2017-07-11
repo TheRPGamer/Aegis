@@ -13,48 +13,42 @@ class AEGIS_API AAegisWeapon : public APawn
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this pawn's properties
-	AAegisWeapon();
-
+	explicit AAegisWeapon();
+	virtual ~AAegisWeapon(); 
 protected:
-	// Called when the game starts or when spawned
+	/* Called when the game starts or when spawned */
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
+	/* Called every frame */
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
+	/* Called to bind functionality to input */
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
-	FORCEINLINE bool CanDamageTargets()
-	{
-		return bCanDamageTargets; 
-	}
+	/*Returns true if the weapon is active and can damage enemies*/
+	FORCEINLINE bool CanDamageTargets(){ return bCanDamageTargets; }
 
-	FORCEINLINE AAegisCharacter* GetWeaponOwner() const
-	{
-		return Owner; 
-	}
-	FORCEINLINE void SetWeaponOwner(AAegisCharacter* owner)
-	{
-		Owner = owner; 
-	}
+	
 
 protected:
+	/*Function called when the weapon overlaps with a target*/
 	UFUNCTION(BlueprintCallable)
-	void OnWeaponBeginOverlap(AActor* MyOverlappedActor, AActor* OtherActor); 
+	void OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, 
+		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
+	/*True if the weapon is currently active and and will damage targets it overlaps with*/
 	bool bCanDamageTargets = false; 
 	
 private: 
+	/*Damage this weapon deals on Melee Attack hit*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WeaponDamage", meta = (AllowPrivateAccess = "true"))
-	float Damage = 0.0f;
+	float MeleeAttackDamage = 0.0f;
 	
+	/*The weapon's Mesh. To be assigned in BP*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
 	UMeshComponent* Mesh = nullptr; 
 
-	AAegisCharacter* Owner; 
 	
 	
 };

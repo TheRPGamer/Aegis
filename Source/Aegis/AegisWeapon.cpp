@@ -11,18 +11,26 @@ AAegisWeapon::AAegisWeapon()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
-	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>("PawnMesh"); 
+	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>("Mesh"); 
 	if (Mesh)
 	{
 
 	}
 }
 
-// Called when the game starts or when spawned
+AAegisWeapon::~AAegisWeapon()
+{
+
+}
+
+// Called when the game starts or when spawned:AegisPlayerCharacter.cpp
 void AAegisWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-	OnActorBeginOverlap.AddDynamic(this, &AAegisWeapon::OnWeaponBeginOverlap); 
+	if (Mesh)
+	{
+		Mesh->OnComponentBeginOverlap.AddDynamic(this, &AAegisWeapon::OnWeaponBeginOverlap);
+	}
 }
 
 // Called every frame
@@ -39,9 +47,10 @@ void AAegisWeapon::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 }
 
-void AAegisWeapon::OnWeaponBeginOverlap(AActor* MyOverlappedActor, AActor* OtherActor)
+void AAegisWeapon::OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (!bCanDamageTargets || (OtherActor == this) || (OtherActor == Owner) )
+	if (!bCanDamageTargets || (OtherActor == this) || (OtherActor == GetOwner()) )
 	{
 		return; 
 	}
@@ -49,7 +58,7 @@ void AAegisWeapon::OnWeaponBeginOverlap(AActor* MyOverlappedActor, AActor* Other
 	auto overlappedTarget = Cast<AAegisCharacter>(OtherActor); 
 	if (overlappedTarget)
 	{
-		overlappedTarget->TakeDamage(Damage, FDamageEvent(), GetController(), Owner); 
+		overlappedTarget->TakeDamage(MeleeAttackDamage, FDamageEvent(), GetController(), GetOwner()); 
 	}
 
 }
