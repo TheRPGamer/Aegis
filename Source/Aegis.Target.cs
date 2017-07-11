@@ -5,21 +5,11 @@ using System.Collections.Generic;
 
 public class AegisTarget : TargetRules
 {
-	public AegisTarget(TargetInfo Target)
+	public AegisTarget(TargetInfo Target) : base (Target)
 	{
 		Type = TargetType.Game;
-	}
 
-	//
-	// TargetRules interface.
-	//
+     	ExtraModuleNames.AddRange( new string[] { "Aegis" } );
 
-	public override void SetupBinaries(
-		TargetInfo Target,
-		ref List<UEBuildBinaryConfiguration> OutBuildBinaryConfigurations,
-		ref List<string> OutExtraModuleNames
-		)
-	{
-		OutExtraModuleNames.AddRange( new string[] { "Aegis" } );
 	}
 }

@@ -4,7 +4,7 @@ using UnrealBuildTool;
 
 public class Aegis : ModuleRules
 {
-	public Aegis(TargetInfo Target)
+	public Aegis(ReadOnlyTargetRules Target) : base (Target)
 	{
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
