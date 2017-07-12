@@ -15,7 +15,8 @@ class AEGIS_API AAegisPlayerCharacter : public AAegisCharacter
 	
 public: 
 	explicit AAegisPlayerCharacter(); 
-	virtual ~AAegisPlayerCharacter(); 
+	// virtual ~AAegisPlayerCharacter(); 
+
 protected:
 	/* Called when the game starts or when spawned */
 	virtual void BeginPlay() override;

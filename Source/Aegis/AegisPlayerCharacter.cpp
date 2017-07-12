@@ -3,6 +3,8 @@
 #include "Aegis.h"
 #include "AegisPlayerCharacter.h"
 #include "AegisWeapon.h"
+
+
 AAegisPlayerCharacter::AAegisPlayerCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true; 
@@ -34,13 +36,19 @@ AAegisPlayerCharacter::AAegisPlayerCharacter()
 	{
 		GetCharacterMovement()->bOrientRotationToMovement = true; 
 	}
-	
-}
-
-AAegisPlayerCharacter::~AAegisPlayerCharacter()
-{
 
 }
+
+//AAegisPlayerCharacter::~AAegisPlayerCharacter()
+//{
+// I removed this for 2 reasons: 
+//
+// 1. We want to let UE4's garbage collection handle the destruction (and eventually cleanup if needed via AActor::BeginDestroy())
+// 2. Rule of 3 (google "c++ rule of 3" - whereas also google "c++ rule of 1" which is a more modern approach and yet another reason for no destructor)
+//
+// Get rid of the comment here once it's clear :)
+//}
+
 void AAegisPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay(); 
@@ -53,7 +61,7 @@ void AAegisPlayerCharacter::BeginPlay()
 		AAegisWeapon* weapon = GetWorld()->SpawnActor<AAegisWeapon>(EquippedWeaponClass, weaponSpawnInfo);
 		if (weapon)
 		{
-			weapon->AttachRootComponentTo(GetMesh(), FName(TEXT("Sword_01")), EAttachLocation::SnapToTargetIncludingScale, true);
+			weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, RightHandSocket);
 		}
 	}
 }
@@ -352,3 +360,4 @@ float AAegisPlayerCharacter::GetMeleeAttackInputTimeDown()
 	}
 	return -1.0f; 
 }
+

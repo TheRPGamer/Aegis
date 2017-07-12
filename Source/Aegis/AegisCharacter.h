@@ -30,9 +30,26 @@ public:
 	/* Called to bind functionality to input*/
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
+public:
+	/** The left hand socket of the character */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Sockets")
+	FName LeftHandSocket = NAME_None;
+
+	/** The right hand socket of the character */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Sockets")
+	FName RightHandSocket = NAME_None;
+
+private:
+#if !UE_BUILD_SHIPPING
+	/** Checks if sockets exist and logs missing ones */
+	void ValidateSockets();
+#endif
+
+public:
 	/* Function called when AegisCharacter is damaged*/
-	virtual float TakeDamage(float DamageAmount, const struct FDamageEvent& DamageEvent,
-		AController* EventInstigagor, AActor* DamageCauser) override; 
+	virtual float TakeDamage(float DamageAmount, const struct FDamageEvent& DamageEvent, AController* EventInstigagor, AActor* DamageCauser) override; 
+
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE float GetCurrentHP() const { return CurrentHP; }
 	
