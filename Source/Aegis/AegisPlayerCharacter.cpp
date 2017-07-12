@@ -2,7 +2,7 @@
 
 #include "Aegis.h"
 #include "AegisPlayerCharacter.h"
-
+#include "AegisWeapon.h"
 AAegisPlayerCharacter::AAegisPlayerCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true; 
@@ -44,6 +44,18 @@ AAegisPlayerCharacter::~AAegisPlayerCharacter()
 void AAegisPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay(); 
+	if (EquippedWeaponClass && GetMesh() && GetWorld())
+	{
+		FActorSpawnParameters weaponSpawnInfo;
+		weaponSpawnInfo.Owner = this;
+
+
+		AAegisWeapon* weapon = GetWorld()->SpawnActor<AAegisWeapon>(EquippedWeaponClass, weaponSpawnInfo);
+		if (weapon)
+		{
+			weapon->AttachRootComponentTo(GetMesh(), FName(TEXT("Sword_01")), EAttachLocation::SnapToTargetIncludingScale, true);
+		}
+	}
 }
 
 void AAegisPlayerCharacter::Tick(float DeltaTime)

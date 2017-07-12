@@ -17,21 +17,7 @@ AAegisCharacter::AAegisCharacter()
 void AAegisCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	if (EquippedWeaponClass && GetMesh() && GetWorld())
-	{
-		FActorSpawnParameters weaponSpawnInfo; 
-		weaponSpawnInfo.Owner = this; 
-		
-		FRotator weaponRotation = GetActorRotation(); 
-		FVector weaponLocation = GetMesh()->GetSocketLocation("Sword"); 
-		
-		AAegisWeapon* weapon = GetWorld()->SpawnActor<AAegisWeapon>(EquippedWeaponClass, weaponLocation, 
-			weaponRotation, weaponSpawnInfo); 
-		if (weapon)
-		{
-			weapon->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, "Sword"); 
-		}
-	}
+	
 	
 }
 

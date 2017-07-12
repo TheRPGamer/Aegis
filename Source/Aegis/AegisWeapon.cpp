@@ -14,7 +14,7 @@ AAegisWeapon::AAegisWeapon()
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>("Mesh"); 
 	if (Mesh)
 	{
-
+		RootComponent = Mesh; 
 	}
 }
 
@@ -31,19 +31,13 @@ void AAegisWeapon::BeginPlay()
 	{
 		Mesh->OnComponentBeginOverlap.AddDynamic(this, &AAegisWeapon::OnWeaponBeginOverlap);
 	}
+	
 }
 
 // Called every frame
 void AAegisWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-}
-
-// Called to bind functionality to input
-void AAegisWeapon::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
 
@@ -56,9 +50,10 @@ void AAegisWeapon::OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 	}
 
 	auto overlappedTarget = Cast<AAegisCharacter>(OtherActor); 
-	if (overlappedTarget)
+	auto owner = Cast<AAegisCharacter>(GetOwner());
+	if (overlappedTarget && owner)
 	{
-		overlappedTarget->TakeDamage(MeleeAttackDamage, FDamageEvent(), GetController(), GetOwner()); 
+		overlappedTarget->TakeDamage(MeleeAttackDamage, FDamageEvent(), owner->GetController(), owner); 
 	}
 
 }

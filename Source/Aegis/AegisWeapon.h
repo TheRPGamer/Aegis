@@ -3,12 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
+#include "GameFramework/Actor.h"
 #include "AegisWeapon.generated.h"
 
 class AAegisCharacter; 
 UCLASS()
-class AEGIS_API AAegisWeapon : public APawn
+class AEGIS_API AAegisWeapon : public AActor
 {
 	GENERATED_BODY()
 
@@ -23,9 +23,6 @@ public:
 	/* Called every frame */
 	virtual void Tick(float DeltaTime) override;
 
-	/* Called to bind functionality to input */
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
 	/*Returns true if the weapon is active and can damage enemies*/
 	FORCEINLINE bool CanDamageTargets(){ return bCanDamageTargets; }
 
