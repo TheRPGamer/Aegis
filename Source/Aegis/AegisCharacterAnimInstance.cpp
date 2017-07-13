@@ -3,6 +3,7 @@
 #include "Aegis.h"
 #include "AegisCharacterAnimInstance.h"
 #include "AegisCharacter.h"
+#include "AegisWeapon.h"
 
 UAegisCharacterAnimInstance::UAegisCharacterAnimInstance()
 {
@@ -27,7 +28,8 @@ void UAegisCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		bCanUseGuard = character->CanUseGuard(); 
 		bIsInGroundGuard = character->IsInGroundGuard(); 
 		bIsInHitStun = character->IsInHitStun(); 
-		bIsDead = character->IsDead(); 
+		//bIsDead = character->IsDead(); 
+		bIsDead = false; 
 	}
 }
 
@@ -57,6 +59,40 @@ void UAegisCharacterAnimInstance::OnIdleStateReset()
 	if (character)
 	{
 		character->IdleStateReset();
+	}
+
+}
+
+
+void UAegisCharacterAnimInstance::MakeCharacterWeaponActive()
+{
+	auto character = Cast<AAegisCharacter>(TryGetPawnOwner());
+	if (character && character->GetEquippedWeapon())
+	{
+		character->GetEquippedWeapon()->SetCanDamageTargetsTrue();
+	}
+
+}
+
+
+
+void UAegisCharacterAnimInstance::MakeCharacterWeaponInactive()
+{
+	auto character = Cast<AAegisCharacter>(TryGetPawnOwner());
+	if (character && character->GetEquippedWeapon())
+	{
+		character->GetEquippedWeapon()->SetCanDamageTargetsFalse();
+	}
+
+}
+
+
+void UAegisCharacterAnimInstance::ResetCharacterHitStunState()
+{
+	auto character = Cast<AAegisCharacter>(TryGetPawnOwner());
+	if (character)
+	{
+		character->ResetHitStunState();
 	}
 
 }

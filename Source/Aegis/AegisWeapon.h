@@ -14,7 +14,6 @@ class AEGIS_API AAegisWeapon : public AActor
 
 public:
 	explicit AAegisWeapon();
-	virtual ~AAegisWeapon(); 
 protected:
 	/* Called when the game starts or when spawned */
 	virtual void BeginPlay() override;
@@ -26,6 +25,11 @@ public:
 	/*Returns true if the weapon is active and can damage enemies*/
 	FORCEINLINE bool CanDamageTargets(){ return bCanDamageTargets; }
 
+	FORCEINLINE UFUNCTION(BlueprintCallable)
+	void SetCanDamageTargetsTrue() { bCanDamageTargets = true; }
+	
+	FORCEINLINE UFUNCTION(BlueprintCallable)
+	void SetCanDamageTargetsFalse() { bCanDamageTargets = false; }
 	
 
 protected:

@@ -58,10 +58,11 @@ void AAegisPlayerCharacter::BeginPlay()
 		weaponSpawnInfo.Owner = this;
 
 
-		AAegisWeapon* weapon = GetWorld()->SpawnActor<AAegisWeapon>(EquippedWeaponClass, weaponSpawnInfo);
-		if (weapon)
+		EquippedWeapon = GetWorld()->SpawnActor<AAegisWeapon>(EquippedWeaponClass, weaponSpawnInfo);
+		if (EquippedWeapon)
 		{
-			weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, RightHandSocket);
+			EquippedWeapon->SetOwner(this); 
+			EquippedWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, RightHandSocket);
 		}
 	}
 }

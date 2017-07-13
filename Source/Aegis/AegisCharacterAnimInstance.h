@@ -37,6 +37,18 @@ public:
 	*/
 	UFUNCTION(BlueprintCallable)
 	void OnIdleStateReset(); 
+
+	/** Make Character Equipped Weapon's collision volume active */
+	UFUNCTION(BlueprintCallable)
+	void MakeCharacterWeaponActive(); 
+
+	/** Make Character Equipped Weapon's collision volume inactive */
+	UFUNCTION(BlueprintCallable)
+	void MakeCharacterWeaponInactive(); 
+	
+	/** Set Character's Hit Stun State to false */
+	UFUNCTION(BlueprintCallable)
+	void ResetCharacterHitStunState(); 
 protected: 
 	/*Function called every Animation Tick to update the State of the Character*/
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override; 

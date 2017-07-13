@@ -11,16 +11,13 @@ AAegisWeapon::AAegisWeapon()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
+	
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>("Mesh"); 
 	if (Mesh)
 	{
 		RootComponent = Mesh; 
+		Mesh->bGenerateOverlapEvents = true;
 	}
-}
-
-AAegisWeapon::~AAegisWeapon()
-{
-
 }
 
 // Called when the game starts or when spawned:AegisPlayerCharacter.cpp

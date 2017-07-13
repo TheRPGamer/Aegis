@@ -132,6 +132,10 @@ public:
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	void ResetGroundGuardState() { bIsInGroundGuard = false; }
 	
+	/** Resets character hit stun state to false */
+	FORCEINLINE UFUNCTION(BlueprintCallable)
+	void ResetHitStunState() { bIsInHitStun = false;  }
+	
 	/**
 	* Function called while character is in the Idle State to reset
 	* Melee Attack, Guard State and Hit Stun States.
@@ -143,6 +147,7 @@ public:
 		ResetGroundGuardState(); 
 	}
 
+	FORCEINLINE class AAegisWeapon* GetEquippedWeapon() const { return EquippedWeapon; }
 	
 	
 protected: 
@@ -183,4 +188,6 @@ protected:
 	/* Class of weapon that the character will have equipped*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipped Weapon")
 	TSubclassOf<class AAegisWeapon> EquippedWeaponClass = nullptr; 
+
+	class AAegisWeapon* EquippedWeapon = nullptr;
 };
