@@ -51,6 +51,33 @@ float AAegisCharacter::TakeDamage(float DamageAmount, const struct FDamageEvent&
 	return DamageAmount; 
 }
 
+FORCEINLINE void AAegisCharacter::ResetGroundMeleeAttackState()
+{
+	bIsInGroundMeleeAttack = false;
+	bIsInGroundMeleeChargeUp = false;
+}
+
+FORCEINLINE bool AAegisCharacter::CanMove() const
+{
+	return !bIsInHitStun && !bIsInGroundMeleeAttack && !bIsInAirMeleeAttack &&
+		!bIsInGroundGuard && !bIsInAirGuard;
+}
+
+FORCEINLINE bool AAegisCharacter::IsInAir() const
+{
+	if (GetCharacterMovement())
+	{
+		return GetCharacterMovement()->IsFalling();
+
+	}
+	return false;
+}
+
+FORCEINLINE void AAegisCharacter::IdleStateReset()
+{
+	ResetGroundMeleeAttackState();
+	ResetGroundGuardState();
+}
 
 #if !UE_BUILD_SHIPPING
 void AAegisCharacter::ValidateSockets()
