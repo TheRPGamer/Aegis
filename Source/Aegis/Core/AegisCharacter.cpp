@@ -5,7 +5,7 @@
 #include "Core/AegisWeapon.h" 
 
 
-// Sets defaulth values
+// Sets default values
 AAegisCharacter::AAegisCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.

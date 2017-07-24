@@ -23,6 +23,12 @@ public:
 	FORCEINLINE UPROPERTY(BlueprintCallable)
 	uint8 GetPlayerTargetKeyID() const { return PlayerTargetKeyID;  }
 	
+	FORCEINLINE UPROPERTY(BlueprintCallable)
+	FName GetXYDistanceToPlayerKeyName() const { return XYDistanceToPlayerBBKeyName; }
+
+	FORCEINLINE UPROPERTY(BlueprintCallable)
+	uint8 GetXYDistanceToPlayerKeyID() const { return XYDistanceToPlayerBBKeyID; }
+
 protected: 
 	/** Function called when AI Controller possesses a Pawn */
 	virtual void Possess(APawn* InPawn) override;
@@ -42,5 +48,13 @@ protected:
 	/** Blackboard Key ID for Player Target */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Blackboard Key IDs")
 	uint8 PlayerTargetKeyID = 0; 
+
+	/** Blackboard Key name for Distance To Player. NEEDS TO BE SET IN EDITOR */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blackboard Key Names")
+	FName XYDistanceToPlayerBBKeyName = NAME_None;
+
+	/** Blackboard Key ID for Distance To Player */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Blackboard Key IDs")
+	uint8 XYDistanceToPlayerBBKeyID = 0;
 	
 };

@@ -23,6 +23,7 @@ void AAegisEnemyAIController::Possess(APawn* InPawn)
 	{
 		BlackboardComponent->InitializeBlackboard(*enemyCharacter->GetBehaviorTree()->BlackboardAsset); 
 		PlayerTargetKeyID = BlackboardComponent->GetKeyID(PlayerTargetKeyName); 
+		XYDistanceToPlayerBBKeyID = BlackboardComponent->GetKeyID(XYDistanceToPlayerBBKeyName);
 		BehaviorTreeComponent->StartTree(*(enemyCharacter->GetBehaviorTree()), EBTExecutionMode::Looped); 
 	}
 }

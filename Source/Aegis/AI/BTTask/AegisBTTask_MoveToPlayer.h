@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BTTask_AegisMoveToPlayer.generated.h"
+#include "AegisBTTask_MoveToPlayer.generated.h"
 
 /**
  * BT Task Node that moves AI Character to Player Character's location if Player Character exists
  */
 UCLASS()
-class AEGIS_API UBTTask_AegisMoveToPlayer : public UBTTaskNode
+class AEGIS_API UAegisBTTask_MoveToPlayer : public UBTTaskNode
 {
 	GENERATED_BODY()
 public: 
-	explicit UBTTask_AegisMoveToPlayer();
+	explicit UAegisBTTask_MoveToPlayer();
 
 	/** Called when behavior tree eexecution reaches the BP node*/
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;

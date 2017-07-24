@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTService.h"
-#include "BTService_AegisLocatePlayer.generated.h"
+#include "AegisBTService_UpdatePlayerTarget.generated.h"
 
 /**
  * BT Node to Locate the Player Character
  */
 UCLASS()
-class AEGIS_API UBTService_AegisLocatePlayer : public UBTService
+class AEGIS_API UAegisBTService_UpdatePlayerTarget : public UBTService
 {
 	GENERATED_BODY()
 public: 
-	explicit UBTService_AegisLocatePlayer();
+	explicit UAegisBTService_UpdatePlayerTarget();
 
 	/** Called every tick interval */
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;

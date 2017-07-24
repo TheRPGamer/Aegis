@@ -88,7 +88,7 @@ public:
 	
 	/** Returns true if the character's state allows for the character to Guard*/
 	FORCEINLINE UFUNCTION(BlueprintCallable)
-	bool CanUseGuard() const { return !bIsInHitStun && !CanUseMeleeAttack(); }
+	bool CanUseGuard() const { return !bIsInHitStun; }
 	
 	/** Returns true if the character's current state allows for any movement*/
 	FORCEINLINE UFUNCTION(BlueprintCallable)

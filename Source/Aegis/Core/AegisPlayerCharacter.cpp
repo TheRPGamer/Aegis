@@ -79,6 +79,10 @@ void AAegisPlayerCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 		PlayerInputComponent->BindAction("SuperMode", IE_Pressed, this, &AAegisPlayerCharacter::OnSuperModePressed);
 		PlayerInputComponent->BindAction("SuperMode", IE_Released, this, &AAegisPlayerCharacter::OnSuperModeReleased); 
 
+
+		PlayerInputComponent->BindAction("Guard", IE_Pressed, this, &AAegisPlayerCharacter::OnGuardPressed);
+		PlayerInputComponent->BindAction("Guard", IE_Released, this, &AAegisPlayerCharacter::OnGuardReleased);
+
 		PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump); 
 
 	}
@@ -276,6 +280,7 @@ void AAegisPlayerCharacter::OnSuperModePressed()
 {
 	UE_LOG(AegisLog, Log, TEXT("Super Mode Pressed")); 
 }
+
 void AAegisPlayerCharacter::OnSuperModeReleased()
 {
 	UE_LOG(AegisLog, Log, TEXT("Super Mode Released")); 
@@ -342,7 +347,7 @@ float AAegisPlayerCharacter::CalculateAngleBetweenInputDirectionAndLockOnTarget(
 	return FMath::RadiansToDegrees(angleInRadians); 
 }
 
-float AAegisPlayerCharacter::GetMeleeAttackInputTimeDown()
+float AAegisPlayerCharacter::GetMeleeAttackInputTimeDown() const
 {
 	auto playerController = Cast<APlayerController>(GetController()); 
 	if (playerController)
@@ -350,5 +355,100 @@ float AAegisPlayerCharacter::GetMeleeAttackInputTimeDown()
 		return playerController->GetInputKeyTimeDown(FKey(FName("MeleeAttack"))); 
 	}
 	return -1.0f; 
+}
+
+
+float AAegisPlayerCharacter::GetGuardInputTimeDown() const
+{
+	auto playerController = Cast<APlayerController>(GetController());
+	if (playerController)
+	{
+		return playerController->GetInputKeyTimeDown(FKey(FName("Guard")));
+	}
+	return -1.0f;
+}
+
+int32 AAegisPlayerCharacter::DetermineGuardLevel()
+{
+	float guardTimeDown = GetGuardInputTimeDown(); 
+	auto world = GetWorld(); 
+	if (world)
+	{
+		float deltaTime = world->GetDeltaSeconds(); 
+		float framesFromBeginGuard = guardTimeDown / deltaTime; 
+		if (framesFromBeginGuard <= Level3GuardFrameThreshold)
+		{
+			return 3; 
+		}
+		else if (framesFromBeginGuard > Level3GuardFrameThreshold && framesFromBeginGuard < Level1GuardFrameThreshold)
+		{
+			return 2;
+		}
+		else if (framesFromBeginGuard >= Level1GuardFrameThreshold)
+		{
+			return 1; 
+		}
+	}
+	return 0; 
+}
+
+
+void AAegisPlayerCharacter::GuardLevel0(float OriginalDamageTaken)
+{
+	SetCurrentHP(GetCurrentHP() - OriginalDamageTaken);
+	bIsInHitStun = true;
+}
+
+void AAegisPlayerCharacter::GuardLevel1(float OriginalDamageTaken)
+{
+	SetCurrentHP(GetCurrentHP() - OriginalDamageTaken / 2.0f); 
+	UE_LOG(AegisLog, Log, TEXT("Level 1 Guard Performed"));
+
+}
+
+
+void AAegisPlayerCharacter::GuardLevel2(float OriginalDamageTaken)
+{
+	SetCurrentHP(GetCurrentHP() - OriginalDamageTaken / 4.0f); 
+	UE_LOG(AegisLog, Log, TEXT("Level 2 Guard Performed"));
+
+}
+
+
+void AAegisPlayerCharacter::GuardLevel3()
+{
+	UE_LOG(AegisLog, Log, TEXT("Level 3 Guard Performed"));
+}
+
+float AAegisPlayerCharacter::TakeDamage(float DamageAmount, const struct FDamageEvent& DamageEvent,
+	AController* EventInstigagor, AActor* DamageCauser)
+{
+	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigagor, DamageCauser);
+	if (IsInGroundGuard())
+	{
+		int32 guardLevel = DetermineGuardLevel();
+		switch (guardLevel)
+		{
+			case 1: 
+			{
+				GuardLevel1(DamageAmount); 
+				break; 
+			}
+			case 2: 
+			{
+				GuardLevel2(DamageAmount); 
+				break;
+			}
+			case 3:
+			{
+				GuardLevel3(); 
+				break; 
+			}
+		}
+		GuardLevel0(DamageAmount); 
+		return DamageAmount; 
+	}
+	
+	return DamageAmount;
 }
 

@@ -71,10 +71,41 @@ private:
 	float CalculateAngleBetweenInputDirectionAndLockOnTarget();
 
 	/** Get amount of time the Melee Attack Button is held down*/
-	float GetMeleeAttackInputTimeDown();
+	float GetMeleeAttackInputTimeDown() const;
 
+	/** Get amount of time the Melee Attack Button is held down*/
+	float GetGuardInputTimeDown() const;
+	
+	/** Function called when taking a direct hit by an attack */
+	void GuardLevel0(float OriginalDamageTaken);
+
+	/**Function called when a Level 1 Guard is performed */
+	void GuardLevel1(float OriginalDamageTaken); 
+	
+	/** Called when a Levle 2 Guard is performed */
+	void GuardLevel2(float OriginalDamageTaken); 
+	
+	/** Called when a Level 3 Guard is performed */
+	void GuardLevel3(); 
+
+	/** Determines the Guard Level on blocking an attack. */
+	int32 DetermineGuardLevel(); 
+	
+	/** Function called when player takes damage from attack*/
+	UFUNCTION(BlueprintCallable)
+	virtual float TakeDamage(float DamageAmount, const struct FDamageEvent& DamageEvent,
+			AController* EventInstigagor, AActor* DamageCauser) override; 
+	
 	/** Tolerance angle when deciding if character input is toward/away from target */
 	float InputDirectionToLockOnTargetAngleTolerance = 20.0f; 
+	
+	/** Used to determine Guard Level. Any number of frames <= Level3GuardFrameThreshold guarantees Level 3 Guard */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Guard", meta = (AllowPrivateAccess = "true"))
+	float Level3GuardFrameThreshold = 15.0f;
+	
+	/** Used to determine Guard Level. Any number of frames >= Level1GuardFrameThreshold guarantees Level 1 Guard */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Guard", meta = (AllowPrivateAccess = "true"))
+	float Level1GuardFrameThreshold = 30.0f;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* ThirdPersonSpringArm; 
