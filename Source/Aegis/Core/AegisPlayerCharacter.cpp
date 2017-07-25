@@ -452,3 +452,104 @@ float AAegisPlayerCharacter::TakeDamage(float DamageAmount, const struct FDamage
 	return DamageAmount;
 }
 
+EInputState AAegisPlayerCharacter::DetermineInputState() 
+{
+	if (IsInLockOn() && IsInputDirectionTowardLockOnTarget()) 
+	{
+		return EInputState::LockOnTowardsTarget; 
+	}
+	else if (IsInLockOn() && IsInputDirectionOppositeLockOnTarget())
+	{
+		return EInputState::LockOnOppositeFromTarget; 
+	}
+	else if (IsInLockOn())
+	{
+		return EInputState::LockOnNeutral; 
+	}
+	else
+	{
+		return EInputState::Neutral; 
+	}
+}
+
+ECharacterCombatState AAegisPlayerCharacter::DetermineCharacterCombatState() 
+{
+	if (IsInAir())
+	{
+		if (IsInSuperMode())
+		{
+			return ECharacterCombatState::SuperAir; 
+		}
+		else
+		{
+			return ECharacterCombatState::Air; 
+		}
+	}
+	else
+	{
+		if (IsInSuperMode())
+		{
+			return ECharacterCombatState::SuperGround; 
+		}
+		else
+		{
+			return ECharacterCombatState::Ground; 
+		}
+	}
+}
+
+EInputCombatCombinedState AAegisPlayerCharacter::DetermineInputCombatCombinedState(EInputState InputState, ECharacterCombatState CombatState)
+{
+	switch (CombatState)
+	{
+		case ECharacterCombatState::Ground:
+		{
+			switch (InputState)
+			{
+				case EInputState::LockOnTowardsTarget: { return EInputCombatCombinedState::GroundLockOnTowardTarget; }
+				case EInputState::LockOnOppositeFromTarget:{ return EInputCombatCombinedState::GroundLockOnOppositeTarget; }
+				case EInputState::LockOnNeutral: { return EInputCombatCombinedState::GroundLockOnNeutral; }
+				case EInputState::Neutral: { return EInputCombatCombinedState::GroundNeutral; }
+				default: { return EInputCombatCombinedState::Invalid; }
+			}
+		}
+		case ECharacterCombatState::SuperGround:
+		{
+			switch (InputState)
+			{
+				case EInputState::LockOnTowardsTarget: { return EInputCombatCombinedState::SuperGroundLockOnTowardTarget; }
+				case EInputState::LockOnOppositeFromTarget: { return EInputCombatCombinedState::SuperGroundLockOnOppositeTarget; }
+				case EInputState::LockOnNeutral: { return EInputCombatCombinedState::SuperGroundLockOnNeutral; }
+				case EInputState::Neutral: { return EInputCombatCombinedState::SuperGroundNeutral; }
+				default: { return EInputCombatCombinedState::Invalid; }
+			}
+		}
+		case ECharacterCombatState::Air:
+		{
+			switch (InputState)
+			{
+				case EInputState::LockOnTowardsTarget: { return EInputCombatCombinedState::AirLockOnTowardTarget; }
+				case EInputState::LockOnOppositeFromTarget: { return EInputCombatCombinedState::AirLockOnOppositeTarget; }
+				case EInputState::LockOnNeutral: { return EInputCombatCombinedState::AirLockOnNeutral; }
+				case EInputState::Neutral: { return EInputCombatCombinedState::AirNeutral; }
+				default: { return EInputCombatCombinedState::Invalid; }
+			}
+		}
+		case ECharacterCombatState::SuperAir:
+		{
+			switch (InputState)
+			{
+				case EInputState::LockOnTowardsTarget: { return EInputCombatCombinedState::SuperAirLockOnTowardTarget; }
+				case EInputState::LockOnOppositeFromTarget: { return EInputCombatCombinedState::SuperAirLockOnOppositeTarget; }
+				case EInputState::LockOnNeutral: { return EInputCombatCombinedState::SuperAirLockOnNeutral; }
+				case EInputState::Neutral: { return EInputCombatCombinedState::SuperAirNeutral; }
+				default: { return EInputCombatCombinedState::Invalid; }
+			}
+		}
+		default:
+		{
+			return EInputCombatCombinedState::Invalid; 
+		}
+	}
+}
+

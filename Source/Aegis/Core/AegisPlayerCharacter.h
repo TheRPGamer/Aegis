@@ -8,6 +8,52 @@
 /**
  * 
  */
+
+enum class EInputState
+{
+	//Char Locked On && Velocity Vector Toward Target
+	LockOnTowardsTarget,
+	//Char Locked On && Velocity Vector Away From Target
+	LockOnOppositeFromTarget,
+	//Char Locked On && Char not moving 
+	LockOnNeutral,
+	//Char not locked on and not moving 
+	Neutral
+};
+
+enum class ECharacterCombatState
+{
+	Ground, 
+	SuperGround, 
+	Air, 
+	SuperAir
+};
+
+enum class EInputCombatCombinedState
+{
+	//Either Combat State or Input State is invalid
+	Invalid, 
+
+	GroundLockOnTowardTarget, 
+	SuperGroundLockOnTowardTarget, 
+	AirLockOnTowardTarget, 
+	SuperAirLockOnTowardTarget, 
+	
+	GroundLockOnOppositeTarget,
+	SuperGroundLockOnOppositeTarget,
+	AirLockOnOppositeTarget,
+	SuperAirLockOnOppositeTarget,
+
+	GroundLockOnNeutral, 
+	SuperGroundLockOnNeutral, 
+	AirLockOnNeutral,
+	SuperAirLockOnNeutral, 
+
+	GroundNeutral, 
+	SuperGroundNeutral, 
+	AirNeutral, 
+	SuperAirNeutral
+};
 UCLASS()
 class AEGIS_API AAegisPlayerCharacter : public AAegisCharacter
 {
@@ -112,4 +158,8 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* ThirdPersonCamera; 
+	
+	EInputState DetermineInputState();
+	ECharacterCombatState DetermineCharacterCombatState();
+	EInputCombatCombinedState DetermineInputCombatCombinedState(EInputState InputState, ECharacterCombatState CombatState);
 };
