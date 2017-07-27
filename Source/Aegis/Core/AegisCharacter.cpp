@@ -3,7 +3,7 @@
 #include "Aegis.h"
 #include "Core/AegisCharacter.h"
 #include "Core/AegisWeapon.h" 
-
+#include "Core/AegisCharacterComboComponent.h"
 
 // Sets default values
 AAegisCharacter::AAegisCharacter()
@@ -14,6 +14,8 @@ AAegisCharacter::AAegisCharacter()
 	{
 		GetCapsuleComponent()->bGenerateOverlapEvents = true;
 	}
+	ComboComponent = CreateDefaultSubobject<UAegisCharacterComboComponent>("Combo Component"); 
+
 }
 
 // Called when the game starts or when spawned

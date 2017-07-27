@@ -3,7 +3,7 @@
 #include "Aegis.h"
 #include "Core/AegisPlayerCharacter.h"
 #include "Core/AegisWeapon.h"
-
+#include "Core/AegisCharacterComboComponent.h"
 
 AAegisPlayerCharacter::AAegisPlayerCharacter()
 {
@@ -116,151 +116,34 @@ void AAegisPlayerCharacter::MoveRight(float Value)
 
 void AAegisPlayerCharacter::OnMeleeAttackPressed()
 {
-	if (!CanUseMeleeAttack())
+	if (CanUseMeleeAttack())
 	{
-		return; 
-	}
-	if (IsInLockOn() && IsInputDirectionTowardLockOnTarget())
-	{
-		if (IsInSuperMode() && IsInAir())
+		bIsInGroundMeleeChargeUp = true;
+		if(ComboComponent)
 		{
-			UE_LOG(AegisLog, Log, TEXT("Super Air Toward Melee Pressed")); 
-		}
-		else if (IsInSuperMode())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Super Ground Toward Melee Pressed")); 
-		}
-		else if (IsInAir())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Normal Air Toward Melee Pressed")); 
-		}
-		else if (!IsInSuperMode() && !IsInAir())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Normal Ground Toward Melee Pressed")); 
+			//Hard Code can be replaced by a variable or macro in future 
+			ComboComponent->ProcessPlayerInput(FName("Melee")); 
 		}
 	}
-	else if (IsInLockOn() && IsInputDirectionOppositeLockOnTarget())
-	{
-		if (IsInSuperMode() && IsInAir())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Super Air Back Melee Pressed"));
-		}
-		else if (IsInSuperMode())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Super Ground Back Melee Pressed"));
-		}
-		else if (IsInAir())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Normal Air Back Melee Pressed"));
-		}
-		else if (!IsInSuperMode() && !IsInAir())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Normal Ground Back Melee Pressed"));
-		}
-	}
-	else
-	{
-		if (IsInSuperMode() && IsInAir())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Super Air Neutral Melee Pressed"));
-		}
-		else if (IsInSuperMode())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Super Ground Neutral Melee Pressed"));
-		}
-		else if (IsInAir())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Normal Air Neutral Melee Pressed"));
-		}
-		else if (!IsInSuperMode() && !IsInAir())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Normal Ground Neutral Melee Pressed"));
-			bIsInGroundMeleeChargeUp = true; 
-		}
-	}
-
 }
 
 void AAegisPlayerCharacter::OnMeleeAttackReleased()
 {
 	bIsInGroundMeleeChargeUp = false; 
-	if (!CanUseMeleeAttack())
+	if (CanUseMeleeAttack())
 	{
-		return;
-	}
-	bIsInGroundMeleeAttack = true; 
-	if (IsInLockOn() && IsInputDirectionTowardLockOnTarget())
-	{
-		if (IsInSuperMode() && IsInAir())
+		bIsInGroundMeleeAttack = true; 
+		if (ComboComponent)
 		{
-			UE_LOG(AegisLog, Log, TEXT("Super Air Toward Melee Released"));
-		}
-		else if (IsInSuperMode())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Super Ground Toward Melee Released"));
-		}
-		else if (IsInAir())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Normal Air Toward Melee Released"));
-		}
-		else if (!IsInSuperMode() && !IsInAir())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Normal Ground Toward Melee Released"));
+			//Hard Code can be replaced by a variable or macro in future 
+			ComboComponent->ProcessPlayerInput(FName("Melee"));
 		}
 	}
-	else if (IsInLockOn() && IsInputDirectionOppositeLockOnTarget())
-	{
-		if (IsInSuperMode() && IsInAir())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Super Air Back Melee Released"));
-		}
-		else if (IsInSuperMode())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Super Ground Back Melee Released"));
-		}
-		else if (IsInAir())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Normal Air Back Melee Released"));
-		}
-		else if (!IsInSuperMode() && !IsInAir())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Normal Ground Back Melee Released"));
-		}
-	}
-	else
-	{
-		if (IsInSuperMode() && IsInAir())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Super Air Neutral Melee Released"));
-		}
-		else if (IsInSuperMode())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Super Ground Neutral Melee Released"));
-		}
-		else if (IsInAir())
-		{
-			UE_LOG(AegisLog, Log, TEXT("Normal Air Neutral Melee Released"));
-		}
-		else if (!IsInSuperMode() && !IsInAir())
-		{
-			float chargeTime = GetMeleeAttackInputTimeDown(); 
-			if (chargeTime >= 2.0f && chargeTime < 2.3f)
-			{
-				UE_LOG(AegisLog, Log, TEXT("Perfect Charge Attack"));
-			}
-			else if (chargeTime >= 2.3f)
-			{
-				UE_LOG(AegisLog, Log, TEXT("Regular charge attack"))
-			}
-			UE_LOG(AegisLog, Log, TEXT("Normal Ground Neutral Melee Released"));
-		}
-	}  
 
 }
 
 void AAegisPlayerCharacter::OnLockOnPressed()
 {
-	UE_LOG(AegisLog, Log, TEXT("Lock On Pressed")); 
 	bIsInLockOn = true; 
 	if (GetCharacterMovement())
 	{
@@ -450,106 +333,5 @@ float AAegisPlayerCharacter::TakeDamage(float DamageAmount, const struct FDamage
 	}
 	
 	return DamageAmount;
-}
-
-EInputState AAegisPlayerCharacter::DetermineInputState() 
-{
-	if (IsInLockOn() && IsInputDirectionTowardLockOnTarget()) 
-	{
-		return EInputState::LockOnTowardsTarget; 
-	}
-	else if (IsInLockOn() && IsInputDirectionOppositeLockOnTarget())
-	{
-		return EInputState::LockOnOppositeFromTarget; 
-	}
-	else if (IsInLockOn())
-	{
-		return EInputState::LockOnNeutral; 
-	}
-	else
-	{
-		return EInputState::Neutral; 
-	}
-}
-
-ECharacterCombatState AAegisPlayerCharacter::DetermineCharacterCombatState() 
-{
-	if (IsInAir())
-	{
-		if (IsInSuperMode())
-		{
-			return ECharacterCombatState::SuperAir; 
-		}
-		else
-		{
-			return ECharacterCombatState::Air; 
-		}
-	}
-	else
-	{
-		if (IsInSuperMode())
-		{
-			return ECharacterCombatState::SuperGround; 
-		}
-		else
-		{
-			return ECharacterCombatState::Ground; 
-		}
-	}
-}
-
-EInputCombatCombinedState AAegisPlayerCharacter::DetermineInputCombatCombinedState(EInputState InputState, ECharacterCombatState CombatState)
-{
-	switch (CombatState)
-	{
-		case ECharacterCombatState::Ground:
-		{
-			switch (InputState)
-			{
-				case EInputState::LockOnTowardsTarget: { return EInputCombatCombinedState::GroundLockOnTowardTarget; }
-				case EInputState::LockOnOppositeFromTarget:{ return EInputCombatCombinedState::GroundLockOnOppositeTarget; }
-				case EInputState::LockOnNeutral: { return EInputCombatCombinedState::GroundLockOnNeutral; }
-				case EInputState::Neutral: { return EInputCombatCombinedState::GroundNeutral; }
-				default: { return EInputCombatCombinedState::Invalid; }
-			}
-		}
-		case ECharacterCombatState::SuperGround:
-		{
-			switch (InputState)
-			{
-				case EInputState::LockOnTowardsTarget: { return EInputCombatCombinedState::SuperGroundLockOnTowardTarget; }
-				case EInputState::LockOnOppositeFromTarget: { return EInputCombatCombinedState::SuperGroundLockOnOppositeTarget; }
-				case EInputState::LockOnNeutral: { return EInputCombatCombinedState::SuperGroundLockOnNeutral; }
-				case EInputState::Neutral: { return EInputCombatCombinedState::SuperGroundNeutral; }
-				default: { return EInputCombatCombinedState::Invalid; }
-			}
-		}
-		case ECharacterCombatState::Air:
-		{
-			switch (InputState)
-			{
-				case EInputState::LockOnTowardsTarget: { return EInputCombatCombinedState::AirLockOnTowardTarget; }
-				case EInputState::LockOnOppositeFromTarget: { return EInputCombatCombinedState::AirLockOnOppositeTarget; }
-				case EInputState::LockOnNeutral: { return EInputCombatCombinedState::AirLockOnNeutral; }
-				case EInputState::Neutral: { return EInputCombatCombinedState::AirNeutral; }
-				default: { return EInputCombatCombinedState::Invalid; }
-			}
-		}
-		case ECharacterCombatState::SuperAir:
-		{
-			switch (InputState)
-			{
-				case EInputState::LockOnTowardsTarget: { return EInputCombatCombinedState::SuperAirLockOnTowardTarget; }
-				case EInputState::LockOnOppositeFromTarget: { return EInputCombatCombinedState::SuperAirLockOnOppositeTarget; }
-				case EInputState::LockOnNeutral: { return EInputCombatCombinedState::SuperAirLockOnNeutral; }
-				case EInputState::Neutral: { return EInputCombatCombinedState::SuperAirNeutral; }
-				default: { return EInputCombatCombinedState::Invalid; }
-			}
-		}
-		default:
-		{
-			return EInputCombatCombinedState::Invalid; 
-		}
-	}
 }
 

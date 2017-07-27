@@ -9,6 +9,18 @@
 * All characters from Aegis will inherit from this class. Be it NPCs
 * Players or Enemies.
 */
+UENUM()
+enum class EAegisCharacterLockOnState : uint8
+{
+	//Char Locked On && Velocity Vector Toward Target
+	MovingTowardsTarget,
+	//Char Locked On && Velocity Vector Away From Target
+	MovingAwayFromTarget,
+	//Char Locked On && Char not moving 
+	NotMoving,
+	//Char not locked on and not moving 
+	NotLockedOn
+};
 
 UCLASS()
 class AEGIS_API AAegisCharacter : public ACharacter
@@ -43,7 +55,7 @@ public:
 
 	/** Returns character's max HP*/
 	FORCEINLINE UFUNCTION(BlueprintCallable)
-	 float GetMaxHP() const { return MaxHP; }
+	float GetMaxHP() const { return MaxHP; }
 
 	/** Returns true if the character is currently in the air*/
 	FORCEINLINE UFUNCTION(BlueprintCallable)
@@ -159,6 +171,9 @@ protected:
 	/** Character's currently equipped weapon */
 	class AAegisWeapon* EquippedWeapon = nullptr;
 
+	/** Character's Combo Component */
+	class UAegisCharacterComboComponent* ComboComponent = nullptr; 
+	
 	/** The left hand socket of the character */
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Sockets")
 	FName LeftHandSocket = NAME_None;
