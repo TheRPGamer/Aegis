@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Core/AegisCharacterCombo.h"
+#include "Core/Combat/Combo/AegisCharacterComboChain.h"
 #include "AegisCharacterComboComponent.generated.h"
 
 
@@ -25,19 +25,9 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	/** Based on the Input pressed, transition to a new combo if need be */
-	void ProcessPlayerInput(FName InputName);
-
-	void SetIsInAir(bool IsInAir) { OwnerCurrentComboState.bIsInAir = IsInAir; }
-	void SetIsInSuperMode(bool bIsInSuperModde) { OwnerCurrentComboState.bIsInSuperMode = bIsInSuperModde; }
-	void SetLockOnState(EAegisCharacterLockOnState LockOnState) { OwnerCurrentComboState.LockOnState = LockOnState; }
 private: 
-	/** The Character Owner's current Combo State. Determines what Combos can be transitioned to */
-	struct FAegisCharacterComboState OwnerCurrentComboState; 
-	
-	/**The Character Owner's Current Combo */
-	class UAegisCharacterCombo* OwnerCurrentCombo = nullptr;
+	/** All Combo Chains that the owner of this Combo Component can perform */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combos", meta = (AllowPrivateAccess = "true"))
+	TArray<UAegisCharacterComboChain*> AllCombos;
 
-		
-	
 };

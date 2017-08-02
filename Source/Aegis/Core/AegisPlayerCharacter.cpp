@@ -3,7 +3,6 @@
 #include "Aegis.h"
 #include "Core/AegisPlayerCharacter.h"
 #include "Core/AegisWeapon.h"
-#include "Core/AegisCharacterComboComponent.h"
 
 AAegisPlayerCharacter::AAegisPlayerCharacter()
 {
@@ -119,11 +118,7 @@ void AAegisPlayerCharacter::OnMeleeAttackPressed()
 	if (CanUseMeleeAttack())
 	{
 		bIsInGroundMeleeChargeUp = true;
-		if(ComboComponent)
-		{
-			//Hard Code can be replaced by a variable or macro in future 
-			ComboComponent->ProcessPlayerInput(FName("Melee")); 
-		}
+		
 	}
 }
 
@@ -133,11 +128,7 @@ void AAegisPlayerCharacter::OnMeleeAttackReleased()
 	if (CanUseMeleeAttack())
 	{
 		bIsInGroundMeleeAttack = true; 
-		if (ComboComponent)
-		{
-			//Hard Code can be replaced by a variable or macro in future 
-			ComboComponent->ProcessPlayerInput(FName("Melee"));
-		}
+		
 	}
 
 }

@@ -169,9 +169,11 @@ protected:
 	TSubclassOf<class AAegisWeapon> EquippedWeaponClass = nullptr; 
 
 	/** Character's currently equipped weapon */
+	UPROPERTY()
 	class AAegisWeapon* EquippedWeapon = nullptr;
 
 	/** Character's Combo Component */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ComboCombponent")
 	class UAegisCharacterComboComponent* ComboComponent = nullptr; 
 	
 	/** The left hand socket of the character */

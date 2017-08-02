@@ -31,22 +31,3 @@ void UAegisCharacterComboComponent::TickComponent(float DeltaTime, ELevelTick Ti
 
 	// ...
 }
-
-void UAegisCharacterComboComponent::ProcessPlayerInput(FName InputName)
-{
-	TArray<UAegisCharacterCombo*> possibleCombos = OwnerCurrentCombo->GetPossibleCombosFromInput(InputName); 
-	if (possibleCombos.Num() == 0)
-	{
-		return; 
-	}
-	for (auto& combo : possibleCombos)
-	{
-		//there should only be ONE combo that matches. Therefore, just get the first one
-		if(OwnerCurrentComboState.Matches(combo->GetComboState()))
-		{
-			OwnerCurrentCombo = combo; 
-			break; 
-		}
-	}
-}
-
