@@ -16,10 +16,11 @@ class AEGIS_API UAegisCharacterComboChain : public UDataAsset
 {
 	GENERATED_BODY()
 public: 
+	TArray<FAegisCharacterComboState>& GetComboStates() { return ComboStates;  }
 
-protected: 
+private: 
 	/** Array of Combo States thta make up the Combo Chain */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combos")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combos", meta = (AllowPrivateAccess = "true"))
 	TArray<FAegisCharacterComboState> ComboStates; 
 
 	

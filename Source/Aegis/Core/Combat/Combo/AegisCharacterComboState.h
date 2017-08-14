@@ -15,7 +15,20 @@ struct AEGIS_API FAegisCharacterComboState
 {
 	GENERATED_BODY()
 public: 
+	FAegisCharacterComboState(); 
+	explicit FAegisCharacterComboState(const FAegisCharacterComboState& Other); 
+
+	FName GetName() const { return Name; }
+	FText GetDisplayName() const { return DisplayName; }
+	bool RequiresInAir() const { return bRequiresInAir; }
+	bool RequiresSuperMode() const { return bRequiresSuperMode;  }
+	EAegisCharacterLockOnState GetRequiredLockOnState() const { return RequiredLockOnState;  }
+
+	/** Returns true if alk memberes besides Name and FName of this match Other */
+	bool operator==(const FAegisCharacterComboState& Other) const;
 	
+	/** Performs a shallow copy of all the member variables */
+	FAegisCharacterComboState& operator=(const FAegisCharacterComboState& Other);
 protected: 
 	
 	/** Name for this Combo State for quick comparisoms */
@@ -37,8 +50,6 @@ protected:
 	/** Lock On State the character must be in to satisfy this Combo state */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
 	EAegisCharacterLockOnState RequiredLockOnState = EAegisCharacterLockOnState::NotLockedOn;
-	
-
 	
 	
 };

@@ -2,6 +2,7 @@
 
 #include "Aegis.h"
 #include "AegisCharacterComboComponent.h"
+#include "AegisCharacterComboChainNode.h"
 
 // Sets default values for this component's properties
 UAegisCharacterComboComponent::UAegisCharacterComboComponent()
@@ -31,3 +32,29 @@ void UAegisCharacterComboComponent::TickComponent(float DeltaTime, ELevelTick Ti
 
 	// ...
 }
+
+void UAegisCharacterComboComponent::BuildComboTree()
+{
+	for (auto& comboChain : AllCombos)
+	{
+		BuildComboTreeHelper(comboChain); 
+	}
+}
+
+void UAegisCharacterComboComponent::BuildComboTreeHelper(UAegisCharacterComboChain* ComboChain)
+{
+	if (!ComboChain || !ComboChainRootNode)
+	{
+		return; 
+	}
+	auto comboStateArray = ComboChain->GetComboStates();
+	UAegisCharacterComboChainNode* currentNode = ComboChainRootNode;
+	for (auto& comboState : comboStateArray)
+	{
+		auto node = NewObject<UAegisCharacterComboChainNode>(); 
+		node->SetRequiredComboState(comboState); 
+		currentNode->AddChildNode(node); 
+		currentNode = currentNode->FindChildNode(currentNode); 
+	}
+}
+
