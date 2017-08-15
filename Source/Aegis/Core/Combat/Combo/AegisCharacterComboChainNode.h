@@ -16,6 +16,8 @@ class AEGIS_API UAegisCharacterComboChainNode : public UObject
 	GENERATED_BODY()
 public: 
 	const FAegisCharacterComboState& GetRequiredComboState() const { return RequiredComboState; }
+	FAegisCharacterComboState& GetRequiredComboState() { return RequiredComboState; }
+
 	void SetRequiredComboState(const FAegisCharacterComboState& ComboState)  { RequiredComboState = ComboState; }
 
 	/** Returns true if RequiredComboStates are equal */
@@ -26,8 +28,7 @@ public:
 	/** Returns the passed in node was found. Returns nullptr otherwise. */
 	UAegisCharacterComboChainNode* FindChildNode(UAegisCharacterComboChainNode* Child); 
 	
-	/** Gets a unique hash of this Combo Node */
-	uint32 GetTypeHash(const UAegisCharacterComboChainNode& Node);
+	
 private:
 	/** Combo State character must be in to reach this Combo Node */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PossibleCombos", meta = (AllowPrivateAccess = "true"))
@@ -35,6 +36,6 @@ private:
 	
 	/** Set of child nodes of this Combo Node */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PossibleCombos", meta = (AllowPrivateAccess = "true"))
-	TSet<UAegisCharacterComboChainNode*> Children; 
+	TArray<UAegisCharacterComboChainNode*> Children; 
 	
 };

@@ -2,6 +2,9 @@
 
 #include "Aegis.h"
 #include "Core/AegisPlayerCharacter.h"
+#include "Core/Combat/Combo/AegisCharacterComboComponent.h"
+#include "Core/Combat/Combo/AegisCharacterComboChainNode.h"
+#include "Core/Combat/Combo/AegisCharacterComboState.h"
 #include "Core/AegisWeapon.h"
 
 AAegisPlayerCharacter::AAegisPlayerCharacter()
@@ -53,6 +56,11 @@ void AAegisPlayerCharacter::BeginPlay()
 			EquippedWeapon->SetOwner(this); 
 			EquippedWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, RightHandSocket);
 		}
+	}
+
+	if (ComboComponent)
+	{
+		ComboComponent->BuildComboTree(); 
 	}
 }
 
@@ -136,6 +144,14 @@ void AAegisPlayerCharacter::OnMeleeAttackReleased()
 void AAegisPlayerCharacter::OnLockOnPressed()
 {
 	bIsInLockOn = true; 
+	if (ComboComponent)
+	{
+		auto comparisonNode = ComboComponent->GetComparisonComboChainNode(); 
+		if (comparisonNode)
+		{
+			comparisonNode->GetRequiredComboState().SetRequiredLockOnState(EAegisCharacterLockOnState::NotMoving); 
+		}
+	}
 	if (GetCharacterMovement())
 	{
 		GetCharacterMovement()->bOrientRotationToMovement = false;
@@ -145,11 +161,20 @@ void AAegisPlayerCharacter::OnLockOnReleased()
 {
 	UE_LOG(AegisLog, Log, TEXT("Lock On Released")); 
 	bIsInLockOn = false; 
+	if (ComboComponent)
+	{
+		auto comparisonNode = ComboComponent->GetComparisonComboChainNode();
+		if (comparisonNode)
+		{
+			comparisonNode->GetRequiredComboState().SetRequiredLockOnState(EAegisCharacterLockOnState::NotLockedOn);
+		}
+	}
 	if (GetCharacterMovement())
 	{
 		GetCharacterMovement()->bOrientRotationToMovement = true; 
 	}
 }
+
 void AAegisPlayerCharacter::OnSuperModePressed()
 {
 	UE_LOG(AegisLog, Log, TEXT("Super Mode Pressed")); 
@@ -158,14 +183,24 @@ void AAegisPlayerCharacter::OnSuperModePressed()
 void AAegisPlayerCharacter::OnSuperModeReleased()
 {
 	UE_LOG(AegisLog, Log, TEXT("Super Mode Released")); 
-	if (bIsInSuperMode)
+	UAegisCharacterComboChainNode* comparisonNode = nullptr; 
+	if (ComboComponent)
 	{
-		bIsInSuperMode = false; 
+		comparisonNode = ComboComponent->GetComparisonComboChainNode();
+		if (comparisonNode)
+		{
+			if (comparisonNode->GetRequiredComboState().RequiresSuperMode())
+			{
+				comparisonNode->GetRequiredComboState().SetRequiresSuperMode(false);
+			}
+			else
+			{
+				comparisonNode->GetRequiredComboState().SetRequiresSuperMode(true);
+			}
+			ComboComponent->AdvanceCurrentComboChainNode(); 
+		}
 	}
-	else
-	{
-		bIsInSuperMode = true; 
-	}
+	
 }
 
 void AAegisPlayerCharacter::OnGuardPressed()

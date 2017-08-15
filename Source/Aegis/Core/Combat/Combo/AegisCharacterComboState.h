@@ -24,11 +24,16 @@ public:
 	bool RequiresSuperMode() const { return bRequiresSuperMode;  }
 	EAegisCharacterLockOnState GetRequiredLockOnState() const { return RequiredLockOnState;  }
 
+	void SetRequiresInAir(bool bInValue) { bRequiresInAir = bInValue; }
+	void SetRequiresSuperMode(bool bInValue) { bRequiresSuperMode = bInValue; }
+	void SetRequiredLockOnState(EAegisCharacterLockOnState InLockOnState) { RequiredLockOnState = InLockOnState; }
+	
 	/** Returns true if alk memberes besides Name and FName of this match Other */
 	bool operator==(const FAegisCharacterComboState& Other) const;
 	
 	/** Performs a shallow copy of all the member variables */
 	FAegisCharacterComboState& operator=(const FAegisCharacterComboState& Other);
+
 protected: 
 	
 	/** Name for this Combo State for quick comparisoms */

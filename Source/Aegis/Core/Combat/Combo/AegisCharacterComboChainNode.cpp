@@ -11,16 +11,24 @@ bool UAegisCharacterComboChainNode::operator==(const UAegisCharacterComboChainNo
 
 void UAegisCharacterComboChainNode::AddChildNode(UAegisCharacterComboChainNode* Child) 
 {
-	
-	Children.Add(Child); 
+	for (auto comboNode : Children)
+	{
+		if (*comboNode == *Child)
+		{
+			return; 
+		}
+	}
+	Children.Emplace(Child); 
 }
 
 UAegisCharacterComboChainNode* UAegisCharacterComboChainNode::FindChildNode(UAegisCharacterComboChainNode* Child)
 {	
-	return *(Children.Find(Child)); 
-}
-
-uint32 UAegisCharacterComboChainNode::GetTypeHash(const UAegisCharacterComboChainNode& Node)
-{
-	return Node.GetRequiredComboState().GetName().GetNumber(); 
+	for (auto comboNode : Children)
+	{
+		if (*comboNode == *Child)
+		{
+			return comboNode; 
+		}
+	}
+	return nullptr; 
 }
