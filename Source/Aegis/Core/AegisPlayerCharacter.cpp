@@ -146,11 +146,7 @@ void AAegisPlayerCharacter::OnLockOnPressed()
 	bIsInLockOn = true; 
 	if (ComboComponent)
 	{
-		auto comparisonNode = ComboComponent->GetComparisonComboChainNode(); 
-		if (comparisonNode)
-		{
-			comparisonNode->GetRequiredComboState().SetRequiredLockOnState(EAegisCharacterLockOnState::NotMoving); 
-		}
+		ComboComponent->SetLockOnState(EAegisCharacterLockOnState::NotMoving); 
 	}
 	if (GetCharacterMovement())
 	{
@@ -163,11 +159,7 @@ void AAegisPlayerCharacter::OnLockOnReleased()
 	bIsInLockOn = false; 
 	if (ComboComponent)
 	{
-		auto comparisonNode = ComboComponent->GetComparisonComboChainNode();
-		if (comparisonNode)
-		{
-			comparisonNode->GetRequiredComboState().SetRequiredLockOnState(EAegisCharacterLockOnState::NotLockedOn);
-		}
+		ComboComponent->SetLockOnState(EAegisCharacterLockOnState::NotLockedOn); 
 	}
 	if (GetCharacterMovement())
 	{
@@ -183,24 +175,17 @@ void AAegisPlayerCharacter::OnSuperModePressed()
 void AAegisPlayerCharacter::OnSuperModeReleased()
 {
 	UE_LOG(AegisLog, Log, TEXT("Super Mode Released")); 
-	UAegisCharacterComboChainNode* comparisonNode = nullptr; 
 	if (ComboComponent)
 	{
-		comparisonNode = ComboComponent->GetComparisonComboChainNode();
-		if (comparisonNode)
+		if (ComboComponent->IsInSuperMode())
 		{
-			if (comparisonNode->GetRequiredComboState().RequiresSuperMode())
-			{
-				comparisonNode->GetRequiredComboState().SetRequiresSuperMode(false);
-			}
-			else
-			{
-				comparisonNode->GetRequiredComboState().SetRequiresSuperMode(true);
-			}
-			ComboComponent->AdvanceCurrentComboChainNode(); 
+			ComboComponent->SetIsInSuperMode(false); 
+		}
+		else
+		{
+			ComboComponent->SetIsInSuperMode(true); 
 		}
 	}
-	
 }
 
 void AAegisPlayerCharacter::OnGuardPressed()
@@ -266,7 +251,6 @@ float AAegisPlayerCharacter::GetMeleeAttackInputTimeDown() const
 	return -1.0f; 
 }
 
-
 float AAegisPlayerCharacter::GetGuardInputTimeDown() const
 {
 	auto playerController = Cast<APlayerController>(GetController());
@@ -301,7 +285,6 @@ int32 AAegisPlayerCharacter::DetermineGuardLevel()
 	return 0; 
 }
 
-
 void AAegisPlayerCharacter::GuardLevel0(float OriginalDamageTaken)
 {
 	SetCurrentHP(GetCurrentHP() - OriginalDamageTaken);
@@ -315,14 +298,12 @@ void AAegisPlayerCharacter::GuardLevel1(float OriginalDamageTaken)
 
 }
 
-
 void AAegisPlayerCharacter::GuardLevel2(float OriginalDamageTaken)
 {
 	SetCurrentHP(GetCurrentHP() - OriginalDamageTaken / 4.0f); 
 	UE_LOG(AegisLog, Log, TEXT("Level 2 Guard Performed"));
 
 }
-
 
 void AAegisPlayerCharacter::GuardLevel3()
 {

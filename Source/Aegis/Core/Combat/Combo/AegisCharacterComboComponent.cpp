@@ -16,6 +16,11 @@ UAegisCharacterComboComponent::UAegisCharacterComboComponent()
 		ComboTreeRootNode->SetRequiredComboState(FAegisCharacterComboState());
 		CurrentComboChainNode = ComboTreeRootNode; 
 	}
+	ComparisonComboChainNode = NewObject<UAegisCharacterComboChainNode>(); 
+	if (ComparisonComboChainNode)
+	{
+		ComparisonComboChainNode->SetRequiredComboState(FAegisCharacterComboStateComparison()); 
+	}
 	// ...
 }
 
@@ -87,3 +92,63 @@ void UAegisCharacterComboComponent::AdvanceCurrentComboChainNode()
 	}
 }
 
+
+FName UAegisCharacterComboComponent::GetComboName() const
+{
+	if (ComparisonComboChainNode)
+	{
+		return ComparisonComboChainNode->GetRequiredComboState().GetName(); 
+	}
+	return FName("Null"); 
+}
+bool UAegisCharacterComboComponent::IsInAir() const
+{
+	if (ComparisonComboChainNode)
+	{
+		return ComparisonComboChainNode->GetRequiredComboState().IsInAir(); 
+	}
+	return false; 
+}
+bool UAegisCharacterComboComponent::IsInSuperMode() const
+{
+	if (ComparisonComboChainNode)
+	{
+		ComparisonComboChainNode->GetRequiredComboState().IsInSuperMode(); 
+	}
+	return false; 
+}
+EAegisCharacterLockOnState UAegisCharacterComboComponent::GetLockOnState() const
+{
+	if (ComparisonComboChainNode)
+	{
+		return ComparisonComboChainNode->GetRequiredComboState().GetLockOnState(); 
+	}
+	return EAegisCharacterLockOnState::NotLockedOn; 
+}
+
+void UAegisCharacterComboComponent::SetIsInAir(bool bInValue)
+{
+	if (ComparisonComboChainNode)
+	{
+		FAegisCharacterComboState* ptr = &(ComparisonComboChainNode->GetRequiredComboState());
+		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetIsInAir(bInValue);
+	}
+}
+
+void UAegisCharacterComboComponent::SetIsInSuperMode(bool bInValue)
+{
+	if(ComparisonComboChainNode)
+	{
+		FAegisCharacterComboState* ptr = &(ComparisonComboChainNode->GetRequiredComboState());
+		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetIsInSuperMode(bInValue);
+	}
+}
+
+void UAegisCharacterComboComponent::SetLockOnState(EAegisCharacterLockOnState InLockOnState)
+{
+	if (ComparisonComboChainNode)
+	{
+		FAegisCharacterComboState* ptr = &(ComparisonComboChainNode->GetRequiredComboState());
+		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetLockOnState(InLockOnState);
+	}
+}

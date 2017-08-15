@@ -25,9 +25,17 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
-	class UAegisCharacterComboChainNode* GetComparisonComboChainNode() const { return ComparisonComboChainNode; }
-	class UAegisCharacterComboChainNode* GetComparisonComboChainNode() { return ComparisonComboChainNode; }
-	
+	/** Gets the Name Field from the ComparisonNode's ComboState */
+	FName GetComboName() const; 
+	bool IsInAir() const; 
+	bool IsInSuperMode() const; 
+	EAegisCharacterLockOnState GetLockOnState() const; 
+
+	/** Sets IsInAir field of ComparisonNode's Combo State */
+	void SetIsInAir(bool bInValue);
+	void SetIsInSuperMode(bool bInValue); 
+	void SetLockOnState(EAegisCharacterLockOnState InLockOnState); 
+
 	/** Builds a Combo Tree from AllCombos */
 	void BuildComboTree();
 

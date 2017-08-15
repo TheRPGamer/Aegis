@@ -10,24 +10,24 @@ FAegisCharacterComboState::FAegisCharacterComboState()
 
 FAegisCharacterComboState::FAegisCharacterComboState(const FAegisCharacterComboState& Other)
 {
-	bRequiresInAir = Other.RequiresInAir();
-	bRequiresSuperMode = Other.RequiresSuperMode();
-	RequiredLockOnState = Other.GetRequiredLockOnState();
+	bIsInAir = Other.IsInAir();
+	bIsInSuperMode = Other.IsInSuperMode();
+	LockOnState = Other.GetLockOnState();
 }
 
 bool FAegisCharacterComboState::operator==(const FAegisCharacterComboState& Other) const
 {
-	return RequiresInAir() == Other.RequiresInAir() && RequiresSuperMode() == Other.RequiresSuperMode() &&
-		GetRequiredLockOnState() == Other.GetRequiredLockOnState(); 
+	return IsInAir() == Other.IsInAir() && IsInSuperMode() == Other.IsInSuperMode() &&
+		GetLockOnState() == Other.GetLockOnState(); 
 }
 
 FAegisCharacterComboState& FAegisCharacterComboState::operator=(const FAegisCharacterComboState& Other)
 {
 	if (this != &Other)
 	{
-		bRequiresInAir = Other.RequiresInAir();
-		bRequiresSuperMode = Other.RequiresSuperMode();
-		RequiredLockOnState = Other.GetRequiredLockOnState();
+		bIsInAir = Other.IsInAir();
+		bIsInSuperMode = Other.IsInSuperMode();
+		LockOnState = Other.GetLockOnState();
 	}
 	return *this; 
 }

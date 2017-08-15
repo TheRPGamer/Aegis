@@ -20,14 +20,10 @@ public:
 
 	FName GetName() const { return Name; }
 	FText GetDisplayName() const { return DisplayName; }
-	bool RequiresInAir() const { return bRequiresInAir; }
-	bool RequiresSuperMode() const { return bRequiresSuperMode;  }
-	EAegisCharacterLockOnState GetRequiredLockOnState() const { return RequiredLockOnState;  }
+	bool IsInAir() const { return bIsInAir; }
+	bool IsInSuperMode() const { return bIsInSuperMode;  }
+	EAegisCharacterLockOnState GetLockOnState() const { return LockOnState;  }
 
-	void SetRequiresInAir(bool bInValue) { bRequiresInAir = bInValue; }
-	void SetRequiresSuperMode(bool bInValue) { bRequiresSuperMode = bInValue; }
-	void SetRequiredLockOnState(EAegisCharacterLockOnState InLockOnState) { RequiredLockOnState = InLockOnState; }
-	
 	/** Returns true if alk memberes besides Name and FName of this match Other */
 	bool operator==(const FAegisCharacterComboState& Other) const;
 	
@@ -46,15 +42,26 @@ protected:
 
 	/** Air State required to satisfy Combo State */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
-	bool bRequiresInAir = false; 
+	bool bIsInAir = false; 
 
 	/** Super Mode State required to satisfy this Combo State */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
-	bool bRequiresSuperMode = false; 
+	bool bIsInSuperMode = false; 
 
 	/** Lock On State the character must be in to satisfy this Combo state */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
-	EAegisCharacterLockOnState RequiredLockOnState = EAegisCharacterLockOnState::NotLockedOn;
+	EAegisCharacterLockOnState LockOnState = EAegisCharacterLockOnState::NotLockedOn;
 	
 	
+};
+
+USTRUCT()
+struct AEGIS_API FAegisCharacterComboStateComparison : public FAegisCharacterComboState
+{
+	GENERATED_BODY()
+public: 
+	void SetIsInAir(bool bInValue) { bIsInAir = bInValue; }
+	void SetIsInSuperMode(bool bInValue) { bIsInSuperMode = bInValue; }
+	void SetLockOnState(EAegisCharacterLockOnState InLockOnState) { LockOnState = InLockOnState; }
+
 };
