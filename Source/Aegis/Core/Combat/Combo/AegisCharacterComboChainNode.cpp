@@ -11,9 +11,9 @@ bool UAegisCharacterComboChainNode::operator==(const UAegisCharacterComboChainNo
 
 void UAegisCharacterComboChainNode::AddChildNode(UAegisCharacterComboChainNode* Child) 
 {
-	for (auto comboNode : Children)
+	for (int i=0; i<Children.Num(); ++i)
 	{
-		if (*comboNode == *Child)
+		if (*Children[i] == *Child)
 		{
 			return; 
 		}
@@ -23,11 +23,11 @@ void UAegisCharacterComboChainNode::AddChildNode(UAegisCharacterComboChainNode* 
 
 UAegisCharacterComboChainNode* UAegisCharacterComboChainNode::FindChildNode(UAegisCharacterComboChainNode* Child)
 {	
-	for (auto comboNode : Children)
+	for (int i=0; i<Children.Num(); ++i)
 	{
-		if (*comboNode == *Child)
+		if (*Children[i] == *Child)
 		{
-			return comboNode; 
+			return Children[i]; 
 		}
 	}
 	return nullptr; 

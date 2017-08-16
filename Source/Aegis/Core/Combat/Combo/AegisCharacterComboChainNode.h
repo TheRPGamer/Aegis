@@ -28,7 +28,7 @@ public:
 	/** Returns the passed in node was found. Returns nullptr otherwise. */
 	UAegisCharacterComboChainNode* FindChildNode(UAegisCharacterComboChainNode* Child); 
 	
-	
+	TArray<UAegisCharacterComboChainNode*>& GetChildren() { return Children; }
 private:
 	/** Combo State character must be in to reach this Combo Node */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PossibleCombos", meta = (AllowPrivateAccess = "true"))

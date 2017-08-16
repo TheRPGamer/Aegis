@@ -18,11 +18,12 @@ public:
 	FAegisCharacterComboState(); 
 	explicit FAegisCharacterComboState(const FAegisCharacterComboState& Other); 
 
-	FName GetName() const { return Name; }
-	FText GetDisplayName() const { return DisplayName; }
-	bool IsInAir() const { return bIsInAir; }
-	bool IsInSuperMode() const { return bIsInSuperMode;  }
-	EAegisCharacterLockOnState GetLockOnState() const { return LockOnState;  }
+	FORCEINLINE FName GetName() const { return Name; }
+	FORCEINLINE FText GetDisplayName() const { return DisplayName; }
+	FORCEINLINE bool IsInAir() const { return bInAir; }
+	FORCEINLINE bool IsInSuperMode() const { return bInSuperMode;  }
+	FORCEINLINE bool IsInMeleeAttack() const { return bInMeleeAttack; }
+	FORCEINLINE EAegisCharacterLockOnState GetLockOnState() const { return LockOnState;  }
 
 	/** Returns true if alk memberes besides Name and FName of this match Other */
 	bool operator==(const FAegisCharacterComboState& Other) const;
@@ -42,11 +43,16 @@ protected:
 
 	/** Air State required to satisfy Combo State */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
-	bool bIsInAir = false; 
+	bool bInAir = false; 
 
 	/** Super Mode State required to satisfy this Combo State */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
-	bool bIsInSuperMode = false; 
+	bool bInSuperMode = false; 
+
+	/** Melee Attack State required to satisfy this Combo State */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
+	bool bInMeleeAttack = false;
+
 
 	/** Lock On State the character must be in to satisfy this Combo state */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
@@ -60,8 +66,9 @@ struct AEGIS_API FAegisCharacterComboStateComparison : public FAegisCharacterCom
 {
 	GENERATED_BODY()
 public: 
-	void SetIsInAir(bool bInValue) { bIsInAir = bInValue; }
-	void SetIsInSuperMode(bool bInValue) { bIsInSuperMode = bInValue; }
-	void SetLockOnState(EAegisCharacterLockOnState InLockOnState) { LockOnState = InLockOnState; }
-
+	FORCEINLINE void SetInAir(bool bInValue) { bInAir = bInValue; }
+	FORCEINLINE void SetInSuperMode(bool bInValue) { bInSuperMode = bInValue; }
+	FORCEINLINE void SetInMeleeAttack(bool bInValue) { bInMeleeAttack = bInValue; }
+	FORCEINLINE void SetLockOnState(EAegisCharacterLockOnState InLockOnState) { LockOnState = InLockOnState; }
+	
 };

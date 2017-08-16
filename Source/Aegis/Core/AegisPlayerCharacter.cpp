@@ -60,7 +60,10 @@ void AAegisPlayerCharacter::BeginPlay()
 
 	if (ComboComponent)
 	{
+		ComboComponent->Init(); 
 		ComboComponent->BuildComboTree(); 
+		ComboComponent->PrintComboTree(); 
+
 	}
 }
 
@@ -137,6 +140,11 @@ void AAegisPlayerCharacter::OnMeleeAttackReleased()
 	{
 		bIsInGroundMeleeAttack = true; 
 		
+		if (ComboComponent)
+		{
+			ComboComponent->SetInMeleeAttack(true); 
+			ComboComponent->AdvanceCurrentComboChainNode(); 
+		}
 	}
 
 }
@@ -179,11 +187,11 @@ void AAegisPlayerCharacter::OnSuperModeReleased()
 	{
 		if (ComboComponent->IsInSuperMode())
 		{
-			ComboComponent->SetIsInSuperMode(false); 
+			ComboComponent->SetInSuperMode(false); 
 		}
 		else
 		{
-			ComboComponent->SetIsInSuperMode(true); 
+			ComboComponent->SetInSuperMode(true); 
 		}
 	}
 }

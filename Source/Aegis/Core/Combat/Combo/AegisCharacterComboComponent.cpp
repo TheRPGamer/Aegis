@@ -9,38 +9,8 @@ UAegisCharacterComboComponent::UAegisCharacterComboComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
-	ComboTreeRootNode = NewObject<UAegisCharacterComboChainNode>(); 
-	if (ComboTreeRootNode)
-	{
-		ComboTreeRootNode->SetRequiredComboState(FAegisCharacterComboState());
-		CurrentComboChainNode = ComboTreeRootNode; 
-	}
-	ComparisonComboChainNode = NewObject<UAegisCharacterComboChainNode>(); 
-	if (ComparisonComboChainNode)
-	{
-		ComparisonComboChainNode->SetRequiredComboState(FAegisCharacterComboStateComparison()); 
-	}
-	// ...
-}
-
-
-// Called when the game starts
-void UAegisCharacterComboComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// ...
+	PrimaryComponentTick.bCanEverTick = false;
 	
-}
-
-
-// Called every frame
-void UAegisCharacterComboComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
 
 void UAegisCharacterComboComponent::BuildComboTree()
@@ -57,14 +27,14 @@ void UAegisCharacterComboComponent::BuildComboTreeHelper(UAegisCharacterComboCha
 	{
 		return; 
 	}
-	auto comboStateArray = ComboChain->GetComboStates();
+	TArray<FAegisCharacterComboState>& comboStateArray = ComboChain->GetComboStates();
 	UAegisCharacterComboChainNode* currentNode = ComboTreeRootNode;
-	for (auto& comboState : comboStateArray)
+	for (int i=0; i<comboStateArray.Num(); ++i)
 	{
 		auto node = NewObject<UAegisCharacterComboChainNode>(); 
-		node->SetRequiredComboState(comboState); 
+		node->SetRequiredComboState(comboStateArray[i]); 
 		currentNode->AddChildNode(node); 
-		currentNode = currentNode->FindChildNode(currentNode); 
+		currentNode = currentNode->FindChildNode(node); 
 	}
 }
 
@@ -93,7 +63,7 @@ void UAegisCharacterComboComponent::AdvanceCurrentComboChainNode()
 }
 
 
-FName UAegisCharacterComboComponent::GetComboName() const
+FORCEINLINE FName UAegisCharacterComboComponent::GetComboName() const
 {
 	if (ComparisonComboChainNode)
 	{
@@ -101,7 +71,7 @@ FName UAegisCharacterComboComponent::GetComboName() const
 	}
 	return FName("Null"); 
 }
-bool UAegisCharacterComboComponent::IsInAir() const
+FORCEINLINE bool UAegisCharacterComboComponent::IsInAir() const
 {
 	if (ComparisonComboChainNode)
 	{
@@ -109,7 +79,8 @@ bool UAegisCharacterComboComponent::IsInAir() const
 	}
 	return false; 
 }
-bool UAegisCharacterComboComponent::IsInSuperMode() const
+
+FORCEINLINE bool UAegisCharacterComboComponent::IsInSuperMode() const
 {
 	if (ComparisonComboChainNode)
 	{
@@ -117,7 +88,16 @@ bool UAegisCharacterComboComponent::IsInSuperMode() const
 	}
 	return false; 
 }
-EAegisCharacterLockOnState UAegisCharacterComboComponent::GetLockOnState() const
+
+FORCEINLINE bool UAegisCharacterComboComponent::IsInMeleeAttack() const
+{
+	if (ComparisonComboChainNode)
+	{
+		ComparisonComboChainNode->GetRequiredComboState().IsInMeleeAttack();
+	}
+	return false;
+}
+FORCEINLINE EAegisCharacterLockOnState UAegisCharacterComboComponent::GetLockOnState() const
 {
 	if (ComparisonComboChainNode)
 	{
@@ -126,29 +106,86 @@ EAegisCharacterLockOnState UAegisCharacterComboComponent::GetLockOnState() const
 	return EAegisCharacterLockOnState::NotLockedOn; 
 }
 
-void UAegisCharacterComboComponent::SetIsInAir(bool bInValue)
+FORCEINLINE void UAegisCharacterComboComponent::SetInAir(bool bInValue)
 {
 	if (ComparisonComboChainNode)
 	{
 		FAegisCharacterComboState* ptr = &(ComparisonComboChainNode->GetRequiredComboState());
-		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetIsInAir(bInValue);
+		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetInAir(bInValue);
 	}
 }
 
-void UAegisCharacterComboComponent::SetIsInSuperMode(bool bInValue)
+FORCEINLINE void UAegisCharacterComboComponent::SetInSuperMode(bool bInValue)
 {
 	if(ComparisonComboChainNode)
 	{
 		FAegisCharacterComboState* ptr = &(ComparisonComboChainNode->GetRequiredComboState());
-		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetIsInSuperMode(bInValue);
+		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetInSuperMode(bInValue);
 	}
 }
 
-void UAegisCharacterComboComponent::SetLockOnState(EAegisCharacterLockOnState InLockOnState)
+
+FORCEINLINE void UAegisCharacterComboComponent::SetInMeleeAttack(bool bInValue)
+{
+	if (ComparisonComboChainNode)
+	{
+		FAegisCharacterComboState* ptr = &(ComparisonComboChainNode->GetRequiredComboState());
+		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetInMeleeAttack(bInValue);
+	}
+}
+
+FORCEINLINE void UAegisCharacterComboComponent::SetLockOnState(EAegisCharacterLockOnState InLockOnState)
 {
 	if (ComparisonComboChainNode)
 	{
 		FAegisCharacterComboState* ptr = &(ComparisonComboChainNode->GetRequiredComboState());
 		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetLockOnState(InLockOnState);
+	}
+}
+
+void UAegisCharacterComboComponent::PrintComboTree()
+{
+	TArray<UAegisCharacterComboChainNode*> queue; 
+	if (!ComboTreeRootNode)
+	{
+		return; 
+	}
+	auto currentNode = ComboTreeRootNode; 
+	queue.Emplace(currentNode); 
+	for (int i=0; i<queue.Num(); ++i)
+	{
+		currentNode = queue[i];
+		auto children = currentNode->GetChildren(); 
+		if (children.Num() < 1)
+		{
+			continue; 
+		}
+
+		for (auto child : children)
+		{
+			if (child)
+			{
+				queue.Emplace(child);
+			}
+		}
+	}
+
+	for (auto node : queue)
+	{
+		UE_LOG(AegisLog, Log, TEXT("%s, "), *(node->GetRequiredComboState().GetName().ToString()));
+	}
+}
+
+void UAegisCharacterComboComponent::Init()
+{
+	ComboTreeRootNode = NewObject<UAegisCharacterComboChainNode>();
+	if (ComboTreeRootNode)
+	{
+		CurrentComboChainNode = ComboTreeRootNode;
+	}
+	ComparisonComboChainNode = NewObject<UAegisCharacterComboChainNode>();
+	if (ComparisonComboChainNode)
+	{
+		ComparisonComboChainNode->SetRequiredComboState(FAegisCharacterComboStateComparison());
 	}
 }

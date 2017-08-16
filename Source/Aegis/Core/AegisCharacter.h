@@ -64,7 +64,7 @@ public:
 
 	/** Returns true if character is currently in Super Mode*/
 	FORCEINLINE UFUNCTION(BlueprintCallable)
-	bool IsInSuperMode() const { return bIsInSuperMode; }
+	bool IsInSuperMode() const { return bInSuperMode; }
 	
 	/** Returns true if character is in the lock on state*/
 	FORCEINLINE UFUNCTION(BlueprintCallable)
@@ -141,7 +141,7 @@ protected:
 	bool bIsInLockOn = false;
 
 	/** True if character is in Super Mode*/
-	bool bIsInSuperMode = false;
+	bool bInSuperMode = false;
 
 	/** True if character is currently in hit stun*/
 	bool bIsInHitStun = false;
