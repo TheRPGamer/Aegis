@@ -13,7 +13,7 @@ void UAegisCharacterComboChainNode::AddChildNode(UAegisCharacterComboChainNode* 
 {
 	for (int i=0; i<Children.Num(); ++i)
 	{
-		if (*Children[i] == *Child)
+		if (Child || (*Children[i] == *Child))
 		{
 			return; 
 		}

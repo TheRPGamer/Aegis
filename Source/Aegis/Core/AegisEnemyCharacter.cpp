@@ -6,8 +6,3 @@
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyAllTypes.h"
-
-AAegisEnemyCharacter::AAegisEnemyCharacter()
-{
-	
-}

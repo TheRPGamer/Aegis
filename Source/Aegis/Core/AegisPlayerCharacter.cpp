@@ -38,7 +38,6 @@ AAegisPlayerCharacter::AAegisPlayerCharacter()
 	{
 		GetCharacterMovement()->bOrientRotationToMovement = true; 
 	}
-
 }
 
 void AAegisPlayerCharacter::BeginPlay()
@@ -49,7 +48,6 @@ void AAegisPlayerCharacter::BeginPlay()
 		FActorSpawnParameters weaponSpawnInfo;
 		weaponSpawnInfo.Owner = this;
 
-
 		EquippedWeapon = GetWorld()->SpawnActor<AAegisWeapon>(EquippedWeaponClass, weaponSpawnInfo);
 		if (EquippedWeapon)
 		{
@@ -57,19 +55,6 @@ void AAegisPlayerCharacter::BeginPlay()
 			EquippedWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, RightHandSocket);
 		}
 	}
-
-	if (ComboComponent)
-	{
-		ComboComponent->Init(); 
-		ComboComponent->BuildComboTree(); 
-		ComboComponent->PrintComboTree(); 
-
-	}
-}
-
-void AAegisPlayerCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime); 
 }
 
 void AAegisPlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -113,6 +98,7 @@ void AAegisPlayerCharacter::MoveForward(float Value)
 		AddMovementInput(charForwward, Value); 
 	}
 }
+
 void AAegisPlayerCharacter::MoveRight(float Value)
 {
 	if ((Value != 0.0f) && CanMove() && ThirdPersonCamera)
@@ -129,7 +115,6 @@ void AAegisPlayerCharacter::OnMeleeAttackPressed()
 	if (CanUseMeleeAttack())
 	{
 		bIsInGroundMeleeChargeUp = true;
-		
 	}
 }
 
@@ -249,104 +234,10 @@ float AAegisPlayerCharacter::CalculateAngleBetweenInputDirectionAndLockOnTarget(
 	return FMath::RadiansToDegrees(angleInRadians); 
 }
 
-float AAegisPlayerCharacter::GetMeleeAttackInputTimeDown() const
-{
-	auto playerController = Cast<APlayerController>(GetController()); 
-	if (playerController)
-	{
-		return playerController->GetInputKeyTimeDown(FKey(FName("MeleeAttack"))); 
-	}
-	return -1.0f; 
-}
-
-float AAegisPlayerCharacter::GetGuardInputTimeDown() const
-{
-	auto playerController = Cast<APlayerController>(GetController());
-	if (playerController)
-	{
-		return playerController->GetInputKeyTimeDown(FKey(FName("Guard")));
-	}
-	return -1.0f;
-}
-
-int32 AAegisPlayerCharacter::DetermineGuardLevel()
-{
-	float guardTimeDown = GetGuardInputTimeDown(); 
-	auto world = GetWorld(); 
-	if (world)
-	{
-		float deltaTime = world->GetDeltaSeconds(); 
-		float framesFromBeginGuard = guardTimeDown / deltaTime; 
-		if (framesFromBeginGuard <= Level3GuardFrameThreshold)
-		{
-			return 3; 
-		}
-		else if (framesFromBeginGuard > Level3GuardFrameThreshold && framesFromBeginGuard < Level1GuardFrameThreshold)
-		{
-			return 2;
-		}
-		else if (framesFromBeginGuard >= Level1GuardFrameThreshold)
-		{
-			return 1; 
-		}
-	}
-	return 0; 
-}
-
-void AAegisPlayerCharacter::GuardLevel0(float OriginalDamageTaken)
-{
-	SetCurrentHP(GetCurrentHP() - OriginalDamageTaken);
-	bIsInHitStun = true;
-}
-
-void AAegisPlayerCharacter::GuardLevel1(float OriginalDamageTaken)
-{
-	SetCurrentHP(GetCurrentHP() - OriginalDamageTaken / 2.0f); 
-	UE_LOG(AegisLog, Log, TEXT("Level 1 Guard Performed"));
-
-}
-
-void AAegisPlayerCharacter::GuardLevel2(float OriginalDamageTaken)
-{
-	SetCurrentHP(GetCurrentHP() - OriginalDamageTaken / 4.0f); 
-	UE_LOG(AegisLog, Log, TEXT("Level 2 Guard Performed"));
-
-}
-
-void AAegisPlayerCharacter::GuardLevel3()
-{
-	UE_LOG(AegisLog, Log, TEXT("Level 3 Guard Performed"));
-}
-
 float AAegisPlayerCharacter::TakeDamage(float DamageAmount, const struct FDamageEvent& DamageEvent,
 	AController* EventInstigagor, AActor* DamageCauser)
 {
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigagor, DamageCauser);
-	if (IsInGroundGuard())
-	{
-		int32 guardLevel = DetermineGuardLevel();
-		switch (guardLevel)
-		{
-			case 1: 
-			{
-				GuardLevel1(DamageAmount); 
-				break; 
-			}
-			case 2: 
-			{
-				GuardLevel2(DamageAmount); 
-				break;
-			}
-			case 3:
-			{
-				GuardLevel3(); 
-				break; 
-			}
-		}
-		GuardLevel0(DamageAmount); 
-		return DamageAmount; 
-	}
-	
 	return DamageAmount;
 }
 

@@ -9,18 +9,6 @@
 * All characters from Aegis will inherit from this class. Be it NPCs
 * Players or Enemies.
 */
-UENUM()
-enum class EAegisCharacterLockOnState : uint8
-{
-	//Char Locked On && Velocity Vector Toward Target
-	MovingTowardsTarget,
-	//Char Locked On && Velocity Vector Away From Target
-	MovingAwayFromTarget,
-	//Char Locked On && Char not moving 
-	NotMoving,
-	//Char not locked on and not moving 
-	NotLockedOn
-};
 
 UCLASS()
 class AEGIS_API AAegisCharacter : public ACharacter
@@ -34,14 +22,6 @@ public:
 protected:
 	/** Called when the game starts or when spawned */
 	virtual void BeginPlay() override;
-
-public:	
-	/** Called every frame*/
-	virtual void Tick(float DeltaTime) override;
-
-	/** Called to bind functionality to input*/
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 
 public:
 	/** Function called when AegisCharacter is damaged*/
@@ -172,10 +152,15 @@ protected:
 	UPROPERTY()
 	class AAegisWeapon* EquippedWeapon = nullptr;
 
+	/** Character's Combo Component Class to be used. Must be set in editor  */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ComboCombponent")
+	TSubclassOf<class UAegisCharacterComboComponent> ComboComponentClass = nullptr; 
+
 	/** Character's Combo Component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ComboCombponent")
-	class UAegisCharacterComboComponent* ComboComponent = nullptr; 
-	
+	class UAegisCharacterComboComponent* ComboComponent = nullptr;
+
+
 	/** The left hand socket of the character */
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Sockets")
 	FName LeftHandSocket = NAME_None;

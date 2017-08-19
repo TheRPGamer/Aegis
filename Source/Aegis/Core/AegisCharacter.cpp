@@ -14,8 +14,16 @@ AAegisCharacter::AAegisCharacter()
 	{
 		GetCapsuleComponent()->bGenerateOverlapEvents = true;
 	}
-	ComboComponent = CreateDefaultSubobject<UAegisCharacterComboComponent>("Combo Component"); 
-
+	//Ensures that in editor, there won't be an instance of null ComboComponentClass
+	ComboComponentClass = UAegisCharacterComboComponent::StaticClass(); 
+	if (ComboComponentClass)
+	{
+		ComboComponent = CreateDefaultSubobject<UAegisCharacterComboComponent>("Combo Component");
+	}
+	else
+	{
+		UE_LOG(AegisComboLog, Error, TEXT("Combo Component Class is invalid in %s. Fix in eidotr."), *GetHumanReadableName());
+	}
 }
 
 // Called when the game starts or when spawned
@@ -27,20 +35,6 @@ void AAegisCharacter::BeginPlay()
 #if !UE_BUILD_SHIPPING
 	ValidateSockets();
 #endif
-}
-
-// Called every frame
-void AAegisCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-// Called to bind functionality to input
-void AAegisCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 float AAegisCharacter::TakeDamage(float DamageAmount, const struct FDamageEvent& DamageEvent,

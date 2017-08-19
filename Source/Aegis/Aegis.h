@@ -4,3 +4,4 @@
 
 #include "Engine.h"
 DECLARE_LOG_CATEGORY_EXTERN(AegisLog, Log, All); 
+DECLARE_LOG_CATEGORY_EXTERN(AegisComboLog, Log, All);

@@ -37,5 +37,4 @@ private:
 	/** Set of child nodes of this Combo Node */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PossibleCombos", meta = (AllowPrivateAccess = "true"))
 	TArray<UAegisCharacterComboChainNode*> Children; 
-	
 };

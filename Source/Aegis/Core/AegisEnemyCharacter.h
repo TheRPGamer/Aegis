@@ -14,8 +14,6 @@ class AEGIS_API AAegisEnemyCharacter : public AAegisCharacter
 {
 	GENERATED_BODY()
 public: 
-	explicit AAegisEnemyCharacter(); 
-	
 	FORCEINLINE UPROPERTY(BlueprintCallable)
 	class UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
 protected: 

@@ -15,8 +15,8 @@ class AEGIS_API AAegisEnemyAIController : public AAIController
 	GENERATED_BODY()
 	
 public: 
-	explicit AAegisEnemyAIController(); 
-	
+	AAegisEnemyAIController();
+
 	FORCEINLINE UPROPERTY(BlueprintCallable)
 	FName GetPlayerTargetKeyName() const { return PlayerTargetKeyName; }
 
