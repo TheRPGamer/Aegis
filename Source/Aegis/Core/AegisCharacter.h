@@ -108,7 +108,7 @@ public:
 	
 	FORCEINLINE class AAegisWeapon* GetEquippedWeapon() const { return EquippedWeapon; }
 	
-	
+	FORCEINLINE class UAegisCharacterComboComponent* GetComboComponent() { return ComboComponent; }
 protected: 
 	/** Character's maximum HP. Must be > 0.0f*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "HP", meta = (AllowPrivateAccess = "true"))

@@ -4,7 +4,7 @@
 #include "Core/AegisCharacterAnimInstance.h"
 #include "Core/AegisCharacter.h"
 #include "Core/AegisWeapon.h"
-
+#include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 UAegisCharacterAnimInstance::UAegisCharacterAnimInstance()
 {
 
@@ -30,6 +30,7 @@ void UAegisCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		bIsInHitStun = character->IsInHitStun(); 
 		//bIsDead = character->IsDead(); 
 		bIsDead = false; 
+		CurrentMeleeAnimation = GetMeleeAnimToPlay(); 
 	}
 }
 
@@ -95,4 +96,19 @@ void UAegisCharacterAnimInstance::ResetCharacterHitStunState()
 		character->ResetHitStunState();
 	}
 
+}
+
+
+UAnimationAsset* UAegisCharacterAnimInstance::GetMeleeAnimToPlay()
+{
+	auto character = Cast<AAegisCharacter>(TryGetPawnOwner());
+	if (character)
+	{
+		auto comboComp = character->GetComboComponent(); 
+		if (comboComp)
+		{
+			return comboComp->GetAnimation(); 
+		}
+	}
+	return nullptr; 
 }

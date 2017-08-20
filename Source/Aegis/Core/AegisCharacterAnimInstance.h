@@ -49,8 +49,11 @@ public:
 	/** Set Character's Hit Stun State to false */
 	UFUNCTION(BlueprintCallable)
 	void ResetCharacterHitStunState(); 
+
+	UFUNCTION(BlueprintCallable)
+	UAnimationAsset* GetMeleeAnimToPlay();
 protected: 
-	/*Function called every Animation Tick to update the State of the Character*/
+	/** Function called every Animation Tick to update the State of the Character*/
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override; 
 
 private: 
@@ -86,5 +89,7 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
 	bool bIsDead = false; 
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "MeleeAnimProperties", meta = (AllowPrivateAccess = "true"))
+	UAnimationAsset* CurrentMeleeAnimation = nullptr; 
 	
 };

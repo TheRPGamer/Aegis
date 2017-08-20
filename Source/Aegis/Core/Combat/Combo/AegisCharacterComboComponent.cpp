@@ -88,7 +88,6 @@ FName UAegisCharacterComboComponent::GetComboName() const
 	{
 		return ComparisonComboTreeNode->GetRequiredComboState().GetName(); 
 	}
-	UE_LOG(AegisComboLog, Error, TEXT("Comparison Combo Node invalid in %s Combo Component."), *(GetOwner()->GetHumanReadableName()));
 	return NAME_None;
 }
 
@@ -98,7 +97,6 @@ bool UAegisCharacterComboComponent::IsInAir() const
 	{
 		return ComparisonComboTreeNode->GetRequiredComboState().IsInAir(); 
 	}
-	UE_LOG(AegisComboLog, Error, TEXT("Comparison Combo Node invalid in %s Combo Component."), *(GetOwner()->GetHumanReadableName()));
 	return false;
 }
 
@@ -108,7 +106,6 @@ bool UAegisCharacterComboComponent::IsInSuperMode() const
 	{
 		ComparisonComboTreeNode->GetRequiredComboState().IsInSuperMode(); 
 	}
-	UE_LOG(AegisComboLog, Error, TEXT("Comparison Combo Node invalid in %s Combo Component."), *(GetOwner()->GetHumanReadableName()));
 	return false;
 }
 
@@ -118,7 +115,6 @@ bool UAegisCharacterComboComponent::IsInMeleeAttack() const
 	{
 		ComparisonComboTreeNode->GetRequiredComboState().IsInMeleeAttack();
 	}
-	UE_LOG(AegisComboLog, Error, TEXT("Comparison Combo Node invalid in %s Combo Component."), *(GetOwner()->GetHumanReadableName()));
 	return false;
 }
 
@@ -128,8 +124,16 @@ EAegisCharacterLockOnState UAegisCharacterComboComponent::GetLockOnState() const
 	{
 		return ComparisonComboTreeNode->GetRequiredComboState().GetLockOnState(); 
 	}
-	UE_LOG(AegisComboLog, Error, TEXT("Comparison Combo Node invalid in %s Combo Component."), *(GetOwner()->GetHumanReadableName()));
 	return EAegisCharacterLockOnState::NotLockedOn;
+}
+
+UAnimationAsset* UAegisCharacterComboComponent::GetAnimation()
+{
+	if (CurrentComboTreeNode)
+	{
+		return CurrentComboTreeNode->GetRequiredComboState().GetAnimation();
+	}
+	return nullptr; 
 }
 
 void UAegisCharacterComboComponent::SetInAir(bool bInValue)
@@ -138,10 +142,6 @@ void UAegisCharacterComboComponent::SetInAir(bool bInValue)
 	{
 		FAegisCharacterComboState* ptr = &(ComparisonComboTreeNode->GetRequiredComboState());
 		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetInAir(bInValue);
-	}
-	else
-	{
-		UE_LOG(AegisComboLog, Error, TEXT("Comparison Combo Node invalid in %s Combo Component."), *(GetOwner()->GetHumanReadableName()));
 	}
 }
 
@@ -152,10 +152,7 @@ void UAegisCharacterComboComponent::SetInSuperMode(bool bInValue)
 		FAegisCharacterComboState* ptr = &(ComparisonComboTreeNode->GetRequiredComboState());
 		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetInSuperMode(bInValue);
 	}
-	else
-	{
-		UE_LOG(AegisComboLog, Error, TEXT("Comparison Combo Node invalid in %s Combo Component."), *(GetOwner()->GetHumanReadableName()));
-	}
+	
 }
 
 
@@ -166,10 +163,7 @@ void UAegisCharacterComboComponent::SetInMeleeAttack(bool bInValue)
 		FAegisCharacterComboState* ptr = &(ComparisonComboTreeNode->GetRequiredComboState());
 		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetInMeleeAttack(bInValue);
 	}
-	else
-	{
-		UE_LOG(AegisComboLog, Error, TEXT("Comparison Combo Node invalid in %s Combo Component."), *(GetOwner()->GetHumanReadableName()));
-	}
+	
 }
 
 void UAegisCharacterComboComponent::SetLockOnState(EAegisCharacterLockOnState InLockOnState)
@@ -179,10 +173,7 @@ void UAegisCharacterComboComponent::SetLockOnState(EAegisCharacterLockOnState In
 		FAegisCharacterComboState* ptr = &(ComparisonComboTreeNode->GetRequiredComboState());
 		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetLockOnState(InLockOnState);
 	}
-	else
-	{
-		UE_LOG(AegisComboLog, Error, TEXT("Comparison Combo Node invalid in %s Combo Component."),*(GetOwner()->GetHumanReadableName()));
-	}
+	
 }
 #if !UE_BUILD_SHIPPING
 void UAegisCharacterComboComponent::PrintComboTree()

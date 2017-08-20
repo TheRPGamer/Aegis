@@ -27,6 +27,7 @@ public:
 	bool IsInSuperMode() const; 
 	bool IsInMeleeAttack() const; 
 	EAegisCharacterLockOnState GetLockOnState() const; 
+	UAnimationAsset* GetAnimation(); 
 
 	/** Sets IsInAir field of ComparisonNode's Combo State */
 	void SetInAir(bool bInValue);
