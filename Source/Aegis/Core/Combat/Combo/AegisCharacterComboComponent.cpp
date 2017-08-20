@@ -2,7 +2,7 @@
 
 #include "Aegis.h"
 #include "AegisCharacterComboComponent.h"
-#include "AegisCharacterComboChainNode.h"
+#include "AegisCharacterComboTreeNode.h"
 
 // Sets default values for this component's properties
 UAegisCharacterComboComponent::UAegisCharacterComboComponent()
@@ -19,11 +19,11 @@ void UAegisCharacterComboComponent::BuildComboTree()
 {
 	for (auto& comboChain : AllCombos)
 	{
-		BuildComboTreeHelper(comboChain); 
+		AddComboChainToComboTree(comboChain); 
 	}
 }
 
-void UAegisCharacterComboComponent::BuildComboTreeHelper(UAegisCharacterComboChain* ComboChain)
+void UAegisCharacterComboComponent::AddComboChainToComboTree(UAegisCharacterComboChain* ComboChain)
 {
 	if (!ComboChain)
 	{
@@ -36,46 +36,57 @@ void UAegisCharacterComboComponent::BuildComboTreeHelper(UAegisCharacterComboCha
 		return;
 	}
 	TArray<FAegisCharacterComboState>& comboStateArray = ComboChain->GetComboStates();
-	UAegisCharacterComboChainNode* currentNode = ComboTreeRootNode;
+	UAegisCharacterComboTreeNode* currentNode = ComboTreeRootNode;
 	for (int i=0; i<comboStateArray.Num(); ++i)
 	{
-		auto node = NewObject<UAegisCharacterComboChainNode>(); 
+		auto node = NewObject<UAegisCharacterComboTreeNode>(); 
 		node->SetRequiredComboState(comboStateArray[i]); 
-		currentNode->AddChildNode(node); 
-		currentNode = currentNode->FindChildNode(node); 
+		currentNode->AddUniqueChild(node);
+		currentNode = currentNode->FindChild(node);
+		if(!currentNode)
+		{
+			if (GetOwner())
+			{
+				UE_LOG(AegisComboLog, Fatal, TEXT("Cannot find child node that was just inserted in %s Combo Component Combo Tree."), *GetOwner()->GetHumanReadableName());
+			}
+			else
+			{
+				UE_LOG(AegisComboLog, Fatal, TEXT("Combo Component has no owner."));
+			}
+		}
 	}
 }
 
-void UAegisCharacterComboComponent::AdvanceCurrentComboChainNode()
+void UAegisCharacterComboComponent::AdvanceCombo()
 {
-	if (CurrentComboChainNode && ComparisonComboChainNode)
+	if (CurrentComboTreeNode && ComparisonComboTreeNode)
 	{
 		//See if the comparison node matches any possible combos from CurrentComboChainNode
-		auto nextComboNode = CurrentComboChainNode->FindChildNode(ComparisonComboChainNode);
+		auto nextComboNode = CurrentComboTreeNode->FindChild(ComparisonComboTreeNode);
 		//If it does, set the CurrentComboChainNode to that ComboNode
 		if (nextComboNode)
 		{
-			CurrentComboChainNode = nextComboNode; 
+			CurrentComboTreeNode = nextComboNode; 
 		}
 		else
 		{
 			//If it does not, compare Comparison nodes against the possible combos form the ComboTreeRootNode
-			nextComboNode = ComboTreeRootNode->FindChildNode(ComparisonComboChainNode);
+			nextComboNode = ComboTreeRootNode->FindChild(ComparisonComboTreeNode);
 			if (nextComboNode)
 			{
-				CurrentComboChainNode = nextComboNode; 
+				CurrentComboTreeNode = nextComboNode; 
 			}
 		}
-		UE_LOG(AegisLog, Log, TEXT("Current Combo Node Name: %s"), *(CurrentComboChainNode->GetRequiredComboState().GetName().ToString()) );
+		UE_LOG(AegisLog, Log, TEXT("Current Combo Node Name: %s"), *(CurrentComboTreeNode->GetRequiredComboState().GetName().ToString()) );
 	}
 }
 
 
 FName UAegisCharacterComboComponent::GetComboName() const
 {
-	if (ComparisonComboChainNode)
+	if (ComparisonComboTreeNode)
 	{
-		return ComparisonComboChainNode->GetRequiredComboState().GetName(); 
+		return ComparisonComboTreeNode->GetRequiredComboState().GetName(); 
 	}
 	UE_LOG(AegisComboLog, Error, TEXT("Comparison Combo Node invalid in %s Combo Component."), *(GetOwner()->GetHumanReadableName()));
 	return NAME_None;
@@ -83,9 +94,9 @@ FName UAegisCharacterComboComponent::GetComboName() const
 
 bool UAegisCharacterComboComponent::IsInAir() const
 {
-	if (ComparisonComboChainNode)
+	if (ComparisonComboTreeNode)
 	{
-		return ComparisonComboChainNode->GetRequiredComboState().IsInAir(); 
+		return ComparisonComboTreeNode->GetRequiredComboState().IsInAir(); 
 	}
 	UE_LOG(AegisComboLog, Error, TEXT("Comparison Combo Node invalid in %s Combo Component."), *(GetOwner()->GetHumanReadableName()));
 	return false;
@@ -93,9 +104,9 @@ bool UAegisCharacterComboComponent::IsInAir() const
 
 bool UAegisCharacterComboComponent::IsInSuperMode() const
 {
-	if (ComparisonComboChainNode)
+	if (ComparisonComboTreeNode)
 	{
-		ComparisonComboChainNode->GetRequiredComboState().IsInSuperMode(); 
+		ComparisonComboTreeNode->GetRequiredComboState().IsInSuperMode(); 
 	}
 	UE_LOG(AegisComboLog, Error, TEXT("Comparison Combo Node invalid in %s Combo Component."), *(GetOwner()->GetHumanReadableName()));
 	return false;
@@ -103,9 +114,9 @@ bool UAegisCharacterComboComponent::IsInSuperMode() const
 
 bool UAegisCharacterComboComponent::IsInMeleeAttack() const
 {
-	if (ComparisonComboChainNode)
+	if (ComparisonComboTreeNode)
 	{
-		ComparisonComboChainNode->GetRequiredComboState().IsInMeleeAttack();
+		ComparisonComboTreeNode->GetRequiredComboState().IsInMeleeAttack();
 	}
 	UE_LOG(AegisComboLog, Error, TEXT("Comparison Combo Node invalid in %s Combo Component."), *(GetOwner()->GetHumanReadableName()));
 	return false;
@@ -113,9 +124,9 @@ bool UAegisCharacterComboComponent::IsInMeleeAttack() const
 
 EAegisCharacterLockOnState UAegisCharacterComboComponent::GetLockOnState() const
 {
-	if (ComparisonComboChainNode)
+	if (ComparisonComboTreeNode)
 	{
-		return ComparisonComboChainNode->GetRequiredComboState().GetLockOnState(); 
+		return ComparisonComboTreeNode->GetRequiredComboState().GetLockOnState(); 
 	}
 	UE_LOG(AegisComboLog, Error, TEXT("Comparison Combo Node invalid in %s Combo Component."), *(GetOwner()->GetHumanReadableName()));
 	return EAegisCharacterLockOnState::NotLockedOn;
@@ -123,9 +134,9 @@ EAegisCharacterLockOnState UAegisCharacterComboComponent::GetLockOnState() const
 
 void UAegisCharacterComboComponent::SetInAir(bool bInValue)
 {
-	if (ComparisonComboChainNode)
+	if (ComparisonComboTreeNode)
 	{
-		FAegisCharacterComboState* ptr = &(ComparisonComboChainNode->GetRequiredComboState());
+		FAegisCharacterComboState* ptr = &(ComparisonComboTreeNode->GetRequiredComboState());
 		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetInAir(bInValue);
 	}
 	else
@@ -136,9 +147,9 @@ void UAegisCharacterComboComponent::SetInAir(bool bInValue)
 
 void UAegisCharacterComboComponent::SetInSuperMode(bool bInValue)
 {
-	if(ComparisonComboChainNode)
+	if(ComparisonComboTreeNode)
 	{
-		FAegisCharacterComboState* ptr = &(ComparisonComboChainNode->GetRequiredComboState());
+		FAegisCharacterComboState* ptr = &(ComparisonComboTreeNode->GetRequiredComboState());
 		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetInSuperMode(bInValue);
 	}
 	else
@@ -150,9 +161,9 @@ void UAegisCharacterComboComponent::SetInSuperMode(bool bInValue)
 
 void UAegisCharacterComboComponent::SetInMeleeAttack(bool bInValue)
 {
-	if (ComparisonComboChainNode)
+	if (ComparisonComboTreeNode)
 	{
-		FAegisCharacterComboState* ptr = &(ComparisonComboChainNode->GetRequiredComboState());
+		FAegisCharacterComboState* ptr = &(ComparisonComboTreeNode->GetRequiredComboState());
 		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetInMeleeAttack(bInValue);
 	}
 	else
@@ -163,9 +174,9 @@ void UAegisCharacterComboComponent::SetInMeleeAttack(bool bInValue)
 
 void UAegisCharacterComboComponent::SetLockOnState(EAegisCharacterLockOnState InLockOnState)
 {
-	if (ComparisonComboChainNode)
+	if (ComparisonComboTreeNode)
 	{
-		FAegisCharacterComboState* ptr = &(ComparisonComboChainNode->GetRequiredComboState());
+		FAegisCharacterComboState* ptr = &(ComparisonComboTreeNode->GetRequiredComboState());
 		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetLockOnState(InLockOnState);
 	}
 	else
@@ -177,7 +188,7 @@ void UAegisCharacterComboComponent::SetLockOnState(EAegisCharacterLockOnState In
 void UAegisCharacterComboComponent::PrintComboTree()
 {
 	//Does a level order traversal using BFS and prints out results
-	TArray<UAegisCharacterComboChainNode*> queue; 
+	TArray<UAegisCharacterComboTreeNode*> queue; 
 	if (!ComboTreeRootNode)
 	{
 		UE_LOG(AegisComboLog, Error, TEXT("Combo Tree Root Node invalid in %s Combo Component."), *(GetOwner()->GetHumanReadableName()));
@@ -212,19 +223,19 @@ void UAegisCharacterComboComponent::PrintComboTree()
 void UAegisCharacterComboComponent::OnRegister()
 {
 	Super::OnRegister(); 
-	ComboTreeRootNode = CreateDefaultSubobject<UAegisCharacterComboChainNode>("Combo Tree Root Node");
+	ComboTreeRootNode = NewObject<UAegisCharacterComboTreeNode>();
 	if (ComboTreeRootNode)
 	{
-		CurrentComboChainNode = ComboTreeRootNode;
+		CurrentComboTreeNode = ComboTreeRootNode;
 	}
 	else
 	{
 		UE_LOG(AegisComboLog, Error, TEXT("Failure to create Combo Tree Root Node in %s Combo Component."), *(GetOwner()->GetHumanReadableName()));
 	}
-	ComparisonComboChainNode = CreateDefaultSubobject<UAegisCharacterComboChainNode>("Combo Comparison Node");
-	if (ComparisonComboChainNode)
+	ComparisonComboTreeNode = NewObject<UAegisCharacterComboTreeNode>();
+	if (ComparisonComboTreeNode)
 	{
-		ComparisonComboChainNode->SetRequiredComboState(FAegisCharacterComboStateComparison());
+		ComparisonComboTreeNode->SetRequiredComboState(FAegisCharacterComboStateComparison());
 	}
 	else
 	{

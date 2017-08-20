@@ -3,7 +3,7 @@
 #include "Aegis.h"
 #include "Core/AegisPlayerCharacter.h"
 #include "Core/Combat/Combo/AegisCharacterComboComponent.h"
-#include "Core/Combat/Combo/AegisCharacterComboChainNode.h"
+#include "Core/Combat/Combo/AegisCharacterComboTreeNode.h"
 #include "Core/Combat/Combo/AegisCharacterComboState.h"
 #include "Core/AegisWeapon.h"
 
@@ -128,7 +128,7 @@ void AAegisPlayerCharacter::OnMeleeAttackReleased()
 		if (ComboComponent)
 		{
 			ComboComponent->SetInMeleeAttack(true); 
-			ComboComponent->AdvanceCurrentComboChainNode(); 
+			ComboComponent->AdvanceCombo(); 
 		}
 	}
 

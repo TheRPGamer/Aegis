@@ -5,12 +5,13 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Engine/DataAsset.h"
-#include "AegisCharacterComboState.h"
+#include "Core/Combat/Combo/AegisCharacterComboState.h"
 #include "AegisCharacterComboChain.generated.h"
 
 /**
- * A single instance of a Combo Chain that can be used for one character
- */
+* A series of FAegisCharacterComboStates make up a Combo Chain.
+* Declare in Editor and customise ComboStates to give the series of requirements for the Combo Chain
+*/
 UCLASS()
 class AEGIS_API UAegisCharacterComboChain : public UDataAsset
 {

@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "Core/AegisCharacter.h"
 #include "AegisCharacterComboState.generated.h"
 
+/**
+* Enum for the various Lock ON States a Character can be in . 
+*/
 UENUM()
 enum class EAegisCharacterLockOnState : uint8
 {
@@ -21,14 +23,14 @@ enum class EAegisCharacterLockOnState : uint8
 };
 
 /**
- * The building block for Combo Chains. 
+ * The building block for Combo Chains. Contains all requirements needed for this Combo State.
  */
 USTRUCT(BlueprintType)
 struct AEGIS_API FAegisCharacterComboState 
 {
 	GENERATED_BODY()
 public: 
-	FAegisCharacterComboState(); 
+	FAegisCharacterComboState() {}
 	explicit FAegisCharacterComboState(const FAegisCharacterComboState& Other); 
 
 	FORCEINLINE FName GetName() const { return Name; }
@@ -37,15 +39,13 @@ public:
 	FORCEINLINE bool IsInSuperMode() const { return bInSuperMode;  }
 	FORCEINLINE bool IsInMeleeAttack() const { return bInMeleeAttack; }
 	FORCEINLINE EAegisCharacterLockOnState GetLockOnState() const { return LockOnState;  }
+	FORCEINLINE UAnimationAsset* GetAnimation() { return Animation; }
+	FORCEINLINE UAnimationAsset* GetAnimation() const { return Animation; }
 
 	/** Returns true if alk memberes besides Name and FName of this match Other */
 	bool operator==(const FAegisCharacterComboState& Other) const;
 	
-	/** Performs a shallow copy of all the member variables */
-	FAegisCharacterComboState& operator=(const FAegisCharacterComboState& Other);
-
 protected: 
-	
 	/** Name for this Combo State for quick comparisoms */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo Name")
 	FName Name = NAME_None; 
@@ -66,14 +66,20 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
 	bool bInMeleeAttack = false;
 
-
 	/** Lock On State the character must be in to satisfy this Combo state */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
 	EAegisCharacterLockOnState LockOnState = EAegisCharacterLockOnState::NotLockedOn;
-	
+
+	/** Animation asset to be played when this combo is performed */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
+	UAnimationAsset* Animation = nullptr; 
 	
 };
 
+/**
+* Combo State used for the ComparisonComboTreeNode in ComboComponent. 
+* Allows for Setting of the various requirements. 
+*/
 USTRUCT()
 struct AEGIS_API FAegisCharacterComboStateComparison : public FAegisCharacterComboState
 {

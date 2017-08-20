@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
+#include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 #include "GameFramework/Character.h"
 #include "AegisCharacter.generated.h"
 /**
@@ -154,7 +154,7 @@ protected:
 
 	/** Character's Combo Component Class to be used. Must be set in editor  */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ComboCombponent")
-	TSubclassOf<class UAegisCharacterComboComponent> ComboComponentClass = nullptr; 
+		TSubclassOf<class UAegisCharacterComboComponent> ComboComponentClass = UAegisCharacterComboComponent::StaticClass();
 
 	/** Character's Combo Component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ComboCombponent")

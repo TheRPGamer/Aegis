@@ -14,8 +14,7 @@ AAegisCharacter::AAegisCharacter()
 	{
 		GetCapsuleComponent()->bGenerateOverlapEvents = true;
 	}
-	//Ensures that in editor, there won't be an instance of null ComboComponentClass
-	ComboComponentClass = UAegisCharacterComboComponent::StaticClass(); 
+
 	if (ComboComponentClass)
 	{
 		ComboComponent = CreateDefaultSubobject<UAegisCharacterComboComponent>("Combo Component");

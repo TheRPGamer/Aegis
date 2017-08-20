@@ -15,7 +15,7 @@ class AEGIS_API AAegisPlayerCharacter : public AAegisCharacter
 	GENERATED_BODY()
 	
 public: 
-	explicit AAegisPlayerCharacter(); 
+	AAegisPlayerCharacter(); 
 
 protected:
 	/** Called when the game starts or when spawned */
