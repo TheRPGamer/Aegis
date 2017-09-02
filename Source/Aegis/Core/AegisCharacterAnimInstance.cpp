@@ -23,46 +23,22 @@ void UAegisCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		bIsFalling = character->IsInAir(); 
 		MovementSpeed = character->GetVelocity().Size();
-		bCanUseMeleeAttack = character->CanUseMeleeAttack();
-		bIsInGroundMeleeAttack = character->IsInGroundMeleeAttack(); 
-		bCanUseGuard = character->CanUseGuard(); 
-		bIsInGroundGuard = character->IsInGroundGuard(); 
 		bIsInHitStun = character->IsInHitStun(); 
-		//bIsDead = character->IsDead(); 
 		bIsDead = false; 
-		CurrentMeleeAnimation = GetMeleeAnimToPlay(); 
+		CurrentComboAnimation = GetComboAnimToPlay();
+		bInCombo = IsAegisCharacterInCombo(); 
 	}
 }
 
-void UAegisCharacterAnimInstance::ResetCharacterGroundMeleeState()
+void UAegisCharacterAnimInstance::ResetCharacterInCombo()
 {
-	auto character = Cast<AAegisCharacter>(TryGetPawnOwner()); 
-	if (character)
+	auto comboComp = GetAegisCharacterComboComponent(); 
+	if (comboComp)
 	{
-		character->ResetGroundMeleeAttackState(); 
+		comboComp->SetInCombo(false); 
 	}
 }
 
-void UAegisCharacterAnimInstance::ResetCharacterGroundGuardState()
-{
-	auto character = Cast<AAegisCharacter>(TryGetPawnOwner());
-	if (character)
-	{
-		character->ResetGroundGuardState(); 
-	}
-
-}
-
-
-void UAegisCharacterAnimInstance::OnIdleStateReset()
-{
-	auto character = Cast<AAegisCharacter>(TryGetPawnOwner());
-	if (character)
-	{
-		character->IdleStateReset();
-	}
-
-}
 
 
 void UAegisCharacterAnimInstance::MakeCharacterWeaponActive()
@@ -75,8 +51,6 @@ void UAegisCharacterAnimInstance::MakeCharacterWeaponActive()
 
 }
 
-
-
 void UAegisCharacterAnimInstance::MakeCharacterWeaponInactive()
 {
 	auto character = Cast<AAegisCharacter>(TryGetPawnOwner());
@@ -88,27 +62,60 @@ void UAegisCharacterAnimInstance::MakeCharacterWeaponInactive()
 }
 
 
-void UAegisCharacterAnimInstance::ResetCharacterHitStunState()
+AAegisCharacter* UAegisCharacterAnimInstance::GetAegisCharacter()
 {
-	auto character = Cast<AAegisCharacter>(TryGetPawnOwner());
+	auto character =  Cast<AAegisCharacter>(TryGetPawnOwner());
 	if (character)
 	{
-		character->ResetHitStunState();
+		return character; 
 	}
+	UE_LOG(AegisComboLog, Log, TEXT("Character Animation instance: unable to get Aegis Character Owner")); 
+	return nullptr; 
 
 }
 
 
-UAnimationAsset* UAegisCharacterAnimInstance::GetMeleeAnimToPlay()
+UAegisCharacterComboComponent* UAegisCharacterAnimInstance::GetAegisCharacterComboComponent()
 {
-	auto character = Cast<AAegisCharacter>(TryGetPawnOwner());
+	auto character = GetAegisCharacter(); 
 	if (character)
 	{
-		auto comboComp = character->GetComboComponent(); 
-		if (comboComp)
-		{
-			return comboComp->GetAnimation(); 
-		}
+		return character->GetComboComponent(); 
 	}
 	return nullptr; 
 }
+
+
+UAnimSequence* UAegisCharacterAnimInstance::GetComboAnimToPlay()
+{
+	auto comboComp = GetAegisCharacterComboComponent(); 
+	if (comboComp)
+	{
+		return comboComp->GetAnimation(); 
+	}
+	return nullptr;
+}
+
+bool UAegisCharacterAnimInstance::IsAegisCharacterInCombo() 
+{
+	auto comboComp = GetAegisCharacterComboComponent(); 
+	if (comboComp)
+	{
+		return comboComp->IsInCombo(); 
+	}
+	UE_LOG(AegisComboLog, Log, TEXT("Anim Instance cannot access owner Combo Component")); 
+	return false; 
+}
+
+void UAegisCharacterAnimInstance::SetAegisCharacterInPauseComboWindow(bool bInValue)
+{
+	auto comboComp = GetAegisCharacterComboComponent(); 
+	if (comboComp)
+	{
+		comboComp->SetInPauseComboWindow(bInValue); 
+		return; 
+	}
+	UE_LOG(AegisComboLog, Log, TEXT("Anim Instnace::Cannot access combo component"));
+}
+
+

@@ -26,14 +26,22 @@ public:
 	bool IsInAir() const; 
 	bool IsInSuperMode() const; 
 	bool IsInMeleeAttack() const; 
+	bool IsInPauseComboWindow() const;
 	EAegisCharacterLockOnState GetLockOnState() const; 
-	UAnimationAsset* GetAnimation(); 
+	UAnimSequence* GetAnimation(); 
+
+	UFUNCTION(BlueprintCallable)
+	bool IsInCombo() const { return bInCombo; }
 
 	/** Sets IsInAir field of ComparisonNode's Combo State */
 	void SetInAir(bool bInValue);
 	void SetInSuperMode(bool bInValue); 
 	void SetInMeleeAttack(bool bInValue);
+	void SetInPauseComboWindow(bool bInValue);
 	void SetLockOnState(EAegisCharacterLockOnState InLockOnState); 
+	
+	UFUNCTION(BlueprintCallable)
+	void SetInCombo(bool bInValue) { bInCombo = bInValue; }
 
 	/** Builds a Combo Tree from AllCombos */
 	void BuildComboTree();
@@ -67,4 +75,7 @@ private:
 	/** Combo Tree Node the owner will update. To be used to compare with Children of CurrentComboTreeNode */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combos", meta = (AllowPrivateAccess = "true"))
 	class UAegisCharacterComboTreeNode* ComparisonComboTreeNode = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combos", meta = (AllowPrivateAccess = "true"))
+	bool bInCombo;
 };

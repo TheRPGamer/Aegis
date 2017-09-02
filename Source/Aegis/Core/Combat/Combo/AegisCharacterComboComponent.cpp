@@ -77,6 +77,9 @@ void UAegisCharacterComboComponent::AdvanceCombo()
 				CurrentComboTreeNode = nextComboNode; 
 			}
 		}
+		//Reset the CurrentComboNode's Pause Combo Window State to false
+		SetInPauseComboWindow(false); 
+		
 		UE_LOG(AegisLog, Log, TEXT("Current Combo Node Name: %s"), *(CurrentComboTreeNode->GetRequiredComboState().GetName().ToString()) );
 	}
 }
@@ -118,6 +121,15 @@ bool UAegisCharacterComboComponent::IsInMeleeAttack() const
 	return false;
 }
 
+bool UAegisCharacterComboComponent::IsInPauseComboWindow() const
+{
+	if (ComparisonComboTreeNode)
+	{
+		return ComparisonComboTreeNode->GetRequiredComboState().IsInPauseComboWindow();
+	}
+	return false;
+}
+
 EAegisCharacterLockOnState UAegisCharacterComboComponent::GetLockOnState() const
 {
 	if (ComparisonComboTreeNode)
@@ -127,7 +139,7 @@ EAegisCharacterLockOnState UAegisCharacterComboComponent::GetLockOnState() const
 	return EAegisCharacterLockOnState::NotLockedOn;
 }
 
-UAnimationAsset* UAegisCharacterComboComponent::GetAnimation()
+UAnimSequence* UAegisCharacterComboComponent::GetAnimation()
 {
 	if (CurrentComboTreeNode)
 	{
@@ -155,7 +167,6 @@ void UAegisCharacterComboComponent::SetInSuperMode(bool bInValue)
 	
 }
 
-
 void UAegisCharacterComboComponent::SetInMeleeAttack(bool bInValue)
 {
 	if (ComparisonComboTreeNode)
@@ -164,6 +175,15 @@ void UAegisCharacterComboComponent::SetInMeleeAttack(bool bInValue)
 		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetInMeleeAttack(bInValue);
 	}
 	
+}
+
+void UAegisCharacterComboComponent::SetInPauseComboWindow(bool bInValue)
+{
+	if (ComparisonComboTreeNode)
+	{
+		FAegisCharacterComboState* ptr = &(ComparisonComboTreeNode->GetRequiredComboState());
+		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetInPauseComboWindow(bInValue);
+	}
 }
 
 void UAegisCharacterComboComponent::SetLockOnState(EAegisCharacterLockOnState InLockOnState)

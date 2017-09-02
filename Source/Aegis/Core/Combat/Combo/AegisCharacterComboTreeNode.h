@@ -20,7 +20,7 @@ public:
 	const FAegisCharacterComboState& GetRequiredComboState() const { return RequiredComboState; }
 	FAegisCharacterComboState& GetRequiredComboState() { return RequiredComboState; }
 
-	void SetRequiredComboState(const FAegisCharacterComboState& ComboState)  { RequiredComboState = ComboState; }
+	void	SetRequiredComboState(const FAegisCharacterComboState& ComboState)  { RequiredComboState = ComboState; }
 
 	/** Returns true if RequiredComboStates are equal */
 	bool operator==(const UAegisCharacterComboTreeNode& Other) const;

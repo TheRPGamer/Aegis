@@ -38,9 +38,13 @@ public:
 	FORCEINLINE bool IsInAir() const { return bInAir; }
 	FORCEINLINE bool IsInSuperMode() const { return bInSuperMode;  }
 	FORCEINLINE bool IsInMeleeAttack() const { return bInMeleeAttack; }
+	FORCEINLINE bool IsInPauseComboWindow() const {
+		return bInPauseComboWindow
+			;
+	}
 	FORCEINLINE EAegisCharacterLockOnState GetLockOnState() const { return LockOnState;  }
-	FORCEINLINE UAnimationAsset* GetAnimation() { return Animation; }
-	FORCEINLINE UAnimationAsset* GetAnimation() const { return Animation; }
+	FORCEINLINE UAnimSequence* GetAnimation() { return Animation; }
+	FORCEINLINE UAnimSequence* GetAnimation() const { return Animation; }
 
 	/** Returns true if alk memberes besides Name and FName of this match Other */
 	bool operator==(const FAegisCharacterComboState& Other) const;
@@ -66,13 +70,18 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
 	bool bInMeleeAttack = false;
 
+	/** If the combo requreies the  character to be in the pause combo state */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
+	bool bInPauseComboWindow = false;
+
+
 	/** Lock On State the character must be in to satisfy this Combo state */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
 	EAegisCharacterLockOnState LockOnState = EAegisCharacterLockOnState::NotLockedOn;
 
 	/** Animation asset to be played when this combo is performed */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
-	UAnimationAsset* Animation = nullptr; 
+	UAnimSequence* Animation = nullptr; 
 	
 };
 
@@ -88,6 +97,7 @@ public:
 	FORCEINLINE void SetInAir(bool bInValue) { bInAir = bInValue; }
 	FORCEINLINE void SetInSuperMode(bool bInValue) { bInSuperMode = bInValue; }
 	FORCEINLINE void SetInMeleeAttack(bool bInValue) { bInMeleeAttack = bInValue; }
+	FORCEINLINE void SetInPauseComboWindow(bool bInValue) { bInPauseComboWindow = bInValue; }
 	FORCEINLINE void SetLockOnState(EAegisCharacterLockOnState InLockOnState) { LockOnState = InLockOnState; }
 	
 };

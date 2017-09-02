@@ -46,19 +46,17 @@ float AAegisCharacter::TakeDamage(float DamageAmount, const struct FDamageEvent&
 	return DamageAmount; 
 }
 
-FORCEINLINE void AAegisCharacter::ResetGroundMeleeAttackState()
+
+bool AAegisCharacter::CanMove() const
 {
-	bIsInGroundMeleeAttack = false;
-	bIsInGroundMeleeChargeUp = false;
+	if (ComboComponent)
+	{
+		return !ComboComponent->IsInCombo(); 
+	}
+	return false; 
 }
 
-FORCEINLINE bool AAegisCharacter::CanMove() const
-{
-	return !bIsInHitStun && !bIsInGroundMeleeAttack && !bIsInAirMeleeAttack &&
-		!bIsInGroundGuard && !bIsInAirGuard;
-}
-
-FORCEINLINE bool AAegisCharacter::IsInAir() const
+bool AAegisCharacter::IsInAir() const
 {
 	if (GetCharacterMovement())
 	{
@@ -66,12 +64,6 @@ FORCEINLINE bool AAegisCharacter::IsInAir() const
 
 	}
 	return false;
-}
-
-FORCEINLINE void AAegisCharacter::IdleStateReset()
-{
-	ResetGroundMeleeAttackState();
-	ResetGroundGuardState();
 }
 
 #if !UE_BUILD_SHIPPING

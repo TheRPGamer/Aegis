@@ -46,65 +46,17 @@ public:
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	bool IsInSuperMode() const { return bInSuperMode; }
 	
-	/** Returns true if character is in the lock on state*/
-	FORCEINLINE UFUNCTION(BlueprintCallable)
-	bool IsInLockOn() const { return bIsInLockOn;}
-	
 	/** Returns true if character is currently in Hit Stun State*/
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	bool IsInHitStun() const{	return bIsInHitStun; }
 	
-	/** Returns true if character is performing Melee Attack on the ground*/
-	FORCEINLINE UFUNCTION(BlueprintCallable)
-	bool IsInGroundMeleeAttack() const { return bIsInGroundMeleeAttack; }
-	
-	/** Returns true if character is performing Melee Attack in the air*/
-	FORCEINLINE UFUNCTION(BlueprintCallable)
-	bool IsInAirMeleeAttack() const { return bIsInAirMeleeAttack; }
-	
-	/** Returns true if character is Guarding on the ground*/
-	FORCEINLINE UFUNCTION(BlueprintCallable)
-	bool IsInGroundGuard() const { return bIsInGroundGuard; }
-	
-	/** Returns true if character is guarding in the air*/
-	FORCEINLINE UFUNCTION(BlueprintCallable)
-	bool IsInAirGuard() const { return bIsInAirGuard; }
-
 	/** Returns true if character is in the Dead State*/
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	bool IsDead() const { return (CurrentHP <= 0.0f); }
 	
-	/** Returns true if the character's state allows for the character to perform Melee Attacks*/
-	FORCEINLINE UFUNCTION(BlueprintCallable)
-	bool CanUseMeleeAttack() const { return !bIsInHitStun && !bIsInGroundMeleeChargeUp && !bIsInGroundMeleeAttack;}
-	
-	/** Returns true if the character's state allows for the character to Guard*/
-	FORCEINLINE UFUNCTION(BlueprintCallable)
-	bool CanUseGuard() const { return !bIsInHitStun; }
-	
 	/** Returns true if the character's current state allows for any movement*/
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	bool CanMove() const;
-	
-	
-	/** Resets Ground Charge Up and Melee Attack States to false*/
-	FORCEINLINE UFUNCTION(BlueprintCallable)
-	void ResetGroundMeleeAttackState();
-	
-	/** Resets GroundGuardState to false*/
-	FORCEINLINE UFUNCTION(BlueprintCallable)
-	void ResetGroundGuardState() { bIsInGroundGuard = false; }
-	
-	/** Resets character hit stun state to false */
-	FORCEINLINE UFUNCTION(BlueprintCallable)
-	void ResetHitStunState() { bIsInHitStun = false;  }
-	
-	/**
-	* Function called while character is in the Idle State to reset
-	* Melee Attack, Guard State and Hit Stun States.
-	*/
-	FORCEINLINE UFUNCTION(BlueprintCallable)
-	void IdleStateReset();
 	
 	FORCEINLINE class AAegisWeapon* GetEquippedWeapon() const { return EquippedWeapon; }
 	
@@ -117,33 +69,12 @@ protected:
 	/** Character's current HP. Dies if < 0.0f*/
 	float CurrentHP = 0.0f;
 
-	/** True if character is in the lock on state*/
-	bool bIsInLockOn = false;
-
 	/** True if character is in Super Mode*/
 	bool bInSuperMode = false;
 
 	/** True if character is currently in hit stun*/
 	bool bIsInHitStun = false;
 	
-	/** True if character is currently charging up a melee attack on ground*/
-	bool bIsInGroundMeleeChargeUp = false; 
-
-	/** True if character is performing a melee attack on the groun*/
-	bool bIsInGroundMeleeAttack = false; 
-
-	/** True if character is charging up Melee attack in the air*/
-	bool bIsInAirMeleeChargeUp = false; 
-	
-	/** True if character is performing melee attack in the air*/
-	bool bIsInAirMeleeAttack = false; 
-
-	/** True if character is currently performing Guard on the ground*/
-	bool bIsInGroundGuard = false; 
-
-	/** True if character is performing Guard in the air*/
-	bool bIsInAirGuard = false; 
-
 	/** Class of weapon that the character will have equipped*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipped Weapon")
 	TSubclassOf<class AAegisWeapon> EquippedWeaponClass = nullptr; 
@@ -154,7 +85,7 @@ protected:
 
 	/** Character's Combo Component Class to be used. Must be set in editor  */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ComboCombponent")
-		TSubclassOf<class UAegisCharacterComboComponent> ComboComponentClass = UAegisCharacterComboComponent::StaticClass();
+	TSubclassOf<class UAegisCharacterComboComponent> ComboComponentClass = UAegisCharacterComboComponent::StaticClass();
 
 	/** Character's Combo Component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ComboCombponent")
@@ -170,7 +101,7 @@ protected:
 	FName RightHandSocket = NAME_None;
 
 private: 
-#if !UE_BUILD_SHIPPING
+#if !UE_BUILD_SHIPPINGB
 	/** Checks if sockets exist and logs missing ones */
 	void ValidateSockets();
 #endif

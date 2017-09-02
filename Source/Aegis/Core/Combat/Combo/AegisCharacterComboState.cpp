@@ -14,5 +14,6 @@ FAegisCharacterComboState::FAegisCharacterComboState(const FAegisCharacterComboS
 bool FAegisCharacterComboState::operator==(const FAegisCharacterComboState& Other) const
 {
 	return IsInAir() == Other.IsInAir() && IsInSuperMode() == Other.IsInSuperMode() &&
-		 IsInMeleeAttack() == Other.IsInMeleeAttack() && GetLockOnState() == Other.GetLockOnState(); 
+		IsInMeleeAttack() == Other.IsInMeleeAttack() && GetLockOnState() == Other.GetLockOnState() &&
+		IsInPauseComboWindow() == Other.IsInPauseComboWindow(); 
 }

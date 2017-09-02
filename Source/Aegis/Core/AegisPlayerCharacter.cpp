@@ -112,31 +112,22 @@ void AAegisPlayerCharacter::MoveRight(float Value)
 
 void AAegisPlayerCharacter::OnMeleeAttackPressed()
 {
-	if (CanUseMeleeAttack())
-	{
-		bIsInGroundMeleeChargeUp = true;
-	}
+	
 }
 
 void AAegisPlayerCharacter::OnMeleeAttackReleased()
 {
-	bIsInGroundMeleeChargeUp = false; 
-	if (CanUseMeleeAttack())
+	if (ComboComponent && !ComboComponent->IsInCombo())
 	{
-		bIsInGroundMeleeAttack = true; 
-		
-		if (ComboComponent)
-		{
-			ComboComponent->SetInMeleeAttack(true); 
-			ComboComponent->AdvanceCombo(); 
-		}
+		ComboComponent->SetInMeleeAttack(true); 
+		ComboComponent->SetInCombo(true); 
+		ComboComponent->AdvanceCombo(); 
+			
 	}
-
 }
 
 void AAegisPlayerCharacter::OnLockOnPressed()
 {
-	bIsInLockOn = true; 
 	if (ComboComponent)
 	{
 		ComboComponent->SetLockOnState(EAegisCharacterLockOnState::NotMoving); 
@@ -148,8 +139,6 @@ void AAegisPlayerCharacter::OnLockOnPressed()
 }
 void AAegisPlayerCharacter::OnLockOnReleased()
 {
-	UE_LOG(AegisLog, Log, TEXT("Lock On Released")); 
-	bIsInLockOn = false; 
 	if (ComboComponent)
 	{
 		ComboComponent->SetLockOnState(EAegisCharacterLockOnState::NotLockedOn); 
@@ -183,15 +172,12 @@ void AAegisPlayerCharacter::OnSuperModeReleased()
 
 void AAegisPlayerCharacter::OnGuardPressed()
 {
-	if (CanUseGuard())
-	{
-		bIsInGroundGuard = true; 
-	}
+	
 }
 
 void AAegisPlayerCharacter::OnGuardReleased()
 {
-	bIsInGroundGuard = false; 
+
 }
 
 bool AAegisPlayerCharacter::IsInputDirectionTowardLockOnTarget()

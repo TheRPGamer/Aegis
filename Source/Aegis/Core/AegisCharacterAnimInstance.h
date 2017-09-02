@@ -21,23 +21,9 @@ public:
 	* to set Ground Melee State to false
 	*/
 	UFUNCTION(BlueprintCallable)
-	void ResetCharacterGroundMeleeState();
+	void ResetCharacterInCombo();
 
-	/**
-	* Call's the character's ResetGroundGuardState() to set 
-	* its Guard State to false
-	*/
-	UFUNCTION(BlueprintCallable)
-	void ResetCharacterGroundGuardState(); 
 	
-	/**
-	* Function called when the character's idle state plays.
-	* Acts as a safety net to ensure character will always be reset to 
-	* Idle State
-	*/
-	UFUNCTION(BlueprintCallable)
-	void OnIdleStateReset(); 
-
 	/** Make Character Equipped Weapon's collision volume active */
 	UFUNCTION(BlueprintCallable)
 	void MakeCharacterWeaponActive(); 
@@ -46,12 +32,24 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void MakeCharacterWeaponInactive(); 
 	
-	/** Set Character's Hit Stun State to false */
+	
 	UFUNCTION(BlueprintCallable)
-	void ResetCharacterHitStunState(); 
+	class AAegisCharacter* GetAegisCharacter(); 
 
 	UFUNCTION(BlueprintCallable)
-	UAnimationAsset* GetMeleeAnimToPlay();
+	class UAegisCharacterComboComponent* GetAegisCharacterComboComponent();
+
+	/** Gets Combo Animation to be played form character's Combo Component */
+	UFUNCTION(BlueprintCallable)
+	UAnimSequence* GetComboAnimToPlay();
+
+	/** Returns true if character is currently in middle of a combo */
+	UFUNCTION(BlueprintCallable)
+	bool IsAegisCharacterInCombo(); 
+
+	/** Sets whether the Aegis Character is iwthin a Pause Combo Window */
+	UFUNCTION(BlueprintCallable)
+	void SetAegisCharacterInPauseComboWindow(bool bInValue);
 protected: 
 	/** Function called every Animation Tick to update the State of the Character*/
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override; 
@@ -65,22 +63,6 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
 	float MovementSpeed = 0.0f; 
 	
-	/*True if the character's state allows it to use Melee Attacks*/
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
-	bool bCanUseMeleeAttack = false; 
-	
-	/*True if the character is currently performing a Melee Attack */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
-	bool bIsInGroundMeleeAttack = false; 
-
-	/*True if the character's state allows it to use Guard*/
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
-	bool bCanUseGuard = false;
-
-	/*True if the character is currently Guarding on the ground*/
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
-	bool bIsInGroundGuard = false;
-	
 	/*True if the character is currently in a Hit Stun State*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
 	bool bIsInHitStun = false;
@@ -89,7 +71,12 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
 	bool bIsDead = false; 
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "MeleeAnimProperties", meta = (AllowPrivateAccess = "true"))
-	UAnimationAsset* CurrentMeleeAnimation = nullptr; 
+	/** True if character is currently in a combo */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
+	bool bInCombo = false;
+
+	/** The current combo animation to be played */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MeleeAnimProperties", meta = (AllowPrivateAccess = "true"))
+	UAnimSequence* CurrentComboAnimation = nullptr; 
 	
 };
