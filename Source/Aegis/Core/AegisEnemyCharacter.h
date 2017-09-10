@@ -16,6 +16,7 @@ class AEGIS_API AAegisEnemyCharacter : public AAegisCharacter
 public: 
 	FORCEINLINE UPROPERTY(BlueprintCallable)
 	class UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
+
 protected: 
 	/** Behavior Tree that controls this Enemy Character */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BehaviorTree")

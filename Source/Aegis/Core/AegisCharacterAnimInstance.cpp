@@ -30,16 +30,6 @@ void UAegisCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	}
 }
 
-void UAegisCharacterAnimInstance::ResetCharacterInCombo()
-{
-	auto comboComp = GetAegisCharacterComboComponent(); 
-	if (comboComp)
-	{
-		comboComp->SetInCombo(false); 
-	}
-}
-
-
 
 void UAegisCharacterAnimInstance::MakeCharacterWeaponActive()
 {
@@ -86,7 +76,7 @@ UAegisCharacterComboComponent* UAegisCharacterAnimInstance::GetAegisCharacterCom
 }
 
 
-UAnimSequence* UAegisCharacterAnimInstance::GetComboAnimToPlay()
+UAnimSequenceBase* UAegisCharacterAnimInstance::GetComboAnimToPlay()
 {
 	auto comboComp = GetAegisCharacterComboComponent(); 
 	if (comboComp)
@@ -105,17 +95,6 @@ bool UAegisCharacterAnimInstance::IsAegisCharacterInCombo()
 	}
 	UE_LOG(AegisComboLog, Log, TEXT("Anim Instance cannot access owner Combo Component")); 
 	return false; 
-}
-
-void UAegisCharacterAnimInstance::SetAegisCharacterInPauseComboWindow(bool bInValue)
-{
-	auto comboComp = GetAegisCharacterComboComponent(); 
-	if (comboComp)
-	{
-		comboComp->SetInPauseComboWindow(bInValue); 
-		return; 
-	}
-	UE_LOG(AegisComboLog, Log, TEXT("Anim Instnace::Cannot access combo component"));
 }
 
 

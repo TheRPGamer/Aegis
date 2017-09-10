@@ -38,13 +38,10 @@ public:
 	FORCEINLINE bool IsInAir() const { return bInAir; }
 	FORCEINLINE bool IsInSuperMode() const { return bInSuperMode;  }
 	FORCEINLINE bool IsInMeleeAttack() const { return bInMeleeAttack; }
-	FORCEINLINE bool IsInPauseComboWindow() const {
-		return bInPauseComboWindow
-			;
-	}
-	FORCEINLINE EAegisCharacterLockOnState GetLockOnState() const { return LockOnState;  }
-	FORCEINLINE UAnimSequence* GetAnimation() { return Animation; }
-	FORCEINLINE UAnimSequence* GetAnimation() const { return Animation; }
+	FORCEINLINE bool IsInPauseComboWindow() const { return bInPauseComboWindow;  }
+	FORCEINLINE EAegisCharacterLockOnState GetLockOnState() const { return LockOnState; }
+	FORCEINLINE UAnimSequenceBase* GetAnimation() { return Animation; }
+	FORCEINLINE UAnimSequenceBase* GetAnimation() const { return Animation; }
 
 	/** Returns true if alk memberes besides Name and FName of this match Other */
 	bool operator==(const FAegisCharacterComboState& Other) const;
@@ -81,7 +78,7 @@ protected:
 
 	/** Animation asset to be played when this combo is performed */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
-	UAnimSequence* Animation = nullptr; 
+	UAnimSequenceBase* Animation = nullptr; 
 	
 };
 

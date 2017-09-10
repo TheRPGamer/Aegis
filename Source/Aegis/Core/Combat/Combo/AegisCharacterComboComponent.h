@@ -28,7 +28,7 @@ public:
 	bool IsInMeleeAttack() const; 
 	bool IsInPauseComboWindow() const;
 	EAegisCharacterLockOnState GetLockOnState() const; 
-	UAnimSequence* GetAnimation(); 
+	UAnimSequenceBase* GetAnimation(); 
 
 	UFUNCTION(BlueprintCallable)
 	bool IsInCombo() const { return bInCombo; }
@@ -46,9 +46,6 @@ public:
 	/** Builds a Combo Tree from AllCombos */
 	void BuildComboTree();
 
-	/** Function called to advance in the Combo Tree */
-	void AdvanceCombo(); 
-
 #if !UE_BUILD_SHIPPING
 	/** For Debug Purposes */
 	void PrintComboTree(); 
@@ -63,6 +60,14 @@ private:
 	/** Adds a Combo Chain to the Combo Tree. Helper function to BuildComboTree() */
 	void AddComboChainToComboTree(UAegisCharacterComboChain* ComboChain);
 
+	/** Function called to advance in the Combo Tree */
+	void AdvanceCombo(class UAegisCharacterComboTreeNode* InComboTreeNode);
+
+	/** Tries to advance the current combo */
+	void TryAdvanceCombo(); 
+
+	/** Aborts Current Combo */
+	void AbortCombo(); 
 
 	/** Root Node of the Combo Tree. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly , Category = "Combos", meta = (AllowPrivateAccess = "true"))

@@ -16,13 +16,6 @@ public:
 	explicit UAegisCharacterAnimInstance();
 	virtual ~UAegisCharacterAnimInstance();
 	
-	/**
-	* Calls the character's Reset Ground Melee State function
-	* to set Ground Melee State to false
-	*/
-	UFUNCTION(BlueprintCallable)
-	void ResetCharacterInCombo();
-
 	
 	/** Make Character Equipped Weapon's collision volume active */
 	UFUNCTION(BlueprintCallable)
@@ -41,15 +34,13 @@ public:
 
 	/** Gets Combo Animation to be played form character's Combo Component */
 	UFUNCTION(BlueprintCallable)
-	UAnimSequence* GetComboAnimToPlay();
+	UAnimSequenceBase* GetComboAnimToPlay();
 
 	/** Returns true if character is currently in middle of a combo */
 	UFUNCTION(BlueprintCallable)
 	bool IsAegisCharacterInCombo(); 
 
-	/** Sets whether the Aegis Character is iwthin a Pause Combo Window */
-	UFUNCTION(BlueprintCallable)
-	void SetAegisCharacterInPauseComboWindow(bool bInValue);
+	
 protected: 
 	/** Function called every Animation Tick to update the State of the Character*/
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override; 
@@ -77,6 +68,6 @@ private:
 
 	/** The current combo animation to be played */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MeleeAnimProperties", meta = (AllowPrivateAccess = "true"))
-	UAnimSequence* CurrentComboAnimation = nullptr; 
+	UAnimSequenceBase* CurrentComboAnimation = nullptr; 
 	
 };

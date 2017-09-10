@@ -121,8 +121,6 @@ void AAegisPlayerCharacter::OnMeleeAttackReleased()
 	{
 		ComboComponent->SetInMeleeAttack(true); 
 		ComboComponent->SetInCombo(true); 
-		ComboComponent->AdvanceCombo(); 
-			
 	}
 }
 

@@ -57,33 +57,42 @@ void UAegisCharacterComboComponent::AddComboChainToComboTree(UAegisCharacterComb
 	}
 }
 
-void UAegisCharacterComboComponent::AdvanceCombo()
+void UAegisCharacterComboComponent::AdvanceCombo(UAegisCharacterComboTreeNode* InComboTreeNode)
 {
-	if (CurrentComboTreeNode && ComparisonComboTreeNode)
+	if (CurrentComboTreeNode && InComboTreeNode)
 	{
-		//See if the comparison node matches any possible combos from CurrentComboChainNode
-		auto nextComboNode = CurrentComboTreeNode->FindChild(ComparisonComboTreeNode);
-		//If it does, set the CurrentComboChainNode to that ComboNode
-		if (nextComboNode)
-		{
-			CurrentComboTreeNode = nextComboNode; 
-		}
-		else
-		{
-			//If it does not, compare Comparison nodes against the possible combos form the ComboTreeRootNode
-			nextComboNode = ComboTreeRootNode->FindChild(ComparisonComboTreeNode);
-			if (nextComboNode)
-			{
-				CurrentComboTreeNode = nextComboNode; 
-			}
-		}
-		//Reset the CurrentComboNode's Pause Combo Window State to false
+		CurrentComboTreeNode = InComboTreeNode; 
 		SetInPauseComboWindow(false); 
 		
 		UE_LOG(AegisLog, Log, TEXT("Current Combo Node Name: %s"), *(CurrentComboTreeNode->GetRequiredComboState().GetName().ToString()) );
 	}
 }
 
+void UAegisCharacterComboComponent::TryAdvanceCombo()
+{
+	if (CurrentComboTreeNode && ComparisonComboTreeNode)
+	{
+		//Based on current character combo state (ComparisonComboNode), see if there is a Child Combo node to move on to 
+		auto nextComboNode = CurrentComboTreeNode->FindChild(ComparisonComboTreeNode); 
+		
+		//There is a valid combo further on ahead
+		if (nextComboNode)
+		{
+			AdvanceCombo(nextComboNode); 
+		}
+		//a subsequent combo doens't exist in the combo tree. Aborrt the combo and advance 
+		else
+		{
+			AbortCombo(); 
+			TryAdvanceCombo(); 
+		}
+	}
+}
+
+void UAegisCharacterComboComponent::AbortCombo()
+{
+	CurrentComboTreeNode = ComboTreeRootNode; 
+}
 
 FName UAegisCharacterComboComponent::GetComboName() const
 {
@@ -139,7 +148,7 @@ EAegisCharacterLockOnState UAegisCharacterComboComponent::GetLockOnState() const
 	return EAegisCharacterLockOnState::NotLockedOn;
 }
 
-UAnimSequence* UAegisCharacterComboComponent::GetAnimation()
+UAnimSequenceBase* UAegisCharacterComboComponent::GetAnimation()
 {
 	if (CurrentComboTreeNode)
 	{
@@ -173,6 +182,7 @@ void UAegisCharacterComboComponent::SetInMeleeAttack(bool bInValue)
 	{
 		FAegisCharacterComboState* ptr = &(ComparisonComboTreeNode->GetRequiredComboState());
 		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetInMeleeAttack(bInValue);
+		TryAdvanceCombo(); 
 	}
 	
 }
@@ -195,6 +205,7 @@ void UAegisCharacterComboComponent::SetLockOnState(EAegisCharacterLockOnState In
 	}
 	
 }
+
 #if !UE_BUILD_SHIPPING
 void UAegisCharacterComboComponent::PrintComboTree()
 {
