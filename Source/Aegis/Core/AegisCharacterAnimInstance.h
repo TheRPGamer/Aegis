@@ -13,10 +13,6 @@ class AEGIS_API UAegisCharacterAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 public: 
-	explicit UAegisCharacterAnimInstance();
-	virtual ~UAegisCharacterAnimInstance();
-	
-	
 	/** Make Character Equipped Weapon's collision volume active */
 	UFUNCTION(BlueprintCallable)
 	void MakeCharacterWeaponActive(); 
@@ -66,8 +62,19 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
 	bool bInCombo = false;
 
+	/** Debug thing. A variable that is always set to !bInCombo jus to 
+	* check if there's anything wrong with Anim BP
+	*/
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
+	bool bTransitionOutOfCombo = false;
+
+
 	/** The current combo animation to be played */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MeleeAnimProperties", meta = (AllowPrivateAccess = "true"))
 	UAnimSequenceBase* CurrentComboAnimation = nullptr; 
 	
+	/** The next combo animation to be played */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MeleeAnimProperties", meta = (AllowPrivateAccess = "true"))
+	UAnimSequenceBase* NextComboAnimation = nullptr;
+
 };

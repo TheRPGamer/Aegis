@@ -117,10 +117,9 @@ void AAegisPlayerCharacter::OnMeleeAttackPressed()
 
 void AAegisPlayerCharacter::OnMeleeAttackReleased()
 {
-	if (ComboComponent && !ComboComponent->IsInCombo())
+	if (ComboComponent)
 	{
 		ComboComponent->SetInMeleeAttack(true); 
-		ComboComponent->SetInCombo(true); 
 	}
 }
 

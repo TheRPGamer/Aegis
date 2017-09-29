@@ -62,14 +62,15 @@ void UAegisCharacterComboComponent::AdvanceCombo(UAegisCharacterComboTreeNode* I
 	if (CurrentComboTreeNode && InComboTreeNode)
 	{
 		CurrentComboTreeNode = InComboTreeNode; 
-		SetInPauseComboWindow(false); 
-		
+		//sets in melee, in pause window etc to false
+		ResetComparisonComboState();
 		UE_LOG(AegisLog, Log, TEXT("Current Combo Node Name: %s"), *(CurrentComboTreeNode->GetRequiredComboState().GetName().ToString()) );
 	}
 }
 
 void UAegisCharacterComboComponent::TryAdvanceCombo()
 {
+	
 	if (CurrentComboTreeNode && ComparisonComboTreeNode)
 	{
 		//Based on current character combo state (ComparisonComboNode), see if there is a Child Combo node to move on to 
@@ -79,19 +80,39 @@ void UAegisCharacterComboComponent::TryAdvanceCombo()
 		if (nextComboNode)
 		{
 			AdvanceCombo(nextComboNode); 
+			//this being true starts Anim BP transition to combo
+			SetInCombo(true); 
+		
 		}
 		//a subsequent combo doens't exist in the combo tree. Aborrt the combo and advance 
 		else
 		{
+			//can't find a combo from the root state, stop. Don't try to keep looking
+			if (CurrentComboTreeNode == ComboTreeRootNode)
+			{
+				//reset comparison node
+				ResetComparisonComboState();
+				//This starts transitioning the ABP from Combo back to Idle
+				SetInCombo(false);
+
+				return;
+			}
+			//Sets current combo node to root node
 			AbortCombo(); 
+			//Let's see if my comparison node matches anything from the root node
 			TryAdvanceCombo(); 
 		}
 	}
+	//See SetInMeleeAttack()
+	bAcceptInput = true; 
 }
 
 void UAegisCharacterComboComponent::AbortCombo()
 {
-	CurrentComboTreeNode = ComboTreeRootNode; 
+	if (CurrentComboTreeNode && ComboTreeRootNode)
+	{
+		CurrentComboTreeNode = ComboTreeRootNode;
+	}
 }
 
 FName UAegisCharacterComboComponent::GetComboName() const
@@ -182,7 +203,14 @@ void UAegisCharacterComboComponent::SetInMeleeAttack(bool bInValue)
 	{
 		FAegisCharacterComboState* ptr = &(ComparisonComboTreeNode->GetRequiredComboState());
 		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetInMeleeAttack(bInValue);
-		TryAdvanceCombo(); 
+		
+		// Only try to advance the combo if not currently in combo and melee is true 
+		//I.e if you mash melee, it will just set the comparison node melee to true, won't try ot advance/affect current combo 
+		if (bInValue && bAcceptInput)
+		{
+			bAcceptInput = false; 
+			TryAdvanceCombo(); 
+		}
 	}
 	
 }
@@ -267,3 +295,14 @@ void UAegisCharacterComboComponent::OnRegister()
 	PrintComboTree(); 
 }
 
+void UAegisCharacterComboComponent::OnComboAnimationEnd()
+{
+	SetInCombo(false); 
+	TryAdvanceCombo(); 
+}
+
+void UAegisCharacterComboComponent::ResetComparisonComboState()
+{
+	SetInMeleeAttack(false); 
+	SetInPauseComboWindow(false); 
+}

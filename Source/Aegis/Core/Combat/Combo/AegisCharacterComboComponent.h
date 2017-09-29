@@ -43,32 +43,38 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetInCombo(bool bInValue) { bInCombo = bInValue; }
 
-	/** Builds a Combo Tree from AllCombos */
-	void BuildComboTree();
 
-#if !UE_BUILD_SHIPPING
-	/** For Debug Purposes */
-	void PrintComboTree(); 
-#endif
 	/** Function called when the Component is registered */
 	void OnRegister() override;
+
+	/* Function called by Animation Notify when a combo animation has ended*/
+	void OnComboAnimationEnd(); 
 protected:
 	/** All Combo Chains that the owner of this Combo Component can perform */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combos", meta = (AllowPrivateAccess = "true"))
 	TArray<UAegisCharacterComboChain*> AllCombos;
 private: 
+	/** Constructs a tree from the Combo Chains in the owner */
+	void BuildComboTree(); 
+
+	void PrintComboTree(); 
+
 	/** Adds a Combo Chain to the Combo Tree. Helper function to BuildComboTree() */
 	void AddComboChainToComboTree(UAegisCharacterComboChain* ComboChain);
 
 	/** Function called to advance in the Combo Tree */
 	void AdvanceCombo(class UAegisCharacterComboTreeNode* InComboTreeNode);
 
+
 	/** Tries to advance the current combo */
-	void TryAdvanceCombo(); 
+	void TryAdvanceCombo();
 
 	/** Aborts Current Combo */
 	void AbortCombo(); 
 
+	/** Resets the character's Comparison Combo State after a combo */
+	void ResetComparisonComboState(); 
+	
 	/** Root Node of the Combo Tree. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly , Category = "Combos", meta = (AllowPrivateAccess = "true"))
 	class UAegisCharacterComboTreeNode* ComboTreeRootNode = nullptr;
@@ -82,5 +88,8 @@ private:
 	class UAegisCharacterComboTreeNode* ComparisonComboTreeNode = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combos", meta = (AllowPrivateAccess = "true"))
-	bool bInCombo;
+	bool bInCombo = false;
+
+	/* Debug thing. See SetInMeleeAttack() to understand what it does at a glance*/
+	bool bAcceptInput = true; 
 };

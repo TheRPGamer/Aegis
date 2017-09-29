@@ -5,16 +5,6 @@
 #include "Core/AegisCharacter.h"
 #include "Core/AegisWeapon.h"
 #include "Core/Combat/Combo/AegisCharacterComboComponent.h"
-UAegisCharacterAnimInstance::UAegisCharacterAnimInstance()
-{
-
-}
-																																																																																																																																																																																											
-UAegisCharacterAnimInstance::~UAegisCharacterAnimInstance()
-{
-
-}
-
 void UAegisCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
@@ -27,6 +17,7 @@ void UAegisCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		bIsDead = false; 
 		CurrentComboAnimation = GetComboAnimToPlay();
 		bInCombo = IsAegisCharacterInCombo(); 
+		bTransitionOutOfCombo = !IsAegisCharacterInCombo(); 
 	}
 }
 

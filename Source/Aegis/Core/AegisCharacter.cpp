@@ -29,7 +29,7 @@ AAegisCharacter::AAegisCharacter()
 void AAegisCharacter::BeginPlay()
 {
 	Super::BeginPlay();	
-	ComboComponent->BuildComboTree(); 
+	//ComboComponent->BuildComboTree(); 
 	
 #if !UE_BUILD_SHIPPING
 	ValidateSockets();
