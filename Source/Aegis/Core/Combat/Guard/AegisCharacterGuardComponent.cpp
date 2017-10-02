@@ -50,7 +50,7 @@ float UAegisCharacterGuardComponent::OnAttackImpact(float DamageAmount, const st
 	DetermineCurrentGuardLevel(); 
 	float modifiedDamage = DamageAmount;  
 	//if current guard level is not  null as represented as default constructed guard level *
-	if (! (CurrentGuardLevel != FAegisCharacterGuardLevel() ) )
+	if (CurrentGuardLevel != FAegisCharacterGuardLevel())
 	{
 		modifiedDamage *= CurrentGuardLevel.GetDamageReductionMultiplier(); 
 	}
@@ -102,10 +102,8 @@ void UAegisCharacterGuardComponent::DetermineCurrentGuardLevel()
 	CurrentGuardLevel = FAegisCharacterGuardLevel(); 
 	//Reached the end of the GuardLevels list and still can't find a match. This can't be correct 
 	auto owner = Cast<AAegisCharacter>(GetOwner());
-	if (owner)
-	{
-
-	}
+	if(owner)
+	{ }
 }
 
 void UAegisCharacterGuardComponent::ApplyGuardLevelEffectsOnOwner()

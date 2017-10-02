@@ -5,7 +5,8 @@
 #include "CoreMinimal.h"
 #include "AegisActionTimeTracker.generated.h"
 /**
- * 
+ * Utility struct meant to keep track of when a certain action is performed and when the action should end
+ * Also provides functions to caluclate time difference between the actions and reset the action times 
  */
 USTRUCT(BlueprintType)
 struct AEGIS_API FAegisActionTimeTracker

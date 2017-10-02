@@ -6,7 +6,9 @@
 #include "AegisCharacterGuardLevel.generated.h"
 
 /**
- * 
+ * A Guard Level with associated requirements for this guard level to be met,
+ * Effects to be played  if this guard level is met and the corresponding requirements for this guard level
+ * @see AegisCharacterGuardcomponent
  */
 USTRUCT(BlueprintType)
 struct AEGIS_API FAegisCharacterGuardLevel 

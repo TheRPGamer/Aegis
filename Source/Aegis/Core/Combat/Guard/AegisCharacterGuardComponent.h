@@ -8,6 +8,11 @@
 #include "AegisCharacterGuardLevel.h"
 #include "AegisCharacterGuardComponent.generated.h"
 
+/**
+* Actor Component responsible for determining the guard level upon guarding, 
+* plays the effects associated with teh guard level and affects the owner and attacker according to the guard levels
+* @see AegisCharacterGuardLevel 
+*/
 UCLASS( Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class AEGIS_API UAegisCharacterGuardComponent : public UActorComponent
 {
