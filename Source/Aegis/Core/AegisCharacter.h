@@ -2,6 +2,7 @@
 
 #pragma once
 #include "Core/Combat/Combo/AegisCharacterComboComponent.h"
+#include "Core/Combat/Guard/AegisCharacterGuardComponent.h"
 #include "GameFramework/Character.h"
 #include "AegisCharacter.generated.h"
 /**
@@ -85,11 +86,20 @@ protected:
 
 	/** Character's Combo Component Class to be used. Must be set in editor  */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ComboCombponent")
-	TSubclassOf<class UAegisCharacterComboComponent> ComboComponentClass = UAegisCharacterComboComponent::StaticClass();
+	TSubclassOf<UAegisCharacterComboComponent> ComboComponentClass = UAegisCharacterComboComponent::StaticClass();
 
 	/** Character's Combo Component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ComboCombponent")
-	class UAegisCharacterComboComponent* ComboComponent = nullptr;
+	UAegisCharacterComboComponent* ComboComponent = nullptr;
+
+	/** Character's Combo Component Class to be used. Must be set in editor  */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GuardCombponent")
+	TSubclassOf<UAegisCharacterGuardComponent> GuardComponentClass = UAegisCharacterGuardComponent::StaticClass();
+
+	/** Character's Combo Component */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GuardCombponent")
+	UAegisCharacterGuardComponent* GuardComponent = nullptr;
+
 
 
 	/** The left hand socket of the character */

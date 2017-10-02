@@ -3,7 +3,6 @@
 #include "Aegis.h"
 #include "Core/AegisCharacter.h"
 #include "Core/AegisWeapon.h" 
-#include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 
 // Sets default values
 AAegisCharacter::AAegisCharacter()
@@ -22,6 +21,15 @@ AAegisCharacter::AAegisCharacter()
 	else
 	{
 		UE_LOG(AegisComboLog, Error, TEXT("Combo Component Class is invalid in %s. Fix in eidotr."), *GetHumanReadableName());
+	}
+
+	if (GuardComponentClass)
+	{
+		GuardComponent = CreateDefaultSubobject<UAegisCharacterGuardComponent>("Guard Component");
+	}
+	else
+	{
+		UE_LOG(AegisGuardLog, Error, TEXT("Guard Component Class is invalid in %s. Fix in editor."), *GetHumanReadableName());
 	}
 }
 

@@ -134,6 +134,7 @@ void AAegisPlayerCharacter::OnLockOnPressed()
 		GetCharacterMovement()->bOrientRotationToMovement = false;
 	}
 }
+
 void AAegisPlayerCharacter::OnLockOnReleased()
 {
 	if (ComboComponent)
@@ -169,12 +170,18 @@ void AAegisPlayerCharacter::OnSuperModeReleased()
 
 void AAegisPlayerCharacter::OnGuardPressed()
 {
-	
+	if (GuardComponent)
+	{
+		GuardComponent->OnBeginGuard(); 
+	}
 }
 
 void AAegisPlayerCharacter::OnGuardReleased()
 {
-
+	if (GuardComponent)
+	{
+		GuardComponent->OnEndGuard(); 
+	}
 }
 
 bool AAegisPlayerCharacter::IsInputDirectionTowardLockOnTarget()
@@ -221,6 +228,10 @@ float AAegisPlayerCharacter::TakeDamage(float DamageAmount, const struct FDamage
 	AController* EventInstigagor, AActor* DamageCauser)
 {
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigagor, DamageCauser);
+	if (GuardComponent && GuardComponent->IsInGuard())
+	{
+
+	}
 	return DamageAmount;
 }
 

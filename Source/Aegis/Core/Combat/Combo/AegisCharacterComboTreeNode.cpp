@@ -17,6 +17,7 @@ void UAegisCharacterComboTreeNode::AddUniqueChild(UAegisCharacterComboTreeNode* 
 		return;
 	}
 	for (int i=0; i<Children.Num(); ++i)
+
 	{
 		if (*Children[i] == *Child)
 		{
