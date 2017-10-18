@@ -34,6 +34,8 @@ public:
 	
 	/** Function called when this component is registered */
 	virtual void OnRegister() override;
+
+	FName GetGuardLevelName() const { return CurrentGuardLevel.GetName(); }
 private: 
 	void SetInGuard(bool bInValue) { bInGuard = bInValue; }
 	

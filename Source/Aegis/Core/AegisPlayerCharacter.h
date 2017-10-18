@@ -52,7 +52,7 @@ private:
 	
 	/** Function called when Guard Button is released*/
 	void OnGuardReleased(); 
-
+	
 	/**
 	* Returns true ifthe character's input direction is toward the lock 
 	* on target +- tolerance angle
@@ -82,4 +82,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* ThirdPersonCamera; 
 	
+	/** Debug Functions and Variables */
+	void StartTakeDamageTimer(); 
+	void SimulateTakeDamage(); 
+	FTimerHandle TakeDamageTimerHandle; 
+	bool bTimerActive = false; 
 };

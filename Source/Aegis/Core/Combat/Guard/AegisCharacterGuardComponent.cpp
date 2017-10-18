@@ -27,7 +27,7 @@ void UAegisCharacterGuardComponent::OnRegister()
 	{
 		return LHS.GetGuardTicksTimespan() < RHS.GetGuardTicksTimespan();
 	};
-	//GuardLevels.Sort(ascendingSortLambda);
+	GuardLevels.Sort(ascendingSortLambda);
 }
 
 void UAegisCharacterGuardComponent::OnBeginGuard()
@@ -59,6 +59,7 @@ float UAegisCharacterGuardComponent::OnAttackImpact(float DamageAmount, const st
 
 void UAegisCharacterGuardComponent::DetermineCurrentGuardLevel()
 {
+	//if .there are 0 guard levels, this function shouldn't even be firing
 	if (GuardLevels.Num() < 1)
 	{
 		auto owner = Cast<AAegisCharacter>(GetOwner());
@@ -68,13 +69,16 @@ void UAegisCharacterGuardComponent::DetermineCurrentGuardLevel()
 		}
 		return;
 	}
-
+	//Calculate time difference from character starting to guard to attack impact
 	GuardTimeTracker.CalculateTimeDifference();
 	FTimespan guardTimespan = GuardTimeTracker.GetTimeDifference(); 
 	FAegisCharacterGuardLevel currentGuardLevel;
+	//if there's only 1 guard level
 	if (GuardLevels.Num() == 1)
 	{
 		currentGuardLevel = GuardLevels[0]; 
+		//if the calculated time span > the lower bound time requirement of the single guard level 
+		// Set CurrentGuardLevel to the guardLevel
 		if (currentGuardLevel.IsTimeSpanGreaterThanLowerBound(guardTimespan)) 
 		{
 			CurrentGuardLevel = currentGuardLevel;
@@ -86,7 +90,7 @@ void UAegisCharacterGuardComponent::DetermineCurrentGuardLevel()
 		}
 		return; 
 	}
-
+	//there's more than 1 guard level, we need to look at all of them to see where we're at 
 	for (int i = 0; i < GuardLevels.Num(); ++i)
 	{
 		currentGuardLevel = GuardLevels[i];
@@ -99,11 +103,15 @@ void UAegisCharacterGuardComponent::DetermineCurrentGuardLevel()
 			return; 
 		}
 	}
+	//if execution reaches here, there's a problem. 
+	//That means the guard timespan is 
 	CurrentGuardLevel = FAegisCharacterGuardLevel(); 
 	//Reached the end of the GuardLevels list and still can't find a match. This can't be correct 
 	auto owner = Cast<AAegisCharacter>(GetOwner());
 	if(owner)
-	{ }
+	{ 
+		//log problem
+	}
 }
 
 void UAegisCharacterGuardComponent::ApplyGuardLevelEffectsOnOwner()

@@ -80,6 +80,7 @@ void AAegisPlayerCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 		PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump); 
 
+		PlayerInputComponent->BindAction("DebugTakeDamage", IE_Pressed, this, &AAegisPlayerCharacter::StartTakeDamageTimer);
 	}
 	else
 	{
@@ -219,6 +220,7 @@ float AAegisPlayerCharacter::CalculateAngleBetweenInputDirectionAndLockOnTarget(
 	charForward.Normalize();
 
 	float dotProduct = FVector::DotProduct(charVelocity, charForward);
+
 	float angleInRadians = FMath::Acos(dotProduct); 
 	
 	return FMath::RadiansToDegrees(angleInRadians); 
@@ -230,8 +232,26 @@ float AAegisPlayerCharacter::TakeDamage(float DamageAmount, const struct FDamage
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigagor, DamageCauser);
 	if (GuardComponent && GuardComponent->IsInGuard())
 	{
-
+		GuardComponent->OnAttackImpact(DamageAmount, DamageEvent, EventInstigagor, DamageCauser);
+		FName guardLevel = GuardComponent->GetGuardLevelName(); 
+		UE_LOG(AegisGuardLog, Log, TEXT("Guard level is: %s"), *(guardLevel.ToString()) );
 	}
 	return DamageAmount;
 }
 
+/** Debug Functions Implementations Beyond Here */
+
+void AAegisPlayerCharacter::StartTakeDamageTimer()
+{
+	if (!bTimerActive)
+	{
+		bTimerActive = true; 
+		GetWorldTimerManager().SetTimer(TakeDamageTimerHandle, this, &AAegisPlayerCharacter::SimulateTakeDamage, 5.0f, false);
+	}
+}
+
+void AAegisPlayerCharacter::SimulateTakeDamage()
+{
+	TakeDamage(1.0f, FDamageEvent(), GetController(), this);
+	bTimerActive = false; 
+}
