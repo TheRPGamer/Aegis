@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "Core/Utility/AegisActionTimeTracker.h"
 #include "AegisCharacterGuardLevel.h"
+#include "AegisCharacterGuardLevelsWrapper.h"
 #include "AegisCharacterGuardComponent.generated.h"
 
 /**
@@ -58,5 +59,9 @@ private:
 	FAegisCharacterGuardLevel CurrentGuardLevel; 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GuardLevels", meta = (AllowPrivateAccess = "true"))
-	TArray<FAegisCharacterGuardLevel> GuardLevels; 
+	TArray<FAegisCharacterGuardLevel> GuardLevels;
+    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GuardLevels", meta = (AllowPrivateAccess = "true"))
+    UAegisCharacterGuardLevelsWrapper* GuardLevelsWrapper = nullptr;
+
 };

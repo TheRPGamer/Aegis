@@ -11,8 +11,8 @@ AAegisPlayerCharacter::AAegisPlayerCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true; 
 	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = false;
-	bUseControllerRotationRoll = false;
+    bUseControllerRotationYaw = false;
+    bUseControllerRotationRoll = false;
 	ThirdPersonSpringArm = CreateDefaultSubobject<USpringArmComponent>("ThirdPersonSpringArm");
 	if (ThirdPersonSpringArm)
 	{
@@ -230,7 +230,8 @@ float AAegisPlayerCharacter::TakeDamage(float DamageAmount, const struct FDamage
 	AController* EventInstigagor, AActor* DamageCauser)
 {
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigagor, DamageCauser);
-	if (GuardComponent && GuardComponent->IsInGuard())
+    bool temp = GuardComponent->IsInGuard();
+    if (GuardComponent && GuardComponent->IsInGuard())
 	{
 		GuardComponent->OnAttackImpact(DamageAmount, DamageEvent, EventInstigagor, DamageCauser);
 		FName guardLevel = GuardComponent->GetGuardLevelName(); 

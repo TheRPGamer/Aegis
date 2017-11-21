@@ -17,6 +17,7 @@ AAegisCharacter::AAegisCharacter()
 	if (ComboComponentClass)
 	{
 		ComboComponent = CreateDefaultSubobject<UAegisCharacterComboComponent>("Combo Component");
+        
 	}
 	else
 	{
@@ -25,7 +26,7 @@ AAegisCharacter::AAegisCharacter()
 
 	if (GuardComponentClass)
 	{
-		GuardComponent = CreateDefaultSubobject<UAegisCharacterGuardComponent>("Guard Component");
+        GuardComponent = CreateDefaultSubobject<UAegisCharacterGuardComponent>("GuardComponent");
 	}
 	else
 	{
@@ -37,11 +38,14 @@ AAegisCharacter::AAegisCharacter()
 void AAegisCharacter::BeginPlay()
 {
 	Super::BeginPlay();	
-	//ComboComponent->BuildComboTree(); 
-	
-#if !UE_BUILD_SHIPPING
+
 	ValidateSockets();
-#endif
+    
+    
+    
+    
+    
+
 }
 
 float AAegisCharacter::TakeDamage(float DamageAmount, const struct FDamageEvent& DamageEvent,

@@ -39,7 +39,7 @@ public:
 	float GetMaxHP() const { return MaxHP; }
 
 	/** Returns true if the character is currently in the air*/
-	FORCEINLINE UFUNCTION(BlueprintCallable)
+    UFUNCTION(BlueprintCallable)
 	bool IsInAir() const;
 	
 
@@ -56,7 +56,7 @@ public:
 	bool IsDead() const { return (CurrentHP <= 0.0f); }
 	
 	/** Returns true if the character's current state allows for any movement*/
-	FORCEINLINE UFUNCTION(BlueprintCallable)
+    UFUNCTION(BlueprintCallable)
 	bool CanMove() const;
 	
 	FORCEINLINE class AAegisWeapon* GetEquippedWeapon() const { return EquippedWeapon; }
@@ -93,11 +93,11 @@ protected:
 	UAegisCharacterComboComponent* ComboComponent = nullptr;
 
 	/** Character's Combo Component Class to be used. Must be set in editor  */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GuardCombponent")
-	TSubclassOf<UAegisCharacterGuardComponent> GuardComponentClass = UAegisCharacterGuardComponent::StaticClass();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GuardComponent")
+    TSubclassOf<UAegisCharacterGuardComponent> GuardComponentClass = UAegisCharacterGuardComponent::StaticClass();
 
 	/** Character's Combo Component */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GuardCombponent")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GuardComponent")
 	UAegisCharacterGuardComponent* GuardComponent = nullptr;
 
 

@@ -17,8 +17,12 @@ UAegisCharacterGuardComponent::UAegisCharacterGuardComponent()
 void UAegisCharacterGuardComponent::OnRegister()
 {
 	Super::OnRegister();
-	//Converts the number of ticks designers gave the Guard levels to Timespans
-	for (auto& guardLevel : GuardLevels)
+	if(GuardLevelsWrapper)
+    {
+        GuardLevels = GuardLevelsWrapper->GetGuardLevels();
+    }
+    //Converts the number of ticks designers gave the Guard levels to Timespans
+    for (auto& guardLevel : GuardLevels)
 	{
 		guardLevel.ConvertTicksToTimespan();
 	}
@@ -32,13 +36,15 @@ void UAegisCharacterGuardComponent::OnRegister()
 
 void UAegisCharacterGuardComponent::OnBeginGuard()
 {
-	//Sets the time the action began to now
+    bInGuard = true;
+    //Sets the time the action began to now
 	GuardTimeTracker.SetActionBeginTime(); 
 }
 
 void UAegisCharacterGuardComponent::OnEndGuard()
 {
-	GuardTimeTracker.ResetActionTimes(); 
+    bInGuard = false;
+    GuardTimeTracker.ResetActionTimes();
 	CurrentGuardLevel = FAegisCharacterGuardLevel();
 }
 
