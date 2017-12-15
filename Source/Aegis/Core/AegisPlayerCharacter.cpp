@@ -5,7 +5,7 @@
 #include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 #include "Core/Combat/Combo/AegisCharacterComboTreeNode.h"
 #include "Core/Combat/Combo/AegisCharacterComboState.h"
-#include "Core/AegisWeapon.h"
+#include "Core/Weapons/AegisWeapon.h"
 
 AAegisPlayerCharacter::AAegisPlayerCharacter()
 {

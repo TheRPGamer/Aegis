@@ -3,7 +3,7 @@
 #include "Aegis.h"
 #include "Core/AegisCharacterAnimInstance.h"
 #include "Core/AegisCharacter.h"
-#include "Core/AegisWeapon.h"
+#include "Core/Weapons/AegisWeapon.h"
 #include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 void UAegisCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {

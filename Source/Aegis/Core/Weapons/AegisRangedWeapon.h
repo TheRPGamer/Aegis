@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core/AegisWeapon.h"
+#include "Core/Weapons/AegisWeapon.h"
 #include "AegisRangedWeapon.generated.h"
 
 /**
