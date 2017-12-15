@@ -45,7 +45,8 @@ void UAegisCharacterGuardComponent::OnEndGuard()
 {
     bInGuard = false;
     GuardTimeTracker.ResetActionTimes();
-	CurrentGuardLevel = FAegisCharacterGuardLevel();
+	//Reset Current Guard Level to default values
+    CurrentGuardLevel = FAegisCharacterGuardLevel();
 }
 
 float UAegisCharacterGuardComponent::OnAttackImpact(float DamageAmount, const struct FDamageEvent& DamageEvent,
@@ -54,9 +55,9 @@ float UAegisCharacterGuardComponent::OnAttackImpact(float DamageAmount, const st
 	//Set action end time to now
 	GuardTimeTracker.SetActionEndTime(); 
 	DetermineCurrentGuardLevel(); 
-	float modifiedDamage = DamageAmount;  
-	//if current guard level is not  null as represented as default constructed guard level *
-	if (CurrentGuardLevel != FAegisCharacterGuardLevel())
+    float modifiedDamage = 0.0; 
+    //default constructed gurd levle represents "null"
+    if(!CurrentGuardLevel.IsDefault())
 	{
 		modifiedDamage *= CurrentGuardLevel.GetDamageReductionMultiplier(); 
 	}
@@ -65,8 +66,8 @@ float UAegisCharacterGuardComponent::OnAttackImpact(float DamageAmount, const st
 
 void UAegisCharacterGuardComponent::DetermineCurrentGuardLevel()
 {
-	//if .there are 0 guard levels, this function shouldn't even be firing
-	if (GuardLevels.Num() < 1)
+	//if owner has 0 guard levels, this function should not be firing
+    if (GuardLevels.Num() < 1)
 	{
 		auto owner = Cast<AAegisCharacter>(GetOwner());
 		if (owner)
@@ -78,46 +79,24 @@ void UAegisCharacterGuardComponent::DetermineCurrentGuardLevel()
 	//Calculate time difference from character starting to guard to attack impact
 	GuardTimeTracker.CalculateTimeDifference();
 	FTimespan guardTimespan = GuardTimeTracker.GetTimeDifference(); 
-	FAegisCharacterGuardLevel currentGuardLevel;
-	//if there's only 1 guard level
-	if (GuardLevels.Num() == 1)
-	{
-		currentGuardLevel = GuardLevels[0]; 
-		//if the calculated time span > the lower bound time requirement of the single guard level 
-		// Set CurrentGuardLevel to the guardLevel
-		if (currentGuardLevel.IsTimeSpanGreaterThanLowerBound(guardTimespan)) 
-		{
-			CurrentGuardLevel = currentGuardLevel;
-		}
-		//guard levle requirements not met. Reset Current Guard level
-		else
-		{
-			CurrentGuardLevel = FAegisCharacterGuardLevel();
-		}
-		return; 
-	}
-	//there's more than 1 guard level, we need to look at all of them to see where we're at 
-	for (int i = 0; i < GuardLevels.Num(); ++i)
-	{
-		currentGuardLevel = GuardLevels[i];
-		//Guard Levels is sorted in ascending order . If the predicate function returns false, 
-		//It means that the guardTimespan < currentGuardLevel's time requirements, therefore GuradLevel prior to 
-		//currentGuardLevel is the correct GuardLevel the character has met 
-		if (!currentGuardLevel.IsTimeSpanGreaterThanLowerBound(guardTimespan))
-		{
-			CurrentGuardLevel = GuardLevels[i - 1]; 
-			return; 
-		}
-	}
-	//if execution reaches here, there's a problem. 
-	//That means the guard timespan is 
-	CurrentGuardLevel = FAegisCharacterGuardLevel(); 
-	//Reached the end of the GuardLevels list and still can't find a match. This can't be correct 
-	auto owner = Cast<AAegisCharacter>(GetOwner());
-	if(owner)
-	{ 
-		//log problem
-	}
+    FAegisCharacterGuardLevel guardLevel;
+    //Guard Levels sorted in ascending Lower Bounds
+    for(int i=0; i<GuardLevels.Num(); ++i)
+    {
+        guardLevel = GuardLevels[i];
+        //if guard time span < lower bound of current guard level
+        //since lower bounds are in ascending order, we overshot the correct guard level by 1
+        //therefore GuardLevels[i-1] is the guard level we're actually in
+        if(!guardLevel.IsTimeSpanGreaterThanLowerBound(guardTimespan))
+        {
+            CurrentGuardLevel = GuardLevels[i-1];
+            return;
+        }
+    }
+    //if execution reaches here, that means
+    //guard time span > lower bound of last Guard level.
+    //i.e GuardLevels[size -1] is the one we're supposed to be at
+    CurrentGuardLevel = GuardLevels[GuardLevels.Num()-1];
 }
 
 void UAegisCharacterGuardComponent::ApplyGuardLevelEffectsOnOwner()

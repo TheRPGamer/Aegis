@@ -13,25 +13,13 @@ AAegisCharacter::AAegisCharacter()
 	{
 		GetCapsuleComponent()->bGenerateOverlapEvents = true;
 	}
+}
 
-	if (ComboComponentClass)
-	{
-		ComboComponent = CreateDefaultSubobject<UAegisCharacterComboComponent>("Combo Component");
-        
-	}
-	else
-	{
-		UE_LOG(AegisComboLog, Error, TEXT("Combo Component Class is invalid in %s. Fix in eidotr."), *GetHumanReadableName());
-	}
+void AAegisCharacter::PostInitProperties()
+{
+    Super::PostInitProperties();
+    CreatePostInitComponents();
 
-	if (GuardComponentClass)
-	{
-        GuardComponent = CreateDefaultSubobject<UAegisCharacterGuardComponent>("GuardComponent");
-	}
-	else
-	{
-		UE_LOG(AegisGuardLog, Error, TEXT("Guard Component Class is invalid in %s. Fix in editor."), *GetHumanReadableName());
-	}
 }
 
 // Called when the game starts or when spawned
@@ -40,7 +28,7 @@ void AAegisCharacter::BeginPlay()
 	Super::BeginPlay();	
 
 	ValidateSockets();
-    
+    ValidateCharacterComponents();
     
     
     
@@ -99,3 +87,32 @@ void AAegisCharacter::ValidateSockets()
 	}
 }
 #endif
+
+void AAegisCharacter::CreatePostInitComponents()
+{
+    if (ComboComponentClass)
+    {
+        ComboComponent = NewObject<UAegisCharacterComboComponent>(this, *ComboComponentClass);
+        
+    }
+    else
+    {
+        
+    }
+    if(GuardComponentClass)
+    {
+        GuardComponent = NewObject<UAegisCharacterGuardComponent>(this, *GuardComponentClass);
+        
+    }
+    else
+    {
+        
+    }
+}
+
+void AAegisCharacter::ValidateCharacterComponents()
+{
+    checkf(ComboComponent, TEXT("ComboComponent for is null in AegisCharacter"));
+    checkf(GuardComponent, TEXT("Guard Component s null in AegisCharacter"));
+}
+

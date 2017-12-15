@@ -19,7 +19,11 @@ class AEGIS_API AAegisCharacter : public ACharacter
 public:
 	/** Sets default values for this character's properties */
 	AAegisCharacter();
-
+    /**
+     * Callback function called after constructor and before BeginPlay()
+     * All BP Properties will be updated at this point
+     */
+    virtual void PostInitProperties() override;
 protected:
 	/** Called when the game starts or when spawned */
 	virtual void BeginPlay() override;
@@ -115,5 +119,9 @@ private:
 	/** Checks if sockets exist and logs missing ones */
 	void ValidateSockets();
 #endif
+    /** Creates all custom component that have their class set in BP */
+    void CreatePostInitComponents();
+    /** Assertion checks to make sure the character has no null components*/
+    void ValidateCharacterComponents();
 
 };

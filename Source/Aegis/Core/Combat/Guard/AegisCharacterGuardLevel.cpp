@@ -22,8 +22,16 @@ bool FAegisCharacterGuardLevel::operator==(const FAegisCharacterGuardLevel& Othe
 		GetGuardTicksTimespan() == Other.GetGuardTicksTimespan() &&
 		GetDamageReductionMultiplier() == Other.GetDamageReductionMultiplier(); 
 }
+bool FAegisCharacterGuardLevel::IsDefault()
+{
+    return !GetParticleEffect() &&
+    !GetSoundEffect() &&
+    GetGuardTicksTimespan() == 0 &&
+    GetDamageReductionMultiplier() == 0;
+}
 
 bool FAegisCharacterGuardLevel::operator!=(const FAegisCharacterGuardLevel& Other)
 {
-	return !( (*this) == Other );
+    return !(*this == Other);
 }
+

@@ -23,13 +23,15 @@ public:
 
 	/** Returns true if the timespan argument is greather or equal to the lower bound of ticks specified by this Guard Level */
 	bool IsTimeSpanGreaterThanLowerBound(FTimespan timespan); 
-	
+    /** Returns true if members are the same as default constructed Guard Level*/
+    bool IsDefault();
+    
 	/** Converts Guard Tick Lower Bound to Timespan */
 	void ConvertTicksToTimespan();
 
-	bool operator==(const FAegisCharacterGuardLevel& Other); 
-
-	bool operator!=(const FAegisCharacterGuardLevel& Other);
+	
+    bool operator==(const FAegisCharacterGuardLevel& Other);
+    bool operator!=(const FAegisCharacterGuardLevel& Other); 
 private: 
 	/** Guard Level's Name for quick comparison */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Name", meta = (AllowPrivateAccess = "true"))
