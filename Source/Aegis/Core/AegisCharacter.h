@@ -4,6 +4,7 @@
 #include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 #include "Core/Combat/Guard/AegisCharacterGuardComponent.h"
 #include "GameFramework/Character.h"
+#include "Core/Input/AegisActionInput.h"
 #include "AegisCharacter.generated.h"
 /**
 * AAegisCharacter is an ACharacter with the addition of an HP field.
@@ -41,7 +42,9 @@ public:
 	/** Returns character's max HP*/
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	float GetMaxHP() const { return MaxHP; }
-
+    
+    FORCEINLINE EAegisCharacterLockOnState GetLockOnState() const { return LockOnState; }
+    
 	/** Returns true if the character is currently in the air*/
     UFUNCTION(BlueprintCallable)
 	bool IsInAir() const;
@@ -113,6 +116,8 @@ protected:
 	/** The right hand socket of the character */
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Sockets")
 	FName RightHandSocket = NAME_None;
+    
+    EAegisCharacterLockOnState LockOnState = EAegisCharacterLockOnState::NotLockedOn;
 
 private: 
 #if !UE_BUILD_SHIPPINGB

@@ -9,7 +9,46 @@ AAegisProjectile::AAegisProjectile()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+    
+    
+    
+    SphereCollisionComponent = CreateDefaultSubobject<USphereComponent>("Collision Component");
+    if(SphereCollisionComponent)
+    {
+        
+        RootComponent = SphereCollisionComponent;
+        SphereCollisionComponent->InitSphereRadius(SphereRadius);
+        SphereCollisionComponent->bGenerateOverlapEvents = true;
+    }
+    
+    ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("Projectile Movement");
+    if(ProjectileMovementComponent)
+    {
+        ProjectileMovementComponent->SetUpdatedComponent(RootComponent);
+        ProjectileMovementComponent->InitialSpeed = 300.0f;
+        ProjectileMovementComponent->MaxSpeed = 300.0f;
+        ProjectileMovementComponent->bRotationFollowsVelocity = true;
+        ProjectileMovementComponent->bShouldBounce = true;
+        ProjectileMovementComponent->ProjectileGravityScale = 0.0f; 
+    }
+    InitialLifeSpan = LifeSpan;
+}
 
+void AAegisProjectile::PostInitProperties()
+{
+    Super::PostInitProperties(); 
+    if(Mesh)
+    {
+        //Mesh->bGenerateOverlapEvents = true;
+        //RootComponent = Mesh;
+    }
+    
+    
+    if(SphereCollisionComponent)
+    {
+        SphereCollisionComponent->SetSphereRadius(SphereRadius  );
+    }
+    InitialLifeSpan = LifeSpan;
 }
 
 // Called when the game starts or when spawned

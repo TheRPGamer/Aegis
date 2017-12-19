@@ -13,7 +13,7 @@ class AEGIS_API AAegisWeapon : public AActor
 	GENERATED_BODY()
 
 public:
-	explicit AAegisWeapon();
+    AAegisWeapon();
 protected:
 	/** Called when the game starts or when spawned */
 	virtual void BeginPlay() override;
@@ -36,19 +36,18 @@ public:
 protected:
 	/** Function called when the weapon overlaps with a target*/
 	UFUNCTION(BlueprintCallable)
-	void OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, 
+    virtual void OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
 	/** True if the weapon is currently active and and will damage targets it overlaps with*/
 	bool bCanDamageTargets = false; 
 	
-private: 
 	/** Damage this weapon deals on Melee Attack hit*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WeaponDamage", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WeaponDamage")
 	float MeleeAttackDamage = 0.0f;
 	
 	/** The weapon's Mesh. To be assigned in BP*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	UMeshComponent* Mesh = nullptr; 
 
 	

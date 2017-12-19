@@ -57,16 +57,6 @@ void UAegisCharacterComboComponent::AddComboChainToComboTree(UAegisCharacterComb
 	}
 }
 
-void UAegisCharacterComboComponent::AdvanceCombo(UAegisCharacterComboTreeNode* InComboTreeNode)
-{
-	if (CurrentComboTreeNode && InComboTreeNode)
-	{
-		CurrentComboTreeNode = InComboTreeNode; 
-		//sets in melee, in pause window etc to false
-		ResetComparisonComboState();
-		UE_LOG(AegisLog, Log, TEXT("Current Combo Node Name: %s"), *(CurrentComboTreeNode->GetRequiredComboState().GetName().ToString()) );
-	}
-}
 
 void UAegisCharacterComboComponent::TryAdvanceCombo()
 {
@@ -76,35 +66,43 @@ void UAegisCharacterComboComponent::TryAdvanceCombo()
 		//Based on current character combo state (ComparisonComboNode), see if there is a Child Combo node to move on to 
 		auto nextComboNode = CurrentComboTreeNode->FindChild(ComparisonComboTreeNode); 
 		
-		//There is a valid combo further on ahead
-		if (nextComboNode)
+		if(!nextComboNode)
 		{
-			AdvanceCombo(nextComboNode); 
-			//this being true starts Anim BP transition to combo
-			SetInCombo(true); 
-		
-		}
-		//a subsequent combo doens't exist in the combo tree. Aborrt the combo and advance 
-		else
-		{
-			//can't find a combo from the root state, stop. Don't try to keep looking
-			if (CurrentComboTreeNode == ComboTreeRootNode)
+            //reset current node to combo tree Root
+            AbortCombo();
+            //try looking for a child from the root
+            nextComboNode = CurrentComboTreeNode->FindChild(ComparisonComboTreeNode);
+            //if we still can't find a child node from root, stop search
+            if (!nextComboNode)
 			{
-				//reset comparison node
-				ResetComparisonComboState();
+				//Sets comparison combo node to Idle State params
+                ResetComparisonComboState();
 				//This starts transitioning the ABP from Combo back to Idle
 				SetInCombo(false);
-
-				return;
+                //See SetInMelee(), allows player inputs to be registered again
+                bAcceptInput = true;
+                return;
 			}
-			//Sets current combo node to root node
-			AbortCombo(); 
-			//Let's see if my comparison node matches anything from the root node
-			TryAdvanceCombo(); 
+			 
 		}
+        //if execution reaches here, we found a valid child. Advance the combo
+        AdvanceCombo(nextComboNode);
+        //this being true starts Anim BP transition to combo
+        SetInCombo(true);
+            
 	}
-	//See SetInMeleeAttack()
-	bAcceptInput = true; 
+}
+
+
+void UAegisCharacterComboComponent::AdvanceCombo(UAegisCharacterComboTreeNode* InComboTreeNode)
+{
+    if (CurrentComboTreeNode && InComboTreeNode)
+    {
+        CurrentComboTreeNode = InComboTreeNode;
+        //Resets Comparison Combo state to Idle State params
+        ResetComparisonComboState();
+        UE_LOG(AegisLog, Log, TEXT("Current Combo Node Name: %s"), *(CurrentComboTreeNode->GetRequiredComboState().GetName().ToString()) );
+    }
 }
 
 void UAegisCharacterComboComponent::AbortCombo()
