@@ -47,4 +47,28 @@ void FAegisCharacterMeleeAction::OnActionReleased(const AAegisCharacter* Charact
 }
 
 
+void FAegisCharacterGuardAction::OnActionPressed(const AAegisCharacter* Character) const
+{
+    if(!Character)
+    {
+        return;
+    }
+    auto comboComp = Character->GetComboComponent();
+    if(comboComp)
+    {
+        //TODO: Update Guard Stuff 
+        auto lockOn = Character->GetLockOnState();
+        comboComp->SetLockOnState(lockOn);
+    }
+}
+
+void FAegisCharacterGuardAction::OnActionReleased(const AAegisCharacter* Character) const
+{
+    if(!Character)
+    {
+        return;
+    }
+}
+
+
 

@@ -69,7 +69,7 @@ void UAegisCharacterComboComponent::Update()
         auto inputBuffer = GetAegisOwnerInputBufferComponent();
         if(inputBuffer)
         {
-            //grab the top input and execute the Character Action
+            //grab the top input and execute the Character Actio to update the relevant Character Components
             auto input = inputBuffer->Get();
             input.Execute(GetAegisOwner());
         }

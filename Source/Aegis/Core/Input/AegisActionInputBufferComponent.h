@@ -23,7 +23,10 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
+	/**
+     * Calls Decay() every frame
+     * @see Decay()
+     */
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
     virtual void OnRegister() override; 
 
@@ -32,8 +35,23 @@ public:
     FAegisCharacterActionInput Get();
     
 protected:
+    /**
+     * Given an FName for an ActionType, returns the corresponding FAegisCharacterActionBase from the ActionNameToActionMap
+     * Returns FAegisCharacterActionBase() if ActionType cannot be found
+     */
     virtual FAegisCharacterActionBase GetAction(FName ActionName);
+    
+    /**
+     * Initialises the ActionNameToActionMap with the correct values of Keys and values.
+     * Must be overridden if custom FAegisCharacterActions are to be used as values
+     */
     virtual void InitActionNameToActionMap();
+
+    /**
+     * Maps the FName of an action its correspoinding FAegisCharacterActionBase
+     * @see NAegisCharacterAction
+     * @see FAegisCharacterActionBase
+     */
     TMap<FName, FAegisCharacterActionBase> ActionNameToActionMap;
 private:
     void IncrementReadIndex();
@@ -41,19 +59,30 @@ private:
 
     
     void IncrementWriteIndex();
+    /** Resets Read and Write Indices to 0 to prevent the write index from lapping the read index*/
     void ResetReadWriteIndices();
     bool IsIndexValid(uint32 InIndex) const;
+    /** Increments the Read Index at set intervals to expend inputs*/
     void Decay();
     class AAegisCharacter* GetAegisOwner() const;
     
+    /** A circular buffer of FAegisCharacterActionINputs*/
     UPROPERTY()
     TArray<FAegisCharacterActionInput> InputBuffer;
     
     uint32 ReadIndex = 0;
     uint32 WriteIndex = 0;
-    uint32 DecayRate = 10;
-    uint32 DecayCounter = 0;
-    uint32 BufferSize = 60; 
+    
+    /** Denotes number of frames between Decay() clals*/
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Input Buffer Parameters", meta = (AllowPrivateAccess = "true"))
+    int32 DecayRate = 10;
+
+    /** Number of frames that have elapsed since last Decay() call */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Input Buffer Parameters", meta = (AllowPrivateAccess = "true"))
+    int32 DecayCounter = 0;
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Input Buffer Parameters", meta = (AllowPrivateAccess = "true"))
+    int32 BufferSize = 60;
 };
 
 

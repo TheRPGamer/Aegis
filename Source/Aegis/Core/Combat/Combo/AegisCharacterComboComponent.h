@@ -47,7 +47,7 @@ public:
 	/** Function called when the Component is registered */
 	void OnRegister() override;
     
-    /** Updates the Combo State of the Owning Character*/
+    /** Updates the Current Combo State of the Owning Character*/
     void Update(); 
     
     /** Function called by AnimNotify at the start of a Combo Animation*/

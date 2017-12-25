@@ -95,6 +95,7 @@ void UAegisActionInputBufferComponent::IncrementReadIndex()
     if(ReadIndex != WriteIndex)
     {
         ++ReadIndex;
+       //loops around like a circular buffer
         ReadIndex %= BufferSize;
     }
 }
@@ -102,6 +103,7 @@ void UAegisActionInputBufferComponent::IncrementReadIndex()
 void UAegisActionInputBufferComponent::IncrementWriteIndex()
 {
     ++WriteIndex;
+    //loops around to act as circular buffer
     WriteIndex %= BufferSize;
 }
 
@@ -127,9 +129,11 @@ bool UAegisActionInputBufferComponent::IsIndexValid(uint32 InIndex) const
 
 void UAegisActionInputBufferComponent::Decay()
 {
+    
     ++DecayCounter;
     if(DecayCounter >= DecayRate)
     {
+        //expends the current Character Action on ReadIndex
         IncrementReadIndex();
         DecayCounter = 0;
     }
