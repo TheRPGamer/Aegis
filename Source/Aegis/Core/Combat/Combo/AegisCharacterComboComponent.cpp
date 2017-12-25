@@ -1,8 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Aegis.h"
+#include "Core/AegisCharacter.h"
+#include "Core/Input/AegisActionInputBufferComponent.h"
+#include "Core/Combat/Combo/AegisCharacterComboTreeNode.h"
 #include "AegisCharacterComboComponent.h"
-#include "AegisCharacterComboTreeNode.h"
 
 // Sets default values for this component's properties
 UAegisCharacterComboComponent::UAegisCharacterComboComponent()
@@ -57,6 +59,24 @@ void UAegisCharacterComboComponent::AddComboChainToComboTree(UAegisCharacterComb
 	}
 }
 
+void UAegisCharacterComboComponent::Update()
+{
+    
+    //only update if not currently in a combo
+    if(!IsInCombo())
+    {
+        
+        auto inputBuffer = GetAegisOwnerInputBufferComponent();
+        if(inputBuffer)
+        {
+            //grab the top input and execute the Character Action
+            auto input = inputBuffer->Get();
+            input.Execute(GetAegisOwner());
+        }
+        
+    }
+    
+}
 
 void UAegisCharacterComboComponent::TryAdvanceCombo()
 {
@@ -201,16 +221,7 @@ void UAegisCharacterComboComponent::SetInMeleeAttack(bool bInValue)
 	{
 		FAegisCharacterComboState* ptr = &(ComparisonComboTreeNode->GetRequiredComboState());
 		static_cast<FAegisCharacterComboStateComparison*>(ptr)->SetInMeleeAttack(bInValue);
-		
-		// Only try to advance the combo if not currently in combo and melee is true 
-		//I.e if you mash melee, it will just set the comparison node melee to true, won't try ot advance/affect current combo 
-		if (bInValue && bAcceptInput)
-		{
-			bAcceptInput = false; 
-			TryAdvanceCombo(); 
-		}
-	}
-	
+    }
 }
 
 void UAegisCharacterComboComponent::SetInPauseComboWindow(bool bInValue)
@@ -293,6 +304,12 @@ void UAegisCharacterComboComponent::OnRegister()
 	PrintComboTree(); 
 }
 
+    void UAegisCharacterComboComponent::OnComboAnimationBegin()
+    {
+        //TODO: Code that runs at teh start of every Combo Animation
+    }
+
+    
 void UAegisCharacterComboComponent::OnComboAnimationEnd()
 {
 	SetInCombo(false); 
@@ -304,3 +321,20 @@ void UAegisCharacterComboComponent::ResetComparisonComboState()
 	SetInMeleeAttack(false); 
 	SetInPauseComboWindow(false); 
 }
+
+AAegisCharacter* UAegisCharacterComboComponent::GetAegisOwner() const
+{
+    return Cast<AAegisCharacter>(GetOwner());
+}
+
+UAegisActionInputBufferComponent* UAegisCharacterComboComponent::GetAegisOwnerInputBufferComponent() const
+{
+    auto owner = GetAegisOwner();
+    if(owner)
+    {
+        return owner->GetInputBufferComponent();
+    }
+    return nullptr;
+}
+
+

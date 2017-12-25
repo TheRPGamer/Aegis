@@ -36,30 +36,57 @@ void UAegisActionInputBufferComponent::TickComponent(float DeltaTime, ELevelTick
 
 void UAegisActionInputBufferComponent::OnRegister()
 {
+    Super::OnRegister(); 
     InputBuffer.Init(FAegisCharacterActionInput(), BufferSize);
 }
 
-void UAegisActionInputBufferComponent::AddActionInput(EAegisCharacterActionType ActionType, bool Pressed)
+FAegisCharacterActionBase UAegisActionInputBufferComponent::GetAction(FName ActionName)
 {
-    auto owner = GetAegisOwner();
-    if(!owner)
+    //find returns a valid ptr if the value exists, else nullptr
+    auto action = ActionNameToActionMap.Find(ActionName);
+    if(action)
     {
-        return;
+        return *action;
     }
+    //return a default character action if the key is invalid
+    return ActionNameToActionMap[NAegisCharacterAction::None];
+}
+
+void UAegisActionInputBufferComponent::InitActionNameToActionMap()
+{
+    ActionNameToActionMap.Emplace(NAegisCharacterAction::None, FAegisCharacterActionBase() );
+    ActionNameToActionMap.Emplace(NAegisCharacterAction::Melee, FAegisCharacterMeleeAction() );
+    
+}
+void UAegisActionInputBufferComponent::AddActionPressed(FName ActionType)
+{
+    AddAction(ActionType, true);
+}
+void UAegisActionInputBufferComponent::AddActionReleased(FName ActionType)
+{
+    AddAction(ActionType, false);
+}
+
+void UAegisActionInputBufferComponent::AddAction(FName ActionType, bool Pressed)
+{
     if(IsIndexValid(WriteIndex))
     {
-        InputBuffer[WriteIndex].Update(owner->GetLockOnState(), ActionType, Pressed);
+        auto action = GetAction(ActionType);
+        InputBuffer[WriteIndex].Update(action, Pressed);
         IncrementWriteIndex();
     }
 }
 
-FAegisCharacterActionInput UAegisActionInputBufferComponent::Get() const
+FAegisCharacterActionInput UAegisActionInputBufferComponent::Get() 
 {
+    FAegisCharacterActionInput input;
     if(IsIndexValid(ReadIndex))
     {
-        return InputBuffer[ReadIndex];
+        input = InputBuffer[ReadIndex];
+        ResetReadWriteIndices();
+        
     }
-    return FAegisCharacterActionInput();
+    return input;
 }
 
 void UAegisActionInputBufferComponent::IncrementReadIndex()
@@ -82,7 +109,7 @@ void UAegisActionInputBufferComponent::ResetReadWriteIndices()
 {
     ReadIndex = 0;
     WriteIndex = 0;
-    //in clears the Action Input on Read Index in case inputs are read to prevent extra actions
+    //Clears the Action Input on Read Index in case inputs are read to prevent extra actions
     if(InputBuffer.Num() > 0)
     {
         InputBuffer[ReadIndex].Clear(); 
@@ -112,3 +139,4 @@ AAegisCharacter* UAegisActionInputBufferComponent::GetAegisOwner() const
 {
     return Cast<AAegisCharacter>(GetOwner());
 }
+

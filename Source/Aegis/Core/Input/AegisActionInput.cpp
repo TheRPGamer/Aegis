@@ -2,21 +2,27 @@
 
 #include "Aegis.h"
 #include "AegisActionInput.h"
+#include "Core/AegisCharacter.h"
 
 void FAegisCharacterActionInput::Clear()
 {
-    LockOnState = EAegisCharacterLockOnState::NotLockedOn;
-    ActionType = EAegisCharacterActionType::None;
+    Action = FAegisCharacterActionBase();
     bPressed = false;
     Timestamp = FDateTime::MinValue();
 }
 
-void FAegisCharacterActionInput::Update(EAegisCharacterLockOnState InLockOnState, EAegisCharacterActionType InActionType, bool InPressed)
+void FAegisCharacterActionInput::Update(const FAegisCharacterActionBase& InAction, bool InPressed)
 {
-    LockOnState = InLockOnState;
-    ActionType = InActionType;
+    Action = InAction;
     bPressed = InPressed;
     Timestamp = FDateTime::Now(); 
 }
 
+void FAegisCharacterActionInput::Execute(const AAegisCharacter* Character) const
+{
+    if(Character)
+    {
+        Action.Execute(Character, bPressed);
+    }
+}
 

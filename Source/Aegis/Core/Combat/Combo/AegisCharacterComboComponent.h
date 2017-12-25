@@ -46,8 +46,14 @@ public:
 
 	/** Function called when the Component is registered */
 	void OnRegister() override;
-
-	/* Function called by Animation Notify when a combo animation has ended*/
+    
+    /** Updates the Combo State of the Owning Character*/
+    void Update(); 
+    
+    /** Function called by AnimNotify at the start of a Combo Animation*/
+    void OnComboAnimationBegin();
+    
+	/** Function called by Animation Notify when a combo animation has ended*/
 	void OnComboAnimationEnd(); 
 protected:
 	/** All Combo Chains that the owner of this Combo Component can perform */
@@ -71,10 +77,16 @@ private:
 
 	/** Aborts Current Combo */
 	void AbortCombo(); 
-
+    
 	/** Resets the character's Comparison Combo State after a combo */
 	void ResetComparisonComboState(); 
 	
+    /** Gets teh Aegis Character Owner */
+    class AAegisCharacter* GetAegisOwner() const;
+    
+    /** Gets teh Aegis Owner's Input Buffer Component. Returns null if Aegis Owner is null */
+    class UAegisActionInputBufferComponent* GetAegisOwnerInputBufferComponent() const;
+    
 	/** Root Node of the Combo Tree. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly , Category = "Combos", meta = (AllowPrivateAccess = "true"))
 	class UAegisCharacterComboTreeNode* ComboTreeRootNode = nullptr;

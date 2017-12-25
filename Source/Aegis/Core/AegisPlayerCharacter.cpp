@@ -5,6 +5,8 @@
 #include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 #include "Core/Combat/Combo/AegisCharacterComboTreeNode.h"
 #include "Core/Combat/Combo/AegisCharacterComboState.h"
+#include "Core/Input/Actions/AegisCharacterActions.h"
+#include "Core/Input/AegisActionInputBufferComponent.h"
 #include "Core/Weapons/AegisWeapon.h"
 
 AAegisPlayerCharacter::AAegisPlayerCharacter()
@@ -113,14 +115,25 @@ void AAegisPlayerCharacter::MoveRight(float Value)
 
 void AAegisPlayerCharacter::OnMeleeAttackPressed()
 {
-	
+	if(InputBufferComponent)
+    {
+        InputBufferComponent->AddActionPressed(NAegisCharacterAction::Melee);
+        if(ComboComponent)
+        {
+            ComboComponent->Update();
+        }
+    }
 }
 
 void AAegisPlayerCharacter::OnMeleeAttackReleased()
 {
-	if (ComboComponent)
+	if(InputBufferComponent)
+    {
+        InputBufferComponent->AddActionReleased(NAegisCharacterAction::Melee);
+    }
+    if (ComboComponent)
 	{
-		ComboComponent->SetInMeleeAttack(true); 
+        
 	}
 }
 

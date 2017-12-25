@@ -1,16 +1,26 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
+
 #include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 #include "Core/Combat/Guard/AegisCharacterGuardComponent.h"
 #include "GameFramework/Character.h"
+#include "Core/Combat/Combo/AegisCharacterComboState.h"
 #include "Core/Input/AegisActionInput.h"
 #include "AegisCharacter.generated.h"
+
+class UAegisActionInputBufferComponent;
+
+
 /**
 * AAegisCharacter is an ACharacter with the addition of an HP field.
 * All characters from Aegis will inherit from this class. Be it NPCs
 * Players or Enemies.
 */
+
+
+
+
 
 UCLASS()
 class AEGIS_API AAegisCharacter : public ACharacter
@@ -68,7 +78,9 @@ public:
 	
 	FORCEINLINE class AAegisWeapon* GetEquippedWeapon() const { return EquippedWeapon; }
 	
-	FORCEINLINE class UAegisCharacterComboComponent* GetComboComponent() { return ComboComponent; }
+	FORCEINLINE UAegisCharacterComboComponent* GetComboComponent() const { return ComboComponent; }
+    
+    FORCEINLINE UAegisActionInputBufferComponent* GetInputBufferComponent() const { return InputBufferComponent;}
 protected: 
 	/** Character's maximum HP. Must be > 0.0f*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "HP", meta = (AllowPrivateAccess = "true"))
@@ -106,8 +118,9 @@ protected:
 	/** Character's Combo Component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GuardComponent")
 	UAegisCharacterGuardComponent* GuardComponent = nullptr;
-
-
+    
+    UPROPERTY(VisibleAnywhere, BLueprintReadOnly, Category = "Input Buffer")
+    UAegisActionInputBufferComponent* InputBufferComponent = nullptr;
 
 	/** The left hand socket of the character */
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Sockets")
@@ -117,6 +130,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Sockets")
 	FName RightHandSocket = NAME_None;
     
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lock On State")
     EAegisCharacterLockOnState LockOnState = EAegisCharacterLockOnState::NotLockedOn;
 
 private: 

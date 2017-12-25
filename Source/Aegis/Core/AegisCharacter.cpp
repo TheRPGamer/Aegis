@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Aegis.h"
+#include "Core/Input/AegisActionInputBufferComponent.h"
+#include "Core/Weapons/AegisWeapon.h"
 #include "Core/AegisCharacter.h"
-#include "Core/Weapons/AegisWeapon.h" 
 
 // Sets default values
 AAegisCharacter::AAegisCharacter()
@@ -13,11 +14,13 @@ AAegisCharacter::AAegisCharacter()
 	{
 		GetCapsuleComponent()->bGenerateOverlapEvents = true;
 	}
+    InputBufferComponent = CreateDefaultSubobject<UAegisActionInputBufferComponent>("Input Buffer ");
 }
 
 void AAegisCharacter::PostInitProperties()
 {
     Super::PostInitProperties();
+    //Creates components from TSubclassOf Properties set in Editor
     CreatePostInitComponents();
 
 }

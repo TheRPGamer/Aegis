@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Core/Input/AegisActionInput.h"
+#include "Core/Input/Actions/AegisCharacterActions.h"
 #include "AegisActionInputBufferComponent.generated.h"
 
 
@@ -26,14 +27,23 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
     virtual void OnRegister() override; 
 
-    void AddActionInput(EAegisCharacterActionType ActionType, bool Pressed);
-    FAegisCharacterActionInput Get() const;
+    void AddActionPressed(FName ActionType);
+    void AddActionReleased(FName ActionType);
+    FAegisCharacterActionInput Get();
+    
+protected:
+    virtual FAegisCharacterActionBase GetAction(FName ActionName);
+    virtual void InitActionNameToActionMap();
+    TMap<FName, FAegisCharacterActionBase> ActionNameToActionMap;
 private:
     void IncrementReadIndex();
+    void AddAction(FName ActionType, bool Pressed);
+
+    
     void IncrementWriteIndex();
     void ResetReadWriteIndices();
     bool IsIndexValid(uint32 InIndex) const;
-    void Decay(); 
+    void Decay();
     class AAegisCharacter* GetAegisOwner() const;
     
     UPROPERTY()
@@ -45,3 +55,6 @@ private:
     uint32 DecayCounter = 0;
     uint32 BufferSize = 60; 
 };
+
+
+
