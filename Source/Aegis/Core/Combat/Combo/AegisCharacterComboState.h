@@ -4,22 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "Core/Combat/LockOn/AegisCharacterLockOnComponent.h"
 #include "AegisCharacterComboState.generated.h"
 
  
-
-UENUM(BlueprintType)
-enum class EAegisCharacterLockOnState : uint8
-{
-    //Char Locked On && Velocity Vector Toward Target
-    MovingTowardsTarget,
-    //Char Locked On && Velocity Vector Away From Target
-    MovingAwayFromTarget,
-    //Char Locked On && Char not moving
-    NotMoving,
-    //Char not locked on and not moving
-    NotLockedOn
-};
 
 /**
  * The building block for Combo Chains. Contains all requirements needed for this Combo State.
