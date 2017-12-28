@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Core/Combat/Combo/AegisCharacterComboState.h"
 #include "AegisCharacterGuardLevel.generated.h"
 
 /**
@@ -14,7 +15,7 @@ USTRUCT(BlueprintType)
 struct AEGIS_API FAegisCharacterGuardLevel 
 {
 	GENERATED_BODY()
-public: 
+public:
 	FName GetName() const { return Name; }
 	UParticleSystem* GetParticleEffect() const { return GuardParticleEffect; }
 	class USoundCue* GetSoundEffect() const { return GuardSoundEffect; }
