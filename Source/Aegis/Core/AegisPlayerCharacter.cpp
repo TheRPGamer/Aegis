@@ -4,7 +4,7 @@
 #include "Core/AegisPlayerCharacter.h"
 #include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 #include "Core/Combat/Combo/AegisCharacterComboTreeNode.h"
-#include "Core/Combat/Combo/AegisCharacterComboState.h"
+#include "Core/Combat/Combo/AegisCharacterCombatState.h"
 #include "Core/Input/Actions/AegisCharacterActions.h"
 #include "Core/Input/AegisActionInputBufferComponent.h"
 #include "Core/Weapons/AegisWeapon.h"
@@ -171,13 +171,13 @@ void AAegisPlayerCharacter::OnSuperModeReleased()
 	UE_LOG(AegisLog, Log, TEXT("Super Mode Released")); 
 	if (ComboComponent)
 	{
-		if (ComboComponent->IsInSuperMode())
+		if (ComboComponent->IsInSuper())
 		{
-			ComboComponent->SetInSuperMode(false); 
+			ComboComponent->SetInSuper(false); 
 		}
 		else
 		{
-			ComboComponent->SetInSuperMode(true); 
+			ComboComponent->SetInSuper(true); 
 		}
 	}
 }

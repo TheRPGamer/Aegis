@@ -11,7 +11,7 @@ void UAegisAnimNotify_OpenPauseWindow::Notify(USkeletalMeshComponent* MeshCompon
 		auto comboComp = AegisCharacterTarget->GetComboComponent(); 
 		if (comboComp)
 		{
-			comboComp->SetInPauseComboWindow(true); 
+            
 		}
 	}
 }

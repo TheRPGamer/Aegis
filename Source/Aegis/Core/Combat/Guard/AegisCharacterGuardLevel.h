@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core/Combat/Combo/AegisCharacterComboState.h"
+#include "Core/Combat/Combo/AegisCharacterCombatState.h"
 #include "AegisCharacterGuardLevel.generated.h"
 
 /**

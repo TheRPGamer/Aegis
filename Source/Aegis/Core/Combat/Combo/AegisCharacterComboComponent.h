@@ -22,22 +22,22 @@ public:
 	UAegisCharacterComboComponent();
 
 	/** Gets the Name Field from the ComparisonNode's ComboState */
-	FName GetComboName() const; 
+	 
 	bool IsInAir() const; 
-	bool IsInSuperMode() const; 
-	bool IsInMeleeAttack() const; 
-	bool IsInPauseComboWindow() const;
+	bool IsInSuper() const;
+	bool IsInMelee() const;
+	
 	EAegisCharacterLockOnState GetLockOnState() const; 
-	UAnimSequenceBase* GetAnimation(); 
+	 
 
 	UFUNCTION(BlueprintCallable)
 	bool IsInCombo() const { return bInCombo; }
 
 	/** Sets IsInAir field of ComparisonNode's Combo State */
 	void SetInAir(bool bInValue);
-	void SetInSuperMode(bool bInValue); 
-	void SetInMeleeAttack(bool bInValue);
-	void SetInPauseComboWindow(bool bInValue);
+	void SetInSuper(bool bInValue);
+	void SetInMelee(bool bInValue);
+	
 	void SetLockOnState(EAegisCharacterLockOnState InLockOnState); 
 	
 	UFUNCTION(BlueprintCallable)

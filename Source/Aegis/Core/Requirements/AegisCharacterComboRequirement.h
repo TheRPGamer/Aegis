@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+ #include "Core/Combat/Combo/AegisCharacterCombatState.h"
 #include "AegisCharacterRequirementBase.h"
 #include "AegisCharacterComboRequirement.generated.h"
 
@@ -19,11 +20,8 @@ public:
     virtual bool AreConditionsSatisfied(const class AAegisCharacter* Character) const override;
 
 protected:
-    bool bInMelee = false;
-    bool bInRanged = false;
-    bool bInGuard = false;
-    bool bInSuper = false;
-    bool bInAir = false;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat State")
+     FAegisCharacterCombatState RequiredCombatState;
 };
 
 

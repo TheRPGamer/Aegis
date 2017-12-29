@@ -1,38 +1,29 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
 #include "Core/Combat/LockOn/AegisCharacterLockOnComponent.h"
-#include "AegisCharacterComboState.generated.h"
+#include "AegisCharacterCombatState.generated.h"
 
  
 
-/**
- * The building block for Combo Chains. Contains all requirements needed for this Combo State.
- */
-
 USTRUCT(BlueprintType)
-struct AEGIS_API FAegisCharacterComboState 
+struct AEGIS_API FAegisCharacterCombatState 
 {
 	GENERATED_BODY()
 public: 
-	FAegisCharacterComboState() {}
-	explicit FAegisCharacterComboState(const FAegisCharacterComboState& Other); 
-
-	FORCEINLINE FName GetName() const { return Name; }
-	FORCEINLINE FText GetDisplayName() const { return DisplayName; }
+	FAegisCharacterCombatState() {}
+	explicit FAegisCharacterCombatState(const FAegisCharacterCombatState& Other);
+	
 	FORCEINLINE bool IsInAir() const { return bInAir; }
-	FORCEINLINE bool IsInSuperMode() const { return bInSuperMode;  }
-	FORCEINLINE bool IsInMeleeAttack() const { return bInMeleeAttack; }
-	FORCEINLINE bool IsInPauseComboWindow() const { return bInPauseComboWindow;  }
+	FORCEINLINE bool IsInSuper() const { return bInSuper;  }
+	FORCEINLINE bool IsInMelee() const { return bInMelee; }
 	FORCEINLINE EAegisCharacterLockOnState GetLockOnState() const { return LockOnState; }
-	FORCEINLINE UAnimSequenceBase* GetAnimation() { return Animation; }
-	FORCEINLINE UAnimSequenceBase* GetAnimation() const { return Animation; }
+	
+	
 
 	/** Returns true if alk memberes besides Name and FName of this match Other */
-	bool operator==(const FAegisCharacterComboState& Other) const;
+	bool operator==(const FAegisCharacterCombatState& Other) const;
 	
 protected: 
 	/** Name for this Combo State for quick comparisoms */
@@ -49,25 +40,14 @@ protected:
 
 	/** Super Mode State required to satisfy this Combo State */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
-	bool bInSuperMode = false; 
+	bool bInSuper = false; 
 
 	/** Melee Attack State required to satisfy this Combo State */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
-	bool bInMeleeAttack = false;
-
-	/** If the combo requreies the  character to be in the pause combo state */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
-	bool bInPauseComboWindow = false;
-
-
+    bool bInMelee = false;
 	/** Lock On State the character must be in to satisfy this Combo state */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
 	EAegisCharacterLockOnState LockOnState = EAegisCharacterLockOnState::NotLockedOn;
-
-
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
-	UAnimSequenceBase* Animation = nullptr; 
-	
 };
 
 /**
@@ -75,14 +55,13 @@ protected:
 * Allows for Setting of the various requirements. 
 */
 USTRUCT()
-struct AEGIS_API FAegisCharacterComboStateComparison : public FAegisCharacterComboState
+struct AEGIS_API FAegisCharacterCombatStateComparison : public FAegisCharacterCombatState
 {
 	GENERATED_BODY()
 public: 
 	FORCEINLINE void SetInAir(bool bInValue) { bInAir = bInValue; }
-	FORCEINLINE void SetInSuperMode(bool bInValue) { bInSuperMode = bInValue; }
-	FORCEINLINE void SetInMeleeAttack(bool bInValue) { bInMeleeAttack = bInValue; }
-	FORCEINLINE void SetInPauseComboWindow(bool bInValue) { bInPauseComboWindow = bInValue; }
+	FORCEINLINE void SetInSuper(bool bInValue) { bInSuper = bInValue; }
+	FORCEINLINE void SetInMelee(bool bInValue) { bInMelee = bInValue; }
 	FORCEINLINE void SetLockOnState(EAegisCharacterLockOnState InLockOnState) { LockOnState = InLockOnState; }
 	
 };

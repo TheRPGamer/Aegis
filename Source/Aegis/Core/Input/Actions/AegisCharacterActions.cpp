@@ -3,7 +3,7 @@
 #include "Aegis.h"
 #include "AegisCharacterActions.h"
 #include "Core/AegisCharacter.h"
-#include "Core/Combat/Combo/AegisCharacterComboState.h"
+#include "Core/Combat/Combo/AegisCharacterCombatState.h"
 #include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 
 
@@ -32,7 +32,7 @@ void FAegisCharacterMeleeAction::OnActionPressed(const AAegisCharacter* Characte
     auto comboComp = Character->GetComboComponent();
     if(comboComp)
     {
-        comboComp->SetInMeleeAttack(true);
+        comboComp->SetInMelee(true);
         auto lockOn = Character->GetLockOnState();
         comboComp->SetLockOnState(lockOn);
     }

@@ -5,7 +5,7 @@
 #include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 #include "Core/Combat/Guard/AegisCharacterGuardComponent.h"
 #include "GameFramework/Character.h"
-#include "Core/Combat/Combo/AegisCharacterComboState.h"
+#include "Core/Combat/Combo/AegisCharacterCombatState.h"
 #include "Core/Input/AegisActionInput.h"
 #include "AegisCharacter.generated.h"
 
