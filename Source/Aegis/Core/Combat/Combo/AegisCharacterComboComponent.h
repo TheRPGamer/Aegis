@@ -29,11 +29,11 @@ public:
     FORCEINLINE bool IsInSuper() const { return CurrentCombatState.IsInSuper(); }
     FORCEINLINE bool IsInMelee() const { return CurrentCombatState.IsInMelee(); }
     FORCEINLINE EAegisCharacterLockOnState GetLockOnState() const { return CurrentCombatState.GetLockOnState(); }
-	 
-
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	bool IsInCombo() const { return bInCombo; }
-
+    /** Get the Animation associated with the current Move*/
+    UAnimSequenceBase* GetCurrentAnimation() const;
+    
 	/** Sets IsInAir field of ComparisonNode's Combo State */
 	FORCEINLINE void SetInAir(bool bInValue);
     FORCEINLINE void SetInSuper(bool bInSuper) { CurrentCombatState.SetInSuper(bInSuper); }

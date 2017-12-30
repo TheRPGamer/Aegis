@@ -72,7 +72,7 @@ UAnimSequenceBase* UAegisCharacterAnimInstance::GetComboAnimToPlay()
 	auto comboComp = GetAegisCharacterComboComponent(); 
 	if (comboComp)
 	{
-		//return comboComp->GetAnimation();
+		return comboComp->GetCurrentAnimation();
 	}
 	return nullptr;
 }

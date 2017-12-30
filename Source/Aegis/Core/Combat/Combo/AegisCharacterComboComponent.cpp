@@ -12,9 +12,15 @@ UAegisCharacterComboComponent::UAegisCharacterComboComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
-	
-	
-	
+}
+
+UAnimSequenceBase* UAegisCharacterComboComponent::GetCurrentAnimation() const
+{
+    if(CurrentComboTreeNode)
+    {
+        return CurrentComboTreeNode->GetMove().GetAnimation();
+    }
+    return nullptr;
 }
 
 void UAegisCharacterComboComponent::BuildComboTree()
