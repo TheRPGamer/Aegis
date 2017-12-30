@@ -11,6 +11,7 @@ UAegisActionInputBufferComponent::UAegisActionInputBufferComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
+    
 
 	// ...
 }
@@ -30,14 +31,15 @@ void UAegisActionInputBufferComponent::BeginPlay()
 void UAegisActionInputBufferComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-    //Increments the Read Index according to the Decay Rate
-    Decay();
+    //expends extra mashed inputs
+    IncrementReadIndex();
 }
 
 void UAegisActionInputBufferComponent::OnRegister()
 {
     Super::OnRegister(); 
     InputBuffer.Init(FAegisCharacterActionInput(), BufferSize);
+    PrimaryComponentTick.TickInterval = ExpendInputRate;
 }
 
 FAegisCharacterActionBase UAegisActionInputBufferComponent::GetAction(FName ActionName)
@@ -127,17 +129,6 @@ bool UAegisActionInputBufferComponent::IsIndexValid(uint32 InIndex) const
     return false;
 }
 
-void UAegisActionInputBufferComponent::Decay()
-{
-    
-    ++DecayCounter;
-    if(DecayCounter >= DecayRate)
-    {
-        //expends the current Character Action on ReadIndex
-        IncrementReadIndex();
-        DecayCounter = 0;
-    }
-}
 
 AAegisCharacter* UAegisActionInputBufferComponent::GetAegisOwner() const
 {

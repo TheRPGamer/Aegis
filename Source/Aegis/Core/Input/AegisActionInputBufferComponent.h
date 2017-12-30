@@ -73,13 +73,10 @@ private:
     uint32 ReadIndex = 0;
     uint32 WriteIndex = 0;
     
-    /** Denotes number of frames between Decay() clals*/
+    /** Rate in seconds the input at the read index is expended*/
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Input Buffer Parameters", meta = (AllowPrivateAccess = "true"))
-    int32 DecayRate = 10;
+    float ExpendInputRate = 0.4f;
 
-    /** Number of frames that have elapsed since last Decay() call */
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Input Buffer Parameters", meta = (AllowPrivateAccess = "true"))
-    int32 DecayCounter = 0;
     
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Input Buffer Parameters", meta = (AllowPrivateAccess = "true"))
     int32 BufferSize = 60;
