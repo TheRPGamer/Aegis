@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Core/Combat/Combo/AegisCharacterComboChain.h"
+#include "Core/Combat/Combo/AegisCharacterCombatState.h"
+#include "core/Combat/Combo/AegisCharacterMove.h"
 #include "AegisCharacterComboComponent.generated.h"
 
 /**
@@ -23,24 +25,22 @@ public:
 
 	/** Gets the Name Field from the ComparisonNode's ComboState */
 	 
-	bool IsInAir() const; 
-	bool IsInSuper() const;
-	bool IsInMelee() const;
-	
-	EAegisCharacterLockOnState GetLockOnState() const; 
+    FORCEINLINE bool IsInAir() const { return CurrentCombatState.IsInAir(); }
+    FORCEINLINE bool IsInSuper() const { return CurrentCombatState.IsInSuper(); }
+    FORCEINLINE bool IsInMelee() const { return CurrentCombatState.IsInMelee(); }
+    FORCEINLINE EAegisCharacterLockOnState GetLockOnState() const { return CurrentCombatState.GetLockOnState(); }
 	 
 
-	UFUNCTION(BlueprintCallable)
+	FORCEINLINE UFUNCTION(BlueprintCallable)
 	bool IsInCombo() const { return bInCombo; }
 
 	/** Sets IsInAir field of ComparisonNode's Combo State */
-	void SetInAir(bool bInValue);
-	void SetInSuper(bool bInValue);
-	void SetInMelee(bool bInValue);
+	FORCEINLINE void SetInAir(bool bInValue);
+    FORCEINLINE void SetInSuper(bool bInSuper) { CurrentCombatState.SetInSuper(bInSuper); }
+    FORCEINLINE void SetInMelee(bool bInMelee) { CurrentCombatState.SetInMelee(bInMelee); }
+    FORCEINLINE void SetLockOnState(EAegisCharacterLockOnState InLockOnState) { CurrentCombatState.SetLockOnState(InLockOnState); }
 	
-	void SetLockOnState(EAegisCharacterLockOnState InLockOnState); 
-	
-	UFUNCTION(BlueprintCallable)
+	FORCEINLINE UFUNCTION(BlueprintCallable)
 	void SetInCombo(bool bInValue) { bInCombo = bInValue; }
 
 
@@ -98,7 +98,9 @@ private:
 	/** Combo Tree Node the owner will update. To be used to compare with Children of CurrentComboTreeNode */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combos", meta = (AllowPrivateAccess = "true"))
 	class UAegisCharacterComboTreeNode* ComparisonComboTreeNode = nullptr;
-
+    
+    FAegisCharacterComparisonCombatState CurrentCombatState;
+    
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combos", meta = (AllowPrivateAccess = "true"))
 	bool bInCombo = false;
 

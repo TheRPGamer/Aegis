@@ -2,11 +2,12 @@
 
 #include "Aegis.h"
 #include "AegisCharacterComboTreeNode.h"
+#include "Core/AegisCharacter.h"
 
 
 bool UAegisCharacterComboTreeNode::operator==(const UAegisCharacterComboTreeNode& Other) const
 {
-	return GetRequiredComboState() == Other.GetRequiredComboState();
+    return true; 
 }
 
 void UAegisCharacterComboTreeNode::AddUniqueChild(UAegisCharacterComboTreeNode* Child) 
@@ -16,10 +17,9 @@ void UAegisCharacterComboTreeNode::AddUniqueChild(UAegisCharacterComboTreeNode* 
 		UE_LOG(AegisComboLog, Error, TEXT("Child node to be added to AeigsComboChainNode is null")); 
 		return;
 	}
-	for (int i=0; i<Children.Num(); ++i)
-
+    for(auto& child : Children)
 	{
-		if (*Children[i] == *Child)
+		if (*child == *Child)
 		{
 			return; 
 		}
@@ -27,14 +27,18 @@ void UAegisCharacterComboTreeNode::AddUniqueChild(UAegisCharacterComboTreeNode* 
 	Children.Emplace(Child); 
 }
 
-UAegisCharacterComboTreeNode* UAegisCharacterComboTreeNode::FindChild(UAegisCharacterComboTreeNode* Child)
+UAegisCharacterComboTreeNode* UAegisCharacterComboTreeNode::FindSatisfiedChild(const AAegisCharacter* Character) const
 {	
-	for (int i=0; i<Children.Num(); ++i)
-	{
-		if (*Children[i] == *Child)
-		{
-			return Children[i]; 
-		}
-	}
+	if(!Character)
+    {
+        return nullptr;
+    }
+    for(auto& child : Children)
+    {
+        if(child->GetMove().CanExecute(Character))
+        {
+            return child;
+        }
+    }
 	return nullptr; 
 }

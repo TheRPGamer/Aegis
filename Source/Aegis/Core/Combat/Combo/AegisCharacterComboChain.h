@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Engine/DataAsset.h"
-#include "Core/Combat/Combo/AegisCharacterCombatState.h"
+#include "Core/Combat/Combo/AegisCharacterMove.h"
 #include "AegisCharacterComboChain.generated.h"
 
 /**
@@ -17,12 +17,12 @@ class AEGIS_API UAegisCharacterComboChain : public UDataAsset
 {
 	GENERATED_BODY()
 public: 
-	TArray<FAegisCharacterCombatState>& GetComboStates() { return CombatStates;  }
+	TArray<FAegisCharacterMove> GetComboStates() const { return Moves;  }
 
 private: 
 	/** Array of Combo States thta make up the Combo Chain */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combos", meta = (AllowPrivateAccess = "true"))
-	TArray<FAegisCharacterCombatState> CombatStates;
+	TArray<FAegisCharacterMove> Moves;
 
 	
 	

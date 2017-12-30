@@ -12,9 +12,8 @@ struct AEGIS_API FAegisCharacterCombatState
 {
 	GENERATED_BODY()
 public: 
-	FAegisCharacterCombatState() {}
-	explicit FAegisCharacterCombatState(const FAegisCharacterCombatState& Other);
-	
+    FAegisCharacterCombatState() { }
+    
 	FORCEINLINE bool IsInAir() const { return bInAir; }
 	FORCEINLINE bool IsInSuper() const { return bInSuper;  }
 	FORCEINLINE bool IsInMelee() const { return bInMelee; }
@@ -26,14 +25,6 @@ public:
 	bool operator==(const FAegisCharacterCombatState& Other) const;
 	
 protected: 
-	/** Name for this Combo State for quick comparisoms */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo Name")
-	FName Name = NAME_None; 
-
-	/** Display name for this Combo State */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo Name")
-	FText DisplayName;
-
 	/** Air State required to satisfy Combo State */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
 	bool bInAir = false; 
@@ -51,14 +42,14 @@ protected:
 };
 
 /**
-* Combo State used for the ComparisonComboTreeNode in ComboComponent. 
-* Allows for Setting of the various requirements. 
+* Combat state that allows for setting of values
 */
 USTRUCT()
-struct AEGIS_API FAegisCharacterCombatStateComparison : public FAegisCharacterCombatState
+struct AEGIS_API FAegisCharacterComparisonCombatState : public FAegisCharacterCombatState
 {
 	GENERATED_BODY()
-public: 
+public:
+    FAegisCharacterComparisonCombatState() { }
 	FORCEINLINE void SetInAir(bool bInValue) { bInAir = bInValue; }
 	FORCEINLINE void SetInSuper(bool bInValue) { bInSuper = bInValue; }
 	FORCEINLINE void SetInMelee(bool bInValue) { bInMelee = bInValue; }

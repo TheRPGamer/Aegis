@@ -21,6 +21,10 @@ void FAegisCharacterMoveRequirement::Init()
     Requirements.Add(ComboRequirement);
 }
 
+bool FAegisCharacterMoveRequirement::operator==(const FAegisCharacterMoveRequirement& Other) const
+{
+    return ComboRequirement == Other.GetComboRequirement(); 
+}
 
 
 

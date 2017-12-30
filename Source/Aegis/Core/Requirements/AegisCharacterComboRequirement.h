@@ -18,10 +18,11 @@ struct AEGIS_API FAegisCharacterComboRequirement : public FAegisCharacterRequire
    GENERATED_BODY()
 public:
     virtual bool AreConditionsSatisfied(const class AAegisCharacter* Character) const override;
-
+    bool operator==(const FAegisCharacterComboRequirement& Other) const;
+    FAegisCharacterCombatState GetCombatState() const { return CombatState; }
 protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat State")
-     FAegisCharacterCombatState RequiredCombatState;
+    FAegisCharacterCombatState CombatState; ;
 };
 
 

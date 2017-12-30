@@ -9,6 +9,10 @@ bool FAegisCharacterComboRequirement::AreConditionsSatisfied(const AAegisCharact
     return false; 
 }
 
+bool FAegisCharacterComboRequirement::operator==(const FAegisCharacterComboRequirement& Other) const
+{
+    return CombatState == Other.GetCombatState(); 
+}
 
 
 
