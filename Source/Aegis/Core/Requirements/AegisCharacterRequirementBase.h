@@ -6,6 +6,8 @@
 #include "Engine/DataAsset.h"
 #include "AegisCharacterRequirementBase.generated.h"
 
+class AAegisCharacter;
+
 /**
  * 
  */
@@ -15,7 +17,7 @@ struct AEGIS_API FAegisCharacterRequirementBase
 	GENERATED_BODY()
 public:
     virtual ~FAegisCharacterRequirementBase() { }
-    virtual bool AreConditionsSatisfied(const class AAegisCharacter* Character) const;
+    virtual bool AreConditionsSatisfied(const  AAegisCharacter* Character) const;
 };
 
 
