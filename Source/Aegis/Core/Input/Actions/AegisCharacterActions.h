@@ -29,7 +29,7 @@ namespace NAegisCharacterAction
 
 /**
  * Base class for all AegisCharacter Actions
- * Inherit from this class for new Character Actions
+ * Inherit from this class for new Default Character Actions
  */
 
 USTRUCT()

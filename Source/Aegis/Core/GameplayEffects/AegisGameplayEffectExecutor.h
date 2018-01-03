@@ -19,7 +19,7 @@ public:
     void TryExecute(AActor* Target);
 protected:
     
-    UPROPERTY()
+    UPROPERTY(Instanced, BlueprintReadWrite)
     UAegisGameplayEffectBase* Effect = nullptr;
 	//Requirements the Target must be in to Execute
 };

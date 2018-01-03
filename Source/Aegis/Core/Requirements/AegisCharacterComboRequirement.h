@@ -21,7 +21,7 @@ public:
     bool operator==(const FAegisCharacterComboRequirement& Other) const;
     FAegisCharacterCombatState GetCombatState() const { return CombatState; }
 protected:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat State")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     FAegisCharacterCombatState CombatState; ;
 };
 

@@ -6,7 +6,7 @@
 
 bool FAegisCharacterComboRequirement::AreConditionsSatisfied(const AAegisCharacter* Character) const
 {
-    return false; 
+    return true; 
 }
 
 bool FAegisCharacterComboRequirement::operator==(const FAegisCharacterComboRequirement& Other) const

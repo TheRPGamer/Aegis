@@ -7,7 +7,7 @@
 
 bool UAegisCharacterComboTreeNode::operator==(const UAegisCharacterComboTreeNode& Other) const
 {
-    return true; 
+    return Move == Other.GetMove();
 }
 
 void UAegisCharacterComboTreeNode::AddUniqueChild(UAegisCharacterComboTreeNode* Child) 
@@ -19,7 +19,8 @@ void UAegisCharacterComboTreeNode::AddUniqueChild(UAegisCharacterComboTreeNode* 
 	}
     for(auto& child : Children)
 	{
-		if (*child == *Child)
+		//don't add if inChild has the exact same Requirements as an existing Node
+        if (*child == *Child)
 		{
 			return; 
 		}

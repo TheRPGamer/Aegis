@@ -14,24 +14,21 @@ class AEGIS_API UAegisActionInputBufferComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
-	// Sets default values for this component's properties
+public:
 	UAegisActionInputBufferComponent();
 
 protected:
-	// Called when the game starts
 	virtual void BeginPlay() override;
 
 public:	
-	/**
-     * Calls Decay() every frame
-     * @see Decay()
-     */
+	/**  IncrementReadIndex() called every Tick*/
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-    virtual void OnRegister() override; 
+    /** Updates Editor provided values of ExpendInputRate and BufferSize*/
+    virtual void OnRegister() override;
 
     void AddActionPressed(FName ActionType);
     void AddActionReleased(FName ActionType);
+    /** Gets Input at current Read Index*/
     FAegisCharacterActionInput Get();
     
 protected:
@@ -62,8 +59,6 @@ private:
     /** Resets Read and Write Indices to 0 to prevent the write index from lapping the read index*/
     void ResetReadWriteIndices();
     bool IsIndexValid(uint32 InIndex) const;
-    /** Increments the Read Index at set intervals to expend inputs*/
-    void Decay();
     class AAegisCharacter* GetAegisOwner() const;
     
     /** A circular buffer of FAegisCharacterActionINputs*/

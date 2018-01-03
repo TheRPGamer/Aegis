@@ -5,6 +5,9 @@
 #include "Animation/AnimInstance.h"
 #include "AegisCharacterAnimInstance.generated.h"
 
+class AAegisCharacter;
+class UAegisCharacterComboComponent;
+
 /**
  * 
  */
@@ -13,28 +16,19 @@ class AEGIS_API UAegisCharacterAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 public: 
-	/** Make Character Equipped Weapon's collision volume active */
-	UFUNCTION(BlueprintCallable)
-	void MakeCharacterWeaponActive(); 
-
-	/** Make Character Equipped Weapon's collision volume inactive */
-	UFUNCTION(BlueprintCallable)
-	void MakeCharacterWeaponInactive(); 
-	
-	
-	UFUNCTION(BlueprintCallable)
-	class AAegisCharacter* GetAegisCharacter(); 
+	FORCEINLINE UFUNCTION(BlueprintCallable)
+    AAegisCharacter* GetAegisCharacter() const {return Cast<AAegisCharacter>(TryGetPawnOwner());}
 
 	UFUNCTION(BlueprintCallable)
-	class UAegisCharacterComboComponent* GetAegisCharacterComboComponent();
+	UAegisCharacterComboComponent* GetAegisCharacterComboComponent() const;
 
-	/** Gets Combo Animation to be played form character's Combo Component */
+	/** Gets Character's current Combo Animation*/
 	UFUNCTION(BlueprintCallable)
-	UAnimSequenceBase* GetComboAnimToPlay();
+	UAnimSequenceBase* GetComboAnim() const;
 
 	/** Returns true if character is currently in middle of a combo */
 	UFUNCTION(BlueprintCallable)
-	bool IsAegisCharacterInCombo(); 
+	bool IsAegisCharacterInCombo() const;
 
 	
 protected: 
@@ -42,21 +36,21 @@ protected:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override; 
 
 private: 
-	/*True if the character is not on the ground*/
+	/** True if the character is not on the ground*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true") )
-	bool bIsFalling = false;
+	bool bFalling = false;
 	
-	/*Character's current movement speed*/
+	/** Character's current movement speed*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
 	float MovementSpeed = 0.0f; 
 	
-	/*True if the character is currently in a Hit Stun State*/
+	/** True if the character is currently in a Hit Stun State*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
-	bool bIsInHitStun = false;
+	bool bInHitStun = false;
 	
-	/*True if the character is the in the Dead State*/
+	/** True if the character is the in the Dead State*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
-	bool bIsDead = false; 
+	bool bDead = false;
 
 	/** True if character is currently in a combo */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))

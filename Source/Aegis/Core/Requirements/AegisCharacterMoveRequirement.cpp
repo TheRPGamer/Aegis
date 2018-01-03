@@ -6,19 +6,7 @@
 
 bool FAegisCharacterMoveRequirement::AreConditionsSatisfied(const AAegisCharacter* Character) const 
 {
-    for(auto& requirement : Requirements)
-    {
-        if(!requirement.AreConditionsSatisfied(Character))
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
-void FAegisCharacterMoveRequirement::Init()
-{
-    Requirements.Add(ComboRequirement);
+    return ComboRequirement.AreConditionsSatisfied(Character);
 }
 
 bool FAegisCharacterMoveRequirement::operator==(const FAegisCharacterMoveRequirement& Other) const

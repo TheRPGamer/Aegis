@@ -22,19 +22,19 @@ public:
     
 protected:
     /** Effects that apply to the Instigator of the effect event*/
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instigator Effects")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Instigator Effects")
     FAegisGameplayEffectChain InstigatorChain;
     
     /** Effects that apply to the Causer of the effect event*/
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Causer Effects")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Causer Effects")
     FAegisGameplayEffectChain CauserChain;
     
     /** Effects that apply to the Receiver of the effectevent */
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Receiver Effects")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Receiver Effects")
     FAegisGameplayEffectChain ReceiverChain;
     
     /** Effects that apply to the Target of the effectevent */
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Target Effects")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Target Effects")
     FAegisGameplayEffectChain TargetChain;
 };
 

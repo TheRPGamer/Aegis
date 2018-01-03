@@ -57,14 +57,21 @@ void UAegisCharacterComboComponent::AddComboChainToComboTree(UAegisCharacterComb
 		UE_LOG(AegisComboLog, Error, TEXT("Combo Tree Root Node invalid in %s Combo Component."), *(GetOwner()->GetHumanReadableName()));
 		return;
 	}
-	TArray<FAegisCharacterMove> moves = ComboChain->GetComboStates();
+	auto& moves = ComboChain->GetMoves();
 	UAegisCharacterComboTreeNode* currentNode = ComboTreeRootNode;
     for(auto& move : moves)
 	{
 		auto node = NewObject<UAegisCharacterComboTreeNode>(); 
-		node->SetMove(move);
-		currentNode->AddUniqueChild(node);
-        currentNode = node;
+		if(node)
+        {
+            node->SetMove(move);
+            currentNode->AddUniqueChild(node);
+            currentNode = node;
+        }
+        else
+        {
+            UE_LOG(AegisComboLog, Error, TEXT("ComboTreeNode could not be created while building Combo Tree."));
+        }
 	}
 }
 
@@ -72,68 +79,69 @@ void UAegisCharacterComboComponent::Update()
 {
     
     //only update if not currently in a combo
-    if(!IsInCombo())
+    if(IsInCombo())
     {
-        auto inputBuffer = GetAegisOwnerInputBufferComponent();
-        if(inputBuffer)
-        {
-            //grab the top input and execute the Character Actio to update the relevant Character Components
-            auto input = inputBuffer->Get();
-            input.Execute(GetAegisOwner());
-        }
-        
+        return;
     }
-    
+    auto inputBuffer = GetAegisOwnerInputBufferComponent();
+    if(inputBuffer)
+    {
+        //grab the top input and execute the Character action to update the relevant Character Components
+        auto input = inputBuffer->Get();
+        input.Execute(GetAegisOwner());
+    }
+    TryAdvanceCombo();
+}
+
+void UAegisCharacterComboComponent::Interrupt()
+{
+    //TODO: Interrupt the combo from an extrenal source 
 }
 
 void UAegisCharacterComboComponent::TryAdvanceCombo()
 {
-	
-	if (CurrentComboTreeNode && ComparisonComboTreeNode)
+	if (CurrentComboTreeNode)
 	{
 		//Based on Owner's current state, see if there's a node to move on to
         auto nextComboNode = CurrentComboTreeNode->FindSatisfiedChild(GetAegisOwner());
-		
 		if(!nextComboNode)
 		{
-            //reset current node to combo tree Root
-            AbortCombo();
-            //try looking for a child from the root
+            //Try searching from the Root
+            SetCurrentNodeToRoot();
             nextComboNode = CurrentComboTreeNode->FindSatisfiedChild(GetAegisOwner());
             //if we still can't find a child node from root, stop search
             if (!nextComboNode)
 			{
-				//Sets comparison combo node to Idle State params
-                ResetComparisonComboState();
-				//This starts transitioning the ABP from Combo back to Idle
-				SetInCombo(false);
-                //See SetInMelee(), allows player inputs to be registered again
-                bAcceptInput = true;
+                AbortCombo();
                 return;
 			}
-			 
 		}
         //if execution reaches here, we found a valid child. Advance the combo
         AdvanceCombo(nextComboNode);
-        //this being true starts Anim BP transition to combo
+        //Starts AnimBP transition from Idle to Combo
         SetInCombo(true);
-            
 	}
 }
 
+void UAegisCharacterComboComponent::AbortCombo()
+{
+    ResetComparisonComboState();
+    //This starts transitioning the ABP from Combo back to Idle
+    SetInCombo(false);
+}
 
 void UAegisCharacterComboComponent::AdvanceCombo(UAegisCharacterComboTreeNode* InComboTreeNode)
 {
-    if (CurrentComboTreeNode && InComboTreeNode)
+    if (CurrentComboTreeNode)
     {
         CurrentComboTreeNode = InComboTreeNode;
-        //Resets Comparison Combo state to Idle State params
+
         ResetComparisonComboState();
-        //UE_LOG(AegisLog, Log, TEXT("Current Combo Node Name: %s"), *(CurrentComboTreeNode->GetRequiredComboState().GetName().ToString()) );
+        UE_LOG(AegisLog, Log, TEXT("Current Combo Node Name: %s"), *(CurrentComboTreeNode->GetMove().GetName().ToString()) );
     }
 }
 
-void UAegisCharacterComboComponent::AbortCombo()
+void UAegisCharacterComboComponent::SetCurrentNodeToRoot()
 {
 	if (CurrentComboTreeNode && ComboTreeRootNode)
 	{
@@ -193,8 +201,9 @@ void UAegisCharacterComboComponent::OnRegister()
     
 void UAegisCharacterComboComponent::OnComboAnimationEnd()
 {
-	SetInCombo(false); 
-	TryAdvanceCombo(); 
+	//transitions Anim BP from Combo to Idle
+    SetInCombo(false);
+    Update();
 }
 
 void UAegisCharacterComboComponent::ResetComparisonComboState()

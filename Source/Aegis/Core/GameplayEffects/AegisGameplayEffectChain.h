@@ -16,7 +16,7 @@ struct AEGIS_API FAegisGameplayEffectChain
 public:
     void Execute(AActor* Target); 
 protected:
-    UPROPERTY()
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TArray<FAegisGameplayEffectExecutor> Effects;
 };
 

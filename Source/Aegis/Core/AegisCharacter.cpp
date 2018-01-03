@@ -43,8 +43,8 @@ float AAegisCharacter::TakeDamage(float DamageAmount, const struct FDamageEvent&
 	AController* EventInstigagor, AActor* DamageCauser)
 {
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigagor, DamageCauser); 
-	SetCurrentHP(GetCurrentHP() - DamageAmount);  
-	bIsInHitStun = true; 
+	//SetCurrentHP(GetCurrentHP() - DamageAmount);
+	//bIsInHitStun = true;
 	UE_LOG(AegisLog, Log, TEXT("Character took damage")); 
 	return DamageAmount; 
 }

@@ -6,5 +6,12 @@
 
 bool FAegisCharacterMove::CanExecute(const AAegisCharacter* Character) const
 {
-    return Requirement.AreConditionsSatisfied(Character);
+    //return Requirement.AreConditionsSatisfied(Character);
+    return true; 
 }
+
+bool FAegisCharacterMove::operator==(const FAegisCharacterMove& Other) const
+{
+    return Requirement == Other.GetRequirement();
+}
+

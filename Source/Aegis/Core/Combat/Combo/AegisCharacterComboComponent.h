@@ -50,6 +50,8 @@ public:
     /** Updates the Current Combo State of the Owning Character*/
     void Update(); 
     
+    /** Interrupts Current Combo */
+    void Interrupt();
     /** Function called by AnimNotify at the start of a Combo Animation*/
     void OnComboAnimationBegin();
     
@@ -74,9 +76,12 @@ private:
 
 	/** Tries to advance the current combo */
 	void TryAdvanceCombo();
-
-	/** Aborts Current Combo */
-	void AbortCombo(); 
+    
+    /** Called to end an combo and transition back to other Char States*/
+    void AbortCombo();
+    
+	/** Sets Current  Combo Node to Root*/
+	void SetCurrentNodeToRoot();
     
 	/** Resets the character's Comparison Combo State after a combo */
 	void ResetComparisonComboState(); 

@@ -17,13 +17,11 @@ struct AEGIS_API FAegisCharacterMoveRequirement : public FAegisCharacterRequirem
     GENERATED_BODY()
 public:
     virtual bool AreConditionsSatisfied(const class AAegisCharacter* Character) const override;
-    void Init();
     bool operator==(const FAegisCharacterMoveRequirement& Other) const;
     FAegisCharacterComboRequirement GetComboRequirement() const { return ComboRequirement; }
+
 protected:
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     FAegisCharacterComboRequirement ComboRequirement;
-private:
-    TArray<FAegisCharacterRequirementBase> Requirements;
 };
 

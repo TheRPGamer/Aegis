@@ -11,52 +11,18 @@ void UAegisCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	auto character = Cast<AAegisCharacter>(TryGetPawnOwner());
 	if (character)
 	{
-		bIsFalling = character->IsInAir(); 
+		bFalling = character->IsInAir();
 		MovementSpeed = character->GetVelocity().Size();
-		bIsInHitStun = character->IsInHitStun(); 
-		bIsDead = false; 
-		CurrentComboAnimation = GetComboAnimToPlay();
+		bInHitStun = character->IsInHitStun();
+		bDead = false;
+        CurrentComboAnimation = GetComboAnim();
 		bInCombo = IsAegisCharacterInCombo(); 
 		bTransitionOutOfCombo = !IsAegisCharacterInCombo(); 
 	}
 }
 
 
-void UAegisCharacterAnimInstance::MakeCharacterWeaponActive()
-{
-	auto character = Cast<AAegisCharacter>(TryGetPawnOwner());
-	if (character && character->GetEquippedWeapon())
-	{
-		character->GetEquippedWeapon()->SetCanDamageTargetsTrue();
-	}
-
-}
-
-void UAegisCharacterAnimInstance::MakeCharacterWeaponInactive()
-{
-	auto character = Cast<AAegisCharacter>(TryGetPawnOwner());
-	if (character && character->GetEquippedWeapon())
-	{
-		character->GetEquippedWeapon()->SetCanDamageTargetsFalse();
-	}
-
-}
-
-
-AAegisCharacter* UAegisCharacterAnimInstance::GetAegisCharacter()
-{
-	auto character =  Cast<AAegisCharacter>(TryGetPawnOwner());
-	if (character)
-	{
-		return character; 
-	}
-	UE_LOG(AegisComboLog, Log, TEXT("Character Animation instance: unable to get Aegis Character Owner")); 
-	return nullptr; 
-
-}
-
-
-UAegisCharacterComboComponent* UAegisCharacterAnimInstance::GetAegisCharacterComboComponent()
+UAegisCharacterComboComponent* UAegisCharacterAnimInstance::GetAegisCharacterComboComponent() const
 {
 	auto character = GetAegisCharacter(); 
 	if (character)
@@ -67,7 +33,7 @@ UAegisCharacterComboComponent* UAegisCharacterAnimInstance::GetAegisCharacterCom
 }
 
 
-UAnimSequenceBase* UAegisCharacterAnimInstance::GetComboAnimToPlay()
+UAnimSequenceBase* UAegisCharacterAnimInstance::GetComboAnim() const
 {
 	auto comboComp = GetAegisCharacterComboComponent(); 
 	if (comboComp)
@@ -77,7 +43,7 @@ UAnimSequenceBase* UAegisCharacterAnimInstance::GetComboAnimToPlay()
 	return nullptr;
 }
 
-bool UAegisCharacterAnimInstance::IsAegisCharacterInCombo() 
+bool UAegisCharacterAnimInstance::IsAegisCharacterInCombo() const
 {
 	auto comboComp = GetAegisCharacterComboComponent(); 
 	if (comboComp)
