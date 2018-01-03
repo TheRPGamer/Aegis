@@ -2,7 +2,7 @@
 
 #include "Aegis.h"
 #include "AegisCharacterMove.h"
-#include "Core/AegisCharacter.h"
+#include "Core/Characters/AegisCharacter.h"
 
 bool FAegisCharacterMove::CanExecute(const AAegisCharacter* Character) const
 {

@@ -2,7 +2,7 @@
 
 #include "Aegis.h"
 #include "AegisCharacterComboTreeNode.h"
-#include "Core/AegisCharacter.h"
+#include "Core/Characters/AegisCharacter.h"
 
 
 bool UAegisCharacterComboTreeNode::operator==(const UAegisCharacterComboTreeNode& Other) const

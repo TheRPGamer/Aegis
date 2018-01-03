@@ -2,7 +2,7 @@
 
 #include "Aegis.h"
 #include "AegisCharacterActions.h"
-#include "Core/AegisCharacter.h"
+#include "Core/Characters/AegisCharacter.h"
 #include "Core/Combat/Combo/AegisCharacterCombatState.h"
 #include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 

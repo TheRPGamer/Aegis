@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "KnockbackEffectInterface.generated.h"
+#include "AegisKnockbackInterface.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
-class UKnockbackEffectInterface : public UInterface
+class UAegisKnockbackInterface : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -15,7 +15,7 @@ class UKnockbackEffectInterface : public UInterface
 /**
  * 
  */
-class AEGIS_API IKnockbackEffectInterface
+class AEGIS_API IAegisKnockbackInterface
 {
 	GENERATED_BODY()
 

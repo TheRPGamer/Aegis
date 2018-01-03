@@ -1,6 +1,6 @@
 #include "Aegis.h"
 #include "AegisActionInputInterpreterComponent.h"
-#include "Core/AegisCharacter.h"
+#include "Core/Characters/AegisCharacter.h"
 #include "Core/Input/AegisActionInputBufferComponent.h"
 
 

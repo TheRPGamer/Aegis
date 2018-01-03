@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Aegis.h"
-#include "Core/AegisPlayerCharacter.h"
+#include "Core/Characters/AegisPlayerCharacter.h"
 #include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 #include "Core/Combat/Combo/AegisCharacterComboTreeNode.h"
 #include "Core/Combat/Combo/AegisCharacterCombatState.h"

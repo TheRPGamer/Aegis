@@ -2,8 +2,8 @@
 
 #include "Aegis.h"
 #include "Core/Weapons/AegisWeapon.h"
-#include "Core/AegisPlayerCharacter.h"
-#include "Core/AegisEnemyCharacter.h"
+#include "Core/Characters/AegisPlayerCharacter.h"
+#include "Core/Characters/AegisEnemyCharacter.h"
 
 // Sets default values
 AAegisWeapon::AAegisWeapon()

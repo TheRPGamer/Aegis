@@ -2,7 +2,7 @@
 
 #include "Aegis.h"
 #include "AegisCharacterGuardComponent.h"
-#include "Core/AegisCharacter.h"
+#include "Core/Characters/AegisCharacter.h"
 
 // Sets default values for this component's properties
 UAegisCharacterGuardComponent::UAegisCharacterGuardComponent()

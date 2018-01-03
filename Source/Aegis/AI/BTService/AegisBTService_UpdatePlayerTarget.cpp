@@ -5,7 +5,7 @@
 #include "AI/AIC/AegisEnemyAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyAllTypes.h"
-#include "Core/AegisPlayerCharacter.h"
+#include "Core/Characters/AegisPlayerCharacter.h"
 
 UAegisBTService_UpdatePlayerTarget::UAegisBTService_UpdatePlayerTarget()
 {

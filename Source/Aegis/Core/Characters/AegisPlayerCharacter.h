@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Core/AegisCharacter.h"
+#include "Core/Characters/AegisCharacter.h"
 #include "AegisPlayerCharacter.generated.h"
 
 /**

@@ -2,7 +2,7 @@
 
 #include "Aegis.h"
 #include "AegisAnimNotify.h"
-#include "Core/AegisCharacter.h"
+#include "Core/Characters/AegisCharacter.h"
 
 
 void UAegisAnimNotify::Notify(USkeletalMeshComponent* MeshComponent, UAnimSequenceBase* Animation)

@@ -2,7 +2,7 @@
 
 #include "Aegis.h"
 #include "AegisActionInput.h"
-#include "Core/AegisCharacter.h"
+#include "Core/Characters/AegisCharacter.h"
 
 void FAegisCharacterActionInput::Clear()
 {

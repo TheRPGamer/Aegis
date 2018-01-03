@@ -6,7 +6,7 @@
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyAllTypes.h"
-#include "Core/AegisEnemyCharacter.h"
+#include "Core/Characters/AegisEnemyCharacter.h"
 
 AAegisEnemyAIController::AAegisEnemyAIController()
 {

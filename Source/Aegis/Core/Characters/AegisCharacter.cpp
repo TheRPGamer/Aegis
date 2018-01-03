@@ -3,7 +3,7 @@
 #include "Aegis.h"
 #include "Core/Input/AegisActionInputBufferComponent.h"
 #include "Core/Weapons/AegisWeapon.h"
-#include "Core/AegisCharacter.h"
+#include "Core/Characters/AegisCharacter.h"
 
 // Sets default values
 AAegisCharacter::AAegisCharacter()
