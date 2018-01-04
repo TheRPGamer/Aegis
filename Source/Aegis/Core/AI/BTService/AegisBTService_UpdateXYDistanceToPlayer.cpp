@@ -4,7 +4,7 @@
 #include "AegisBTService_UpdateXYDistanceToPlayer.h"
 #include "Core/Characters/AegisPlayerCharacter.h"
 #include "Core/Characters/AegisEnemyCharacter.h"
-#include "AI/AIC/AegisEnemyAIController.h"
+#include "Core/AI/AIC/AegisEnemyAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyAllTypes.h"
 

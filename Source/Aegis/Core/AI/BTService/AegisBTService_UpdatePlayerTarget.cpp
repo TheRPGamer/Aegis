@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Aegis.h"
-#include "AI/BTService/AegisBTService_UpdatePlayerTarget.h"
-#include "AI/AIC/AegisEnemyAIController.h"
+#include "AegisBTService_UpdatePlayerTarget.h"
+#include "Core/AI/AIC/AegisEnemyAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyAllTypes.h"
 #include "Core/Characters/AegisPlayerCharacter.h"
