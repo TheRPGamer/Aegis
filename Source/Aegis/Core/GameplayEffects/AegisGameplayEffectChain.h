@@ -3,9 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core/GameplayEffects/AegisGameplayEffectExecutor.h"
 #include "AegisGameplayEffectChain.generated.h"
 
+class UAegisGameplayEffectBase;
+struct FAegisGameplayEffectExecutionInfo; 
 /**
  * 
  */
@@ -14,10 +15,10 @@ struct AEGIS_API FAegisGameplayEffectChain
 {
 	GENERATED_BODY()
 public:
-    void Execute(AActor* Target); 
+    void Execute(FAegisGameplayEffectExecutionInfo& ExecutionInfo) const; 
 protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TArray<FAegisGameplayEffectExecutor> Effects;
+    TArray<UAegisGameplayEffectBase*> Effects;
 };
 
 

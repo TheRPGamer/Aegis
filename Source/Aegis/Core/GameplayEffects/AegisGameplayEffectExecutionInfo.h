@@ -3,33 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
-#include "Core/Requirements/AegisCharacterRequirementBase.h"
+#include "Core/GameplayEffects/AegisGameplayEffectExecutionOrder.h"
 #include "AegisGameplayEffectExecutionInfo.generated.h"
 
-/**
- * Info struct used to hold information about the parties involved in the Gameplay Effect
- * The impact position of the effect, hit normals etc
- */
 USTRUCT()
-struct AEGIS_API FAegisGameplayEffectExecutionInfo
+struct FAegisGameplayEffectExecutionInfo
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 public:
-    UPROPERTY()
-    AActor* Instigator = nullptr;
-    
-    UPROPERTY()
-    AActor* Causer;
-    
-    UPROPERTY()
-    AActor* Receiver = nullptr;
-    
-    UPROPERTY()
+    FAegisGameplayEffectExecutionInfo() { }
     AActor* Target = nullptr;
+    FVector HitLocation;
+    FVector HitNormal;
+    //Add any other variables that would be good to record between effects
+    float DamageRecord = 0.f; 
     
-    FVector ImpactLocation;
-    FVector ImpactNormal;
     
 };
 

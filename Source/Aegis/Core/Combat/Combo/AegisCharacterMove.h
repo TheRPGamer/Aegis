@@ -4,7 +4,7 @@
 #include "CoreMinimal.h"
 #include "Core/Combat/LockOn/AegisCharacterLockOnComponent.h"
 #include "Core/Requirements/AegisCharacterMoveRequirement.h"
-#include "Core/GameplayEffects/AegisGameplayEffectContainer.h"
+#include "Core/GameplayEffects/AegisGameplayEffectExecutionOrder.h"
 #include "AegisCharacterMove.generated.h"
 
  
@@ -38,8 +38,23 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UAnimSequenceBase* Animation = nullptr;
     
-    /** Gameplay Effects that will occur when this Move is successfully performed*/
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FAegisGameplayEffectContainer GameplayEffects;
+    /** Gameplay Effects that will occur when this move is successfully performed before collision occurs */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay Effects")
+    FAegisGameplayEffectExecutionOrder PreCollisionEffects;
+    
+    /** Gameplay Effects that will occur when this Move is successfully performed and collides with a target */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay Effects")
+    FAegisGameplayEffectExecutionOrder CollisionEffects; ;
+    
+    /** Gameplay Effects that will occur when the move is successfully performed after a collision has occured */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay Effects")
+    FAegisGameplayEffectExecutionOrder PostCollisionEffects; ;
+
+
+
+
+
+
+
 };
 

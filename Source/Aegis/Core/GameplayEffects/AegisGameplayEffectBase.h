@@ -7,7 +7,7 @@
 #include "Core/Requirements/AegisCharacterRequirementBase.h"
 #include "AegisGameplayEffectBase.generated.h"
 
-class AAegisCharacter;
+struct FAegisGameplayEffectExecutionInfo;
 
 /**
  * 
@@ -20,9 +20,7 @@ class AEGIS_API UAegisGameplayEffectBase : public UObject
 {
 	GENERATED_BODY()
 public:
-    // Look into PURE_VIRTUAL/make this class abstract
-    virtual void OnBegin() { }
-    virtual void OnEnd() { }
+    virtual void Execute(FAegisGameplayEffectExecutionInfo& ExecutionInfo) const { }
 	
 };
 

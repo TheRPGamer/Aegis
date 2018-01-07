@@ -4,20 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "Core/GameplayEffects/AegisGameplayEffectChain.h"
-#include "AegisGameplayEffectContainer.generated.h"
+#include "AegisGameplayEffectAffectedPartiesInfo.generated.h"
 
 
 /**
  * Container that holds Effect Chains that will affect all parties involved in a effect event
  */
 USTRUCT(BlueprintType)
-struct AEGIS_API FAegisGameplayEffectContainer
+struct AEGIS_API FAegisGameplayEffectAffectedPartiesInfo
 {
 	GENERATED_BODY()
 public:
-    const FAegisGameplayEffectChain& GetInstigatorChain() const { return InstigatorChain; }
-    const FAegisGameplayEffectChain& GetCauserChain() const { return CauserChain; }
-    const FAegisGameplayEffectChain& GetReceiverChain() const { return ReceiverChain; }
+    FAegisGameplayEffectAffectedPartiesInfo();
+     const FAegisGameplayEffectChain& GetInstigatorChain() const { return InstigatorChain; }
+     const FAegisGameplayEffectChain& GetCauserChain() const { return CauserChain; }
+     const FAegisGameplayEffectChain& GetReceiverChain() const { return ReceiverChain; }
     const FAegisGameplayEffectChain& GetTargetChain() const { return TargetChain; }
     
 protected:
