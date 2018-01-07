@@ -4,7 +4,4 @@
 #include "AegisGameplayEffectAffectedPartiesInfo.h"
 #include "Core/Characters/AegisCharacter.h"
 
-FAegisGameplayEffectAffectedPartiesInfo::FAegisGameplayEffectAffectedPartiesInfo()
-{
-    
-}
+

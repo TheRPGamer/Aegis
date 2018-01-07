@@ -2,6 +2,12 @@
 
 #include "Aegis.h"
 #include "AegisGameplayEffectChain.h"
-#include "Core/Characters/AegisCharacter.h"
+#include "Core/GameplayEffects/AegisGameplayEffectBase.h"
 
-
+void FAegisGameplayEffectChain::Execute(FAegisGameplayEffectExecutionInfo& InExecutionInfo) const
+{
+    for(auto& effect : Effects)
+    {
+        effect->Execute(InExecutionInfo);
+    }
+}
