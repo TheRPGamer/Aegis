@@ -4,14 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Core/GameplayEffects/AegisGameplayEffectExecutionOrder.h"
+#include "Core/GameplayEffects/AegisGameplayEffectApplicationOrder.h"
 #include "Core/Interfaces/AegisProcessGameplayEffectInterface.h"
 #include "AegisProjectile.generated.h"
 class UAegisGameplayEffectBufferComponent;
-struct FAegisGameplayEffectTriggerInfo; 
+
 
 UCLASS()
-class AEGIS_API AAegisProjectile : public AActor, public IAegisProcessGameplayEffectInterface
+class AEGIS_API AAegisProjectile : public AActor  
 {
 	GENERATED_BODY()
 	
@@ -27,12 +27,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
     
-    //Begin IAegisProcessGameplayEffectInterface
-    FORCEINLINE UAegisGameplayEffectBufferComponent* GetGameplayEffectComponent() const override { return GameplayEffectComponent; }
-    FAegisGameplayEffectExecutionOrder GetCurrentExecutionOrder() const override { return CollisionEffects; }
-    void ProcessInstigatorEffects(FAegisGameplayEffectTriggerInfo& TriggerInfo) override;
-    void ProcessCauserEffects(FAegisGameplayEffectTriggerInfo& TriggerInfo) override;
-    //End IAegisProcessGameplayEffectInterface
+    
     void OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit); 
 
 protected:
@@ -52,17 +47,4 @@ protected:
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Life Span")
     float LifeSpan = 0.0f;
-    
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay Effects")
-    FAegisGameplayEffectExecutionOrder CollisionEffects;
-    
-private:
-    UPROPERTY()
-    UAegisGameplayEffectBufferComponent* GameplayEffectComponent = nullptr;
-    
-    
-    
-
-	
-	
 };

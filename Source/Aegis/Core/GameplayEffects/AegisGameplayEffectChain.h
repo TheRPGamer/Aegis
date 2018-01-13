@@ -5,17 +5,19 @@
 #include "CoreMinimal.h"
 #include "AegisGameplayEffectChain.generated.h"
 
+struct FAegisGameplayEffectApplicationInfo;
 class UAegisGameplayEffectBase;
-struct FAegisGameplayEffectExecutionInfo; 
+
 /**
- * 
+ * Holds a series of GameplayEffects that will be applied to a single
+ * AActor* 
  */
 USTRUCT(BlueprintType)
 struct AEGIS_API FAegisGameplayEffectChain
 {
 	GENERATED_BODY()
 public:
-    void Execute(FAegisGameplayEffectExecutionInfo& InExecutionInfo) const;
+    void Apply(FAegisGameplayEffectApplicationInfo& InExecutionInfo) const;
 protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TArray<UAegisGameplayEffectBase*> Effects;

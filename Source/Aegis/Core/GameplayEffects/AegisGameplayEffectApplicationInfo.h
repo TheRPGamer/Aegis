@@ -3,16 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core/GameplayEffects/AegisGameplayEffectExecutionOrder.h"
-#include "AegisGameplayEffectExecutionInfo.generated.h"
+#include "Core/GameplayEffects/AegisGameplayEffectApplicationOrder.h"
+#include "AegisGameplayEffectApplicationInfo.generated.h"
 
 USTRUCT()
-struct FAegisGameplayEffectExecutionInfo
+struct AEGIS_API FAegisGameplayEffectApplicationInfo
 {
     GENERATED_BODY()
 public:
-    FAegisGameplayEffectExecutionInfo() { }
+    FAegisGameplayEffectApplicationInfo() { }
+
+    /** Target to apply GameplayEffects to */
     AActor* Target = nullptr;
+    
     FVector HitLocation;
     FVector HitNormal;
     //Add any other variables that would be good to record between effects

@@ -18,10 +18,6 @@ class UAegisActionInputBufferComponent;
 * Players or Enemies.
 */
 
-
-
-
-
 UCLASS()
 class AEGIS_API AAegisCharacter : public ACharacter
 {
@@ -49,26 +45,23 @@ public:
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	void SetCurrentHP(float newValue) { CurrentHP = newValue; }
 
-	/** Returns character's max HP*/
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	float GetMaxHP() const { return MaxHP; }
     
     FORCEINLINE EAegisCharacterLockOnState GetLockOnState() const { return LockOnState; }
     
-	/** Returns true if the character is currently in the air*/
     UFUNCTION(BlueprintCallable)
 	bool IsInAir() const;
 	
 
-	/** Returns true if character is currently in Super Mode*/
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	bool IsInSuperMode() const { return bInSuperMode; }
 	
-	/** Returns true if character is currently in Hit Stun State*/
+	
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	bool IsInHitStun() const{	return bIsInHitStun; }
 	
-	/** Returns true if character is in the Dead State*/
+	
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	bool IsDead() const { return (CurrentHP <= 0.0f); }
 	
@@ -107,7 +100,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ComboCombponent")
 	TSubclassOf<UAegisCharacterComboComponent> ComboComponentClass = UAegisCharacterComboComponent::StaticClass();
 
-	/** Character's Combo Component */
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ComboCombponent")
 	UAegisCharacterComboComponent* ComboComponent = nullptr;
 
@@ -115,11 +108,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GuardComponent")
     TSubclassOf<UAegisCharacterGuardComponent> GuardComponentClass = UAegisCharacterGuardComponent::StaticClass();
 
-	/** Character's Combo Component */
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GuardComponent")
 	UAegisCharacterGuardComponent* GuardComponent = nullptr;
     
-    UPROPERTY(VisibleAnywhere, BLueprintReadOnly, Category = "Input Buffer")
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Input Buffer")
     UAegisActionInputBufferComponent* InputBufferComponent = nullptr;
 
 	/** The left hand socket of the character */

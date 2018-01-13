@@ -2,9 +2,9 @@
 
 #include "Aegis.h"
 #include "AegisProjectile.h"
-#include "Core/GameplayEffects/AegisGameplayEffectTriggerInfo.h"
-#include "Core/GameplayEffects/AegisGameplayEffectExecutionInfo.h"
-#include "Core/GameplayEffects/AegisGameplayEffectBufferComponent.h"
+
+
+
 
 
 // Sets default values
@@ -67,44 +67,10 @@ void AAegisProjectile::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AAegisProjectile::ProcessInstigatorEffects(FAegisGameplayEffectTriggerInfo& TriggerInfo)
-{
-    
-}
-
-void AAegisProjectile::ProcessCauserEffects(FAegisGameplayEffectTriggerInfo& TriggerInfo)
-{
-    auto gameplayEffectComp = GetGameplayEffectComponent();
-    TriggerInfo.ExecutionInfo.Target = this;
-    if(gameplayEffectComp)
-    {
-        gameplayEffectComp->TryExecuteCauserEffects(TriggerInfo);
-    }
-    auto instigator = Cast<IAegisProcessGameplayEffectInterface>(GetOwner());
-    if(instigator)
-    {
-        TriggerInfo.ExecutionInfo.Target = GetOwner();
-        instigator->ProcessInstigatorEffects(TriggerInfo);
-    }
-    else
-    {
-        ProcessInstigatorEffects(TriggerInfo); 
-    }
-    
-}
-
 void AAegisProjectile::OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-    FAegisGameplayEffectTriggerInfo trigger;
-    trigger.InflictingPartyEffects = GetCurrentExecutionOrder();
-    auto target = Cast<IAegisProcessGameplayEffectInterface>(OtherActor);
-    if(target)
-    {
-        trigger.ReceivingPartyEffects = target->GetCurrentExecutionOrder();
-    }
-    trigger.ExecutionInfo.HitLocation = Hit.Location;
-    trigger.ExecutionInfo.HitNormal = Hit.Normal;
-    ProcessCauserEffects(trigger);
+    
+    
 }
 
 

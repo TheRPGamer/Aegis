@@ -4,7 +4,7 @@
 #include "CoreMinimal.h"
 #include "Core/Combat/LockOn/AegisCharacterLockOnComponent.h"
 #include "Core/Requirements/AegisCharacterMoveRequirement.h"
-#include "Core/GameplayEffects/AegisGameplayEffectExecutionOrder.h"
+#include "Core/GameplayEffects/AegisGameplayEffectApplicationOrder.h"
 #include "AegisCharacterMove.generated.h"
 
  
@@ -40,15 +40,15 @@ protected:
     
     /** Gameplay Effects that will occur when this move is successfully performed before collision occurs */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay Effects")
-    FAegisGameplayEffectExecutionOrder PreCollisionEffects;
+    FAegisGameplayEffectApplicationOrder PreCollisionGFX;
     
     /** Gameplay Effects that will occur when this Move is successfully performed and collides with a target */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay Effects")
-    FAegisGameplayEffectExecutionOrder CollisionEffects; ;
+    FAegisGameplayEffectApplicationOrder CollisionGFX;
     
     /** Gameplay Effects that will occur when the move is successfully performed after a collision has occured */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay Effects")
-    FAegisGameplayEffectExecutionOrder PostCollisionEffects; ;
+    FAegisGameplayEffectApplicationOrder PostCollisionGFX;
 
 
 

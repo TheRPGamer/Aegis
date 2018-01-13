@@ -34,7 +34,7 @@ public:
     /** Get the Animation associated with the current Move*/
     UAnimSequenceBase* GetCurrentAnimation() const;
     
-	/** Sets IsInAir field of ComparisonNode's Combo State */
+	/** Sets IsInAir field of ComparisonNode's Combat State */
 	FORCEINLINE void SetInAir(bool bInValue);
     FORCEINLINE void SetInSuper(bool bInSuper) { CurrentCombatState.SetInSuper(bInSuper); }
     FORCEINLINE void SetInMelee(bool bInMelee) { CurrentCombatState.SetInMelee(bInMelee); }
