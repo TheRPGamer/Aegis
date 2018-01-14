@@ -2,6 +2,8 @@
 
 #include "Aegis.h"
 #include "AegisProjectile.h"
+#include "Core/GameplayEffects/AegisGameplayEffectApplicationInfo.h"
+#include "Core/GameplayEffects/AegisActorGameplayEffectApplier.h"
 
 
 
@@ -69,6 +71,7 @@ void AAegisProjectile::Tick(float DeltaTime)
 
 void AAegisProjectile::OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+    
     
     
 }

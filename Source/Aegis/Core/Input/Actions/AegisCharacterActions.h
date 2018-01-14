@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UObject/NoExportTypes.h"
 #include "AegisCharacterActions.generated.h"
 
 class AAegisCharacter;
@@ -32,46 +33,53 @@ namespace NAegisCharacterAction
  * Inherit from this class for new Default Character Actions
  */
 
-USTRUCT()
-struct AEGIS_API FAegisCharacterActionBase
+UCLASS()
+class AEGIS_API UAegisCharacterActionBase : public UObject
 {
     GENERATED_BODY()
 public:
-    virtual ~FAegisCharacterActionBase() { }
+    UAegisCharacterActionBase() { }
+    
     /**
      * Updatest the passed in AegisCharacter's various Components by forwarding the calls to On Action Pressed() and On ActionReleased()*/
-    void Execute(const AAegisCharacter* Character, bool bPressed) const;
+    virtual void Execute(const AAegisCharacter* Character, bool bPressed) const;
 protected:  
     /** Override in child classes*/
-    virtual void OnActionPressed(const AAegisCharacter* Character) const{ }
+    virtual void OnActionPressed(const AAegisCharacter* Character) const{ UE_LOG(AegisInputLog, Log, TEXT("in h file"), *(DebugName.ToString())); }
     /**Override in child classes. */
     virtual void OnActionReleased(const AAegisCharacter* Character) const { }
-    
+    FName DebugName = "Base";
 };
 
 /**
  * Default updates to AegisCharacters when Melee Input is pressed
  * Inherit from this class for custom handling of Melee inputsfor different Characters
  */
-USTRUCT()
-struct FAegisCharacterMeleeAction : public FAegisCharacterActionBase
+UCLASS()
+class AEGIS_API UAegisCharacterMeleeAction : public UAegisCharacterActionBase
 {
     GENERATED_BODY()
+public:
+    UAegisCharacterMeleeAction() { DebugName = "Melee"; }
+    //void Execute(const AAegisCharacter* Character, bool bPressed) const override;
 protected:
     /** Updates Character's Combo Component.*/
     virtual void OnActionPressed(const AAegisCharacter* Character) const override;
     /** Updates Character's Combo Component*/
     virtual void OnActionReleased(const AAegisCharacter* Character) const override;
+    
 };
 
 /**
  * Default updates to AegisCharacter when Guard Action is is Input
  * Inherit from this class for custom handling of Guard Inputs for different characters
  */
-USTRUCT()
-struct FAegisCharacterGuardAction : public FAegisCharacterActionBase
+UCLASS()
+class AEGIS_API UAegisCharacterGuardAction : public UAegisCharacterActionBase
 {
     GENERATED_BODY()
+public:
+    UAegisCharacterGuardAction() { DebugName = "Guard"; }
 protected:
     /** Updates Character's Combo Component and Guard Component*/
     virtual void OnActionPressed(const AAegisCharacter* Character) const override;

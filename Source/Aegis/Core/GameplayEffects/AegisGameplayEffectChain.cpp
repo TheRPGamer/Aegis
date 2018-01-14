@@ -4,13 +4,13 @@
 #include "AegisGameplayEffectChain.h"
 #include "Core/GameplayEffects/AegisGameplayEffectBase.h"
 
-void FAegisGameplayEffectChain::Apply(FAegisGameplayEffectApplicationInfo& InExecutionInfo) const
+void FAegisGameplayEffectChain::Apply(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const
 {
     for(auto& effect : Effects)
     {
         if(effect)
         {
-            effect->Apply(InExecutionInfo);
+            effect->Apply(ApplicationInfo);
         }
     }
 }

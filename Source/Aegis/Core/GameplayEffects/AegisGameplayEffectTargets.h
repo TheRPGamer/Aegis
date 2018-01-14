@@ -21,10 +21,10 @@ struct AEGIS_API FAegisGameplayEffectTargets
 	GENERATED_BODY()
 public:
     FAegisGameplayEffectTargets() { }
-    void ApplyInstigatorEffects(FAegisGameplayEffectApplicationInfo& ExecutionInfo) const { InstigatorEffects.Apply(ExecutionInfo); }
-    void ApplyCauserEffects(FAegisGameplayEffectApplicationInfo& ExecutionInfo) const { CauserEffects.Apply(ExecutionInfo); }
-    void ApplyReceiverEffects(FAegisGameplayEffectApplicationInfo& ExecutionInfo) const { ReceiverEffects.Apply(ExecutionInfo); }
-    void ApplyTargetEffects(FAegisGameplayEffectApplicationInfo& ExecutionInfo) const { TargetEffects.Apply(ExecutionInfo); }
+    void ApplyInstigatorEffects(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const { InstigatorEffects.Apply(ApplicationInfo); }
+    void ApplyCauserEffects(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const { CauserEffects.Apply(ApplicationInfo); }
+    void ApplyReceiverEffects(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const { ReceiverEffects.Apply(ApplicationInfo); }
+    void ApplyTargetEffects(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const { TargetEffects.Apply(ApplicationInfo); }
 
 
 

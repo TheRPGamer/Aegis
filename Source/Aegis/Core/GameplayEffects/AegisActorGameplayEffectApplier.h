@@ -15,7 +15,7 @@ struct AEGIS_API FAegisActorGameplayEffectApplier
 public:
     FAegisActorGameplayEffectApplier() { }
     virtual ~FAegisActorGameplayEffectApplier() { }
-    void Apply(const FAegisGameplayEffectApplicationOrder& InflicterOrder, const FAegisGameplayEffectApplicationOrder& ReceiverOrder, FAegisGameplayEffectApplicationInfo& ExecutionInfo) const;
+    void Apply(const FAegisGameplayEffectApplicationOrder& InflicterOrder, const FAegisGameplayEffectApplicationOrder& ReceiverOrder, FAegisGameplayEffectApplicationInfo& ApplicationInfo) const;
 protected:
     FAegisInflicterGameplayEffectTargetsApplier InflicterExecutor;
     FAegisReceiverGameplayEffectTargetsApplier ReceiverExecutor;

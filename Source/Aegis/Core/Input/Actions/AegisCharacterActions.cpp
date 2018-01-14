@@ -7,8 +7,9 @@
 #include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 
 
-void FAegisCharacterActionBase::Execute(const AAegisCharacter* Character, bool bPressed) const
+void UAegisCharacterActionBase::Execute(const AAegisCharacter* Character, bool bPressed) const
 {
+    UE_LOG(AegisInputLog, Log, TEXT("%s"), *(DebugName.ToString()));
     if(!Character)
     {
         return;
@@ -22,8 +23,7 @@ void FAegisCharacterActionBase::Execute(const AAegisCharacter* Character, bool b
         OnActionReleased(Character);
     }
 }
-
-void FAegisCharacterMeleeAction::OnActionPressed(const AAegisCharacter* Character) const
+void UAegisCharacterMeleeAction::OnActionPressed(const AAegisCharacter* Character) const
 {
     if(!Character)
     {
@@ -38,7 +38,7 @@ void FAegisCharacterMeleeAction::OnActionPressed(const AAegisCharacter* Characte
     }
 }
 
-void FAegisCharacterMeleeAction::OnActionReleased(const AAegisCharacter* Character) const
+void UAegisCharacterMeleeAction::OnActionReleased(const AAegisCharacter* Character) const
 {
     if(!Character)
     {
@@ -47,7 +47,7 @@ void FAegisCharacterMeleeAction::OnActionReleased(const AAegisCharacter* Charact
 }
 
 
-void FAegisCharacterGuardAction::OnActionPressed(const AAegisCharacter* Character) const
+void UAegisCharacterGuardAction::OnActionPressed(const AAegisCharacter* Character) const
 {
     if(!Character)
     {
@@ -62,7 +62,7 @@ void FAegisCharacterGuardAction::OnActionPressed(const AAegisCharacter* Characte
     }
 }
 
-void FAegisCharacterGuardAction::OnActionReleased(const AAegisCharacter* Character) const
+void UAegisCharacterGuardAction::OnActionReleased(const AAegisCharacter* Character) const
 {
     if(!Character)
     {

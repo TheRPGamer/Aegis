@@ -2,11 +2,20 @@
 
 #include "Aegis.h"
 #include "Core/Characters/AegisCharacter.h"
+#include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 #include "AegisCharacterComboRequirement.h"
 
 bool FAegisCharacterComboRequirement::AreConditionsSatisfied(const AAegisCharacter* Character) const
 {
-    return true; 
+    if(Character)
+    {
+        auto comboComp = Character->GetComboComponent();
+        if(comboComp)
+        {
+            return comboComp->GetCurrentCombatState() == CombatState;
+        }
+    }
+    return false; 
 }
 
 bool FAegisCharacterComboRequirement::operator==(const FAegisCharacterComboRequirement& Other) const

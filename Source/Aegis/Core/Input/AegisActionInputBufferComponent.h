@@ -33,10 +33,10 @@ public:
     
 protected:
     /**
-     * Given an FName for an ActionType, returns the corresponding FAegisCharacterActionBase from the ActionNameToActionMap
-     * Returns FAegisCharacterActionBase() if ActionType cannot be found
+     * Given an FName for an ActionType, returns the corresponding UAegisCharacterActionBase from the ActionNameToActionMap
+     * Returns UAegisCharacterActionBase() if ActionType cannot be found
      */
-    virtual FAegisCharacterActionBase GetAction(FName ActionName);
+    virtual UAegisCharacterActionBase* GetAction(FName ActionName);
     
     /**
      * Initialises the ActionNameToActionMap with the correct values of Keys and values.
@@ -45,11 +45,11 @@ protected:
     virtual void InitActionNameToActionMap();
 
     /**
-     * Maps the FName of an action its correspoinding FAegisCharacterActionBase
+     * Maps the FName of an action its correspoinding UAegisCharacterActionBase
      * @see NAegisCharacterAction
-     * @see FAegisCharacterActionBase
+     * @see UAegisCharacterActionBase
      */
-    TMap<FName, FAegisCharacterActionBase> ActionNameToActionMap;
+    TMap<FName, UAegisCharacterActionBase*> ActionNameToActionMap;
 private:
     void IncrementReadIndex();
     void AddAction(FName ActionType, bool Pressed);

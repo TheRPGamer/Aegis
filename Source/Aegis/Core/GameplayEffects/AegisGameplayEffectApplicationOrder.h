@@ -62,7 +62,7 @@ struct AEGIS_API FAegisGameplayEffectTargetsApplierBase
 public: 
     FAegisGameplayEffectTargetsApplierBase() { }
     virtual ~FAegisGameplayEffectTargetsApplierBase() { }
-    virtual void Apply(const FAegisGameplayEffectTargets& Targets,FAegisGameplayEffectApplicationInfo& ExecutionInfo) const { }
+    virtual void Apply(const FAegisGameplayEffectTargets& Targets,FAegisGameplayEffectApplicationInfo& ApplicationInfo) const { }
     bool ShouldApplyInstigatorEffects() const { return bApplyInstigatorEffects; }
     void SetApplyInstigatorEffects(bool bInApplyInstigatorEffects) { bApplyInstigatorEffects = bInApplyInstigatorEffects; }
 protected:
@@ -77,7 +77,7 @@ struct AEGIS_API FAegisInflicterGameplayEffectTargetsApplier : public FAegisGame
     GENERATED_BODY()
 public:
     FAegisInflicterGameplayEffectTargetsApplier() { }
-    void Apply(const FAegisGameplayEffectTargets& Targets,FAegisGameplayEffectApplicationInfo& ExecutionInfo) const override;
+    void Apply(const FAegisGameplayEffectTargets& Targets,FAegisGameplayEffectApplicationInfo& ApplicationInfo) const override;
     
 };
 
@@ -88,7 +88,7 @@ struct AEGIS_API FAegisReceiverGameplayEffectTargetsApplier : public FAegisGamep
     GENERATED_BODY()
 public:
     FAegisReceiverGameplayEffectTargetsApplier() { }
-    void Apply(const FAegisGameplayEffectTargets& Targets,FAegisGameplayEffectApplicationInfo& ExecutionInfo) const override;
+    void Apply(const FAegisGameplayEffectTargets& Targets,FAegisGameplayEffectApplicationInfo& ApplicationInfo) const override;
     
 };
 

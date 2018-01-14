@@ -12,14 +12,21 @@ struct AEGIS_API FAegisGameplayEffectApplicationInfo
     GENERATED_BODY()
 public:
     FAegisGameplayEffectApplicationInfo() { }
-
+    FORCEINLINE AActor* GetApplicationTarget() const { return ApplicationTarget; }
+    FORCEINLINE FVector GetHitLocation() const { return HitLocation; }
+    FORCEINLINE FVector GetHitNormal() const { return HitNormal; }
+    
+    FORCEINLINE void SetApplicationTarget(AActor* InApplicationTarget) { ApplicationTarget = InApplicationTarget; }
+    FORCEINLINE void SetHitLocation(const FVector& InHitLocation) { HitLocation = InHitLocation; }
+    FORCEINLINE void SetHitNormal(const FVector& InHitNormal ) { HitNormal = InHitNormal; }
+private: 
     /** Target to apply GameplayEffects to */
-    AActor* Target = nullptr;
+    AActor* ApplicationTarget = nullptr;
     
     FVector HitLocation;
     FVector HitNormal;
-    //Add any other variables that would be good to record between effects
-    float DamageRecord = 0.f; 
+    
+    
     
     
 };

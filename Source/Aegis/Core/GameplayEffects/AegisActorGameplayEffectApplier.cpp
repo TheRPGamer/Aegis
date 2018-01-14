@@ -4,17 +4,17 @@
 #include "AegisActorGameplayEffectApplier.h"
 #include "Core/GameplayEffects/AegisGameplayEffectApplicationOrder.h"
 
-void FAegisActorGameplayEffectApplier::Apply(const FAegisGameplayEffectApplicationOrder& InflicterOrder, const FAegisGameplayEffectApplicationOrder& ReceiverOrder, FAegisGameplayEffectApplicationInfo& ExecutionInfo) const
+void FAegisActorGameplayEffectApplier::Apply(const FAegisGameplayEffectApplicationOrder& InflicterOrder, const FAegisGameplayEffectApplicationOrder& ReceiverOrder, FAegisGameplayEffectApplicationInfo& ApplicationInfo) const
 {
     //Apply PreEffects
-    InflicterExecutor.Apply(InflicterOrder.GetPreEffects(), ExecutionInfo);
-    ReceiverExecutor.Apply(ReceiverOrder.GetPreEffects(), ExecutionInfo);
+    InflicterExecutor.Apply(InflicterOrder.GetPreEffects(), ApplicationInfo);
+    ReceiverExecutor.Apply(ReceiverOrder.GetPreEffects(), ApplicationInfo);
     //Apply Effects
-    InflicterExecutor.Apply(InflicterOrder.GetEffects(), ExecutionInfo);
-    ReceiverExecutor.Apply(ReceiverOrder.GetEffects(), ExecutionInfo);
+    InflicterExecutor.Apply(InflicterOrder.GetEffects(), ApplicationInfo);
+    ReceiverExecutor.Apply(ReceiverOrder.GetEffects(), ApplicationInfo);
     //Apply Post Effects
-    InflicterExecutor.Apply(InflicterOrder.GetPostEffects(), ExecutionInfo);
-    ReceiverExecutor.Apply(ReceiverOrder.GetPostEffects(), ExecutionInfo);
+    InflicterExecutor.Apply(InflicterOrder.GetPostEffects(), ApplicationInfo);
+    ReceiverExecutor.Apply(ReceiverOrder.GetPostEffects(), ApplicationInfo);
 }
 
 

@@ -17,7 +17,7 @@ struct AEGIS_API FAegisGameplayEffectChain
 {
 	GENERATED_BODY()
 public:
-    void Apply(FAegisGameplayEffectApplicationInfo& InExecutionInfo) const;
+    void Apply(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const;
 protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TArray<UAegisGameplayEffectBase*> Effects;

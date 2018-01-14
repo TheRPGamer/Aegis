@@ -47,4 +47,7 @@ protected:
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Life Span")
     float LifeSpan = 0.0f;
+    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay Effects")
+    FAegisGameplayEffectApplicationOrder CollisionGFX;
 };

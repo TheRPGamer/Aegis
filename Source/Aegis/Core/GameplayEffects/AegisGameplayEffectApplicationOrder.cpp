@@ -3,27 +3,27 @@
 #include "Aegis.h"
 #include "AegisGameplayEffectApplicationOrder.h"
 
-void FAegisInflicterGameplayEffectTargetsApplier::Apply(const FAegisGameplayEffectTargets& Targets,FAegisGameplayEffectApplicationInfo& ExecutionInfo) const
+void FAegisInflicterGameplayEffectTargetsApplier::Apply(const FAegisGameplayEffectTargets& Targets,FAegisGameplayEffectApplicationInfo& ApplicationInfo) const
 {
     if(ShouldApplyInstigatorEffects())
     {
-        Targets.ApplyInstigatorEffects(ExecutionInfo);
+        Targets.ApplyInstigatorEffects(ApplicationInfo);
     }
     else
     {
-        Targets.ApplyCauserEffects(ExecutionInfo);
+        Targets.ApplyCauserEffects(ApplicationInfo);
     }
 }
 
 
-void FAegisReceiverGameplayEffectTargetsApplier::Apply(const FAegisGameplayEffectTargets& Targets,FAegisGameplayEffectApplicationInfo& ExecutionInfo) const
+void FAegisReceiverGameplayEffectTargetsApplier::Apply(const FAegisGameplayEffectTargets& Targets,FAegisGameplayEffectApplicationInfo& ApplicationInfo) const
 {
     if(ShouldApplyInstigatorEffects())
     {
-        Targets.ApplyReceiverEffects(ExecutionInfo);
+        Targets.ApplyReceiverEffects(ApplicationInfo);
     }
     else
     {
-        Targets.ApplyTargetEffects(ExecutionInfo);
+        Targets.ApplyTargetEffects(ApplicationInfo);
     }
 }

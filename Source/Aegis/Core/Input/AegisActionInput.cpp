@@ -6,12 +6,12 @@
 
 void FAegisCharacterActionInput::Clear()
 {
-    Action = FAegisCharacterActionBase();
+    Action = nullptr;
     bPressed = false;
     Timestamp = FDateTime::MinValue();
 }
 
-void FAegisCharacterActionInput::Update(const FAegisCharacterActionBase& InAction, bool InPressed)
+void FAegisCharacterActionInput::Update(UAegisCharacterActionBase* InAction, bool InPressed)
 {
     Action = InAction;
     bPressed = InPressed;
@@ -20,9 +20,9 @@ void FAegisCharacterActionInput::Update(const FAegisCharacterActionBase& InActio
 
 void FAegisCharacterActionInput::Execute(const AAegisCharacter* Character) const
 {
-    if(Character)
+    if(Character && Action)
     {
-        Action.Execute(Character, bPressed);
+        Action->Execute(Character, bPressed);
     }
 }
 

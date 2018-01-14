@@ -12,6 +12,7 @@ UAegisCharacterComboComponent::UAegisCharacterComboComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
+    PrimaryComponentTick.TickGroup = TG_PostPhysics;
 }
 
 UAnimSequenceBase* UAegisCharacterComboComponent::GetCurrentAnimation() const
@@ -119,7 +120,7 @@ void UAegisCharacterComboComponent::TryAdvanceCombo()
         //if execution reaches here, we found a valid child. Advance the combo
         AdvanceCombo(nextComboNode);
         //Starts AnimBP transition from Idle to Combo
-        SetInCombo(true);
+        // SetInCombo(true);
 	}
 }
 
@@ -132,6 +133,7 @@ void UAegisCharacterComboComponent::AbortCombo()
 
 void UAegisCharacterComboComponent::AdvanceCombo(UAegisCharacterComboTreeNode* InComboTreeNode)
 {
+    SetInCombo(true);
     if (CurrentComboTreeNode)
     {
         CurrentComboTreeNode = InComboTreeNode;
@@ -182,8 +184,9 @@ void UAegisCharacterComboComponent::PrintComboTree()
 
 	for (auto node : queue)
 	{
-		//UE_LOG(AegisLog, Log, TEXT("%s, "), *(node->GetRequiredComboState().GetName().ToString()));
+//        UE_LOG(AegisLog, Log, TEXT("%s, "), *(node->GetRequiredCombatState().GetName().ToString()));
 	}
+    
 }
 #endif
 void UAegisCharacterComboComponent::OnRegister()
@@ -203,6 +206,7 @@ void UAegisCharacterComboComponent::OnComboAnimationEnd()
 {
 	//transitions Anim BP from Combo to Idle
     SetInCombo(false);
+    ResetComparisonComboState();
     Update();
 }
 

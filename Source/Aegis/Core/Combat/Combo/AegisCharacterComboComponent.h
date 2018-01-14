@@ -57,6 +57,8 @@ public:
     
 	/** Function called by Animation Notify when a combo animation has ended*/
 	void OnComboAnimationEnd(); 
+
+    const FAegisCharacterCombatState& GetCurrentCombatState() const { return CurrentCombatState; }
 protected:
 	/** All Combo Chains that the owner of this Combo Component can perform */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combos", meta = (AllowPrivateAccess = "true"))
@@ -104,11 +106,12 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combos", meta = (AllowPrivateAccess = "true"))
 	class UAegisCharacterComboTreeNode* ComparisonComboTreeNode = nullptr;
     
+    UPROPERTY()
     FAegisCharacterComparisonCombatState CurrentCombatState;
     
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combos", meta = (AllowPrivateAccess = "true"))
 	bool bInCombo = false;
 
-	/* Debug thing. See SetInMeleeAttack() to understand what it does at a glance*/
-	bool bAcceptInput = true; 
+	
+	 
 };

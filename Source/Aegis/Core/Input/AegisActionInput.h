@@ -18,10 +18,10 @@ public:
     /** Clears teh Action Input to default values*/
     void Clear();
     /** Updates all the member variables  with the arguments*/
-    void Update(const FAegisCharacterActionBase& InAction, bool InPressed);
+    void Update(UAegisCharacterActionBase* InAction, bool InPressed);
     
     
-    FORCEINLINE FAegisCharacterActionBase GetAction() const { return Action; }
+    FORCEINLINE UAegisCharacterActionBase* GetAction() const { return Action; }
     FORCEINLINE bool GetPressed() const { return bPressed; }
     FORCEINLINE FDateTime GetTimestamp() const { return Timestamp; }
     
@@ -29,7 +29,8 @@ public:
      * Represents the Action that was input. E.g Melee, Guard etc
      * @ see AegisCharacterActions.h
      */
-    FAegisCharacterActionBase Action;
+    UPROPERTY()
+    UAegisCharacterActionBase* Action = nullptr;
     
     /** If the Input was from a Press or Release*/
     bool bPressed = false;

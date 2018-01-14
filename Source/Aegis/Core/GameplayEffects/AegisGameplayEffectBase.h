@@ -20,7 +20,7 @@ class AEGIS_API UAegisGameplayEffectBase : public UObject
 {
 	GENERATED_BODY()
 public:
-    virtual void Apply(FAegisGameplayEffectApplicationInfo& InExecutionInfo) const { }
+    virtual void Apply(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const { }
 	
 };
 

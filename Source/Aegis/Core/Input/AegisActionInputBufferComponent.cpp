@@ -11,7 +11,7 @@ UAegisActionInputBufferComponent::UAegisActionInputBufferComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-    
+    PrimaryComponentTick.TickGroup = TG_PrePhysics;
 
 	// ...
 }
@@ -39,12 +39,19 @@ void UAegisActionInputBufferComponent::OnRegister()
 {
     Super::OnRegister(); 
     InputBuffer.Init(FAegisCharacterActionInput(), BufferSize);
+    InitActionNameToActionMap();
     PrimaryComponentTick.TickInterval = ExpendInputRate;
 }
 
-FAegisCharacterActionBase UAegisActionInputBufferComponent::GetAction(FName ActionName)
+UAegisCharacterActionBase* UAegisActionInputBufferComponent::GetAction(FName ActionName)
 {
+    /*
+    for(auto& key : ActionNameToActionMap)
+    {
+        UE_LOG(AegisInputLog, Log, TEXT("Key Name: %s"), *(key.Key.ToString()));
+    }
     //find returns a valid ptr if the value exists, else nullptr
+    UE_LOG(AegisInputLog, Log, TEXT("Action Name: %s"), *(ActionName.ToString()));
     auto action = ActionNameToActionMap.Find(ActionName);
     if(action)
     {
@@ -52,12 +59,14 @@ FAegisCharacterActionBase UAegisActionInputBufferComponent::GetAction(FName Acti
     }
     //return a default character action if the key is invalid
     return ActionNameToActionMap[NAegisCharacterAction::None];
+     */
+    return ActionNameToActionMap[ActionName];
 }
 
 void UAegisActionInputBufferComponent::InitActionNameToActionMap()
 {
-    ActionNameToActionMap.Emplace(NAegisCharacterAction::None, FAegisCharacterActionBase() );
-    ActionNameToActionMap.Emplace(NAegisCharacterAction::Melee, FAegisCharacterMeleeAction() );
+    ActionNameToActionMap.Add(NAegisCharacterAction::None, NewObject<UAegisCharacterActionBase>() );
+    ActionNameToActionMap.Add(NAegisCharacterAction::Melee, NewObject<UAegisCharacterMeleeAction>() );
     
 }
 void UAegisActionInputBufferComponent::AddActionPressed(FName ActionType)
