@@ -3,7 +3,6 @@
 #include "Aegis.h"
 #include "Core/AegisCharacterAnimInstance.h"
 #include "Core/Characters/AegisCharacter.h"
-#include "Core/Weapons/AegisWeapon.h"
 #include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 void UAegisCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
@@ -15,12 +14,8 @@ void UAegisCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		MovementSpeed = character->GetVelocity().Size();
 		bInHitStun = character->IsInHitStun();
 		bDead = false;
-        CurrentComboAnimation = GetComboAnim();
-		bInCombo = IsAegisCharacterInCombo(); 
-		bTransitionOutOfCombo = !IsAegisCharacterInCombo(); 
 	}
 }
-
 
 UAegisCharacterComboComponent* UAegisCharacterAnimInstance::GetAegisCharacterComboComponent() const
 {
@@ -43,15 +38,22 @@ UAnimSequenceBase* UAegisCharacterAnimInstance::GetComboAnim() const
 	return nullptr;
 }
 
-bool UAegisCharacterAnimInstance::IsAegisCharacterInCombo() const
+void UAegisCharacterAnimInstance::PlayComboAnimation(UAnimSequenceBase* Animation)
 {
-	auto comboComp = GetAegisCharacterComboComponent(); 
-	if (comboComp)
-	{
-		return comboComp->IsInCombo(); 
-	}
-	UE_LOG(AegisComboLog, Log, TEXT("Anim Instance cannot access owner Combo Component")); 
-	return false; 
+    if(!Animation)
+    {
+        return; 
+    }
+    auto character = GetAegisCharacter();
+    if(character)
+    {
+        auto mesh = character->GetMesh();
+        if(mesh)
+        {
+            //IMPORTANT:removes control from AnimBP/AnimInstance
+            //sets USkeletalMeshComponent's EAnimationMode to AnimationSingleNode by default
+            mesh->PlayAnimation(Animation, false);
+        }
+    }
 }
-
 

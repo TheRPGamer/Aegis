@@ -10,23 +10,22 @@ bool UAegisCharacterComboTreeNode::operator==(const UAegisCharacterComboTreeNode
     return Move == Other.GetMove();
 }
 
-void UAegisCharacterComboTreeNode::AddUniqueChild(UAegisCharacterComboTreeNode* Child) 
+UAegisCharacterComboTreeNode* UAegisCharacterComboTreeNode::TryAddChild(const FAegisCharacterMove& InMove)
 {
-	if (!Child)
-	{
-		UE_LOG(AegisComboLog, Error, TEXT("Child node to be added to AeigsComboChainNode is null")); 
-		return;
-	}
-    for(auto& child : Children)
-	{
-		//don't add if inChild has the exact same Requirements as an existing Node
-        if (*child == *Child)
-		{
-			return; 
-		}
-	}
-	Children.Emplace(Child); 
+    for(const auto child : Children)
+    {
+        //if a child with the matching FAegisCharacterMove already exists
+        if(child && (child->GetMove() == InMove))
+        {
+            return child; 
+        }
+    }
+    auto newChild = NewObject<UAegisCharacterComboTreeNode>();
+    newChild->SetMove(InMove);
+    Children.Add(newChild);
+    return newChild;
 }
+
 
 UAegisCharacterComboTreeNode* UAegisCharacterComboTreeNode::FindSatisfiedChild(const AAegisCharacter* Character) const
 {	
@@ -34,7 +33,7 @@ UAegisCharacterComboTreeNode* UAegisCharacterComboTreeNode::FindSatisfiedChild(c
     {
         return nullptr;
     }
-    for(auto& child : Children)
+    for(const auto child : Children)
     {
         if(child->GetMove().CanExecute(Character))
         {
@@ -43,3 +42,13 @@ UAegisCharacterComboTreeNode* UAegisCharacterComboTreeNode::FindSatisfiedChild(c
     }
 	return nullptr; 
 }
+
+
+
+
+
+
+
+
+
+

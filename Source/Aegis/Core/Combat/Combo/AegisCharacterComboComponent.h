@@ -9,6 +9,11 @@
 #include "core/Combat/Combo/AegisCharacterMove.h"
 #include "AegisCharacterComboComponent.generated.h"
 
+class AAegisCharacter;
+class UAegisActionInputBufferComponent;
+class UAegisCharacterComboTreeNode;
+class UAegisCharacterAnimInstance;
+
 /**
 * Handles solving for what Combo the Character advances to based on Character actions
 * Builds a Combo Tree of unique Combo Tree Nodes.
@@ -89,23 +94,22 @@ private:
 	void ResetComparisonComboState(); 
 	
     /** Gets teh Aegis Character Owner */
-    class AAegisCharacter* GetAegisOwner() const;
+    AAegisCharacter* GetAegisOwner() const;
     
     /** Gets teh Aegis Owner's Input Buffer Component. Returns null if Aegis Owner is null */
-    class UAegisActionInputBufferComponent* GetAegisOwnerInputBufferComponent() const;
+    UAegisActionInputBufferComponent* GetAegisOwnerInputBufferComponent() const;
+    
+    USkeletalMeshComponent* GetAegisOwnerSkeletalMesh() const;
     
 	/** Root Node of the Combo Tree. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly , Category = "Combos", meta = (AllowPrivateAccess = "true"))
-	class UAegisCharacterComboTreeNode* ComboTreeRootNode = nullptr;
+	UAegisCharacterComboTreeNode* ComboTreeRootNode = nullptr;
 
 	/** Current node in the Combo Tree traversal */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combos", meta = (AllowPrivateAccess = "true"))
-	class UAegisCharacterComboTreeNode* CurrentComboTreeNode = nullptr;
+	UAegisCharacterComboTreeNode* CurrentComboTreeNode = nullptr;
 
-	/** Combo Tree Node the owner will update. To be used to compare with Children of CurrentComboTreeNode */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combos", meta = (AllowPrivateAccess = "true"))
-	class UAegisCharacterComboTreeNode* ComparisonComboTreeNode = nullptr;
-    
+	
     UPROPERTY()
     FAegisCharacterComparisonCombatState CurrentCombatState;
     

@@ -17,15 +17,19 @@ class AEGIS_API UAegisCharacterComboTreeNode : public UObject
 {
 	GENERATED_BODY()
 public: 
-    FAegisCharacterMove GetMove() const { return Move; }
+    const FAegisCharacterMove& GetMove() const { return Move; }
 	void SetMove(const FAegisCharacterMove& InMove)  { Move = InMove; }
 
 	/** Returns true if RequiredComboStates are equal */
 	bool operator==(const UAegisCharacterComboTreeNode& Other) const;
-	
-	/** Adds a Node to the Children Set */
-	void AddUniqueChild(UAegisCharacterComboTreeNode* Child);
-	
+
+    /**
+     * Given a FAegisCharacterMove, ensures the Move does not exist among Children (is unique)
+     * If the Move is unique, creates a new UAegisCharacterComboTreeNode*, adds it to Children Array and returns the newly created UAegisComboTreeNode*
+     * Else returns the UAegisComboTreeNode* that already matches  the given Move«
+     */
+    UAegisCharacterComboTreeNode* TryAddChild(const FAegisCharacterMove& InMove);
+    
 	/**
      * Return a child node that has all requirements satisfied by Character.
      * Else returns nullptr

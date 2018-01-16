@@ -31,6 +31,9 @@ public:
     /** Gets Input at current Read Index*/
     FAegisCharacterActionInput Get();
     
+    /** Executes the Action Input at the current Read Index */
+    void Execute();
+    
 protected:
     /**
      * Given an FName for an ActionType, returns the corresponding UAegisCharacterActionBase from the ActionNameToActionMap

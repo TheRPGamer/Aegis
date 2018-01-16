@@ -7,7 +7,8 @@
 #include "Core/GameplayEffects/AegisGameplayEffectApplicationOrder.h"
 #include "AegisCharacterMove.generated.h"
 
- 
+
+class AAegisCharacter;
 
 USTRUCT(BlueprintType)
 struct AEGIS_API FAegisCharacterMove
@@ -19,7 +20,7 @@ struct AEGIS_API FAegisCharacterMove
     FORCEINLINE FText GetDisplayName() const { return DisplayName; }
     FORCEINLINE UAnimSequenceBase* GetAnimation() const { return Animation; }
     FORCEINLINE const FAegisCharacterMoveRequirement& GetRequirement() const { return Requirement; }
-    bool CanExecute(const class AAegisCharacter* Character) const;
+    bool CanExecute(const AAegisCharacter* Character) const;
     bool operator==(const FAegisCharacterMove& Other) const;
     
 protected:

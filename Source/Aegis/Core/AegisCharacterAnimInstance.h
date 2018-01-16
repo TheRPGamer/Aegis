@@ -11,30 +11,34 @@ class UAegisCharacterComboComponent;
 /**
  * 
  */
-UCLASS()
+UCLASS(transient, Blueprintable)
 class AEGIS_API UAegisCharacterAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 public: 
 	FORCEINLINE UFUNCTION(BlueprintCallable)
     AAegisCharacter* GetAegisCharacter() const {return Cast<AAegisCharacter>(TryGetPawnOwner());}
-
+    
+    
+    
+    
 	UFUNCTION(BlueprintCallable)
 	UAegisCharacterComboComponent* GetAegisCharacterComboComponent() const;
-
+    
 	/** Gets Character's current Combo Animation*/
 	UFUNCTION(BlueprintCallable)
 	UAnimSequenceBase* GetComboAnim() const;
-
-	/** Returns true if character is currently in middle of a combo */
-	UFUNCTION(BlueprintCallable)
-	bool IsAegisCharacterInCombo() const;
-
-	
+    /**
+     * Plays the provided Combo Animation.
+     * IMPORTANT: Changes EAnimationMOde of USkeletalMeshComponent to AnimationSingleNode
+     * IMPORTANT: Removes control of aniamtion playback from UAegisCharacterAnimInstance. jjj
+     */
+    void PlayComboAnimation(UAnimSequenceBase* Base);
 protected: 
 	/** Function called every Animation Tick to update the State of the Character*/
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override; 
-
+    
+    
 private: 
 	/** True if the character is not on the ground*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true") )
@@ -51,24 +55,5 @@ private:
 	/** True if the character is the in the Dead State*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
 	bool bDead = false;
-
-	/** True if character is currently in a combo */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
-	bool bInCombo = false;
-
-	/** Debug thing. A variable that is always set to !bInCombo jus to 
-	* check if there's anything wrong with Anim BP
-	*/
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
-	bool bTransitionOutOfCombo = false;
-
-
-	/** The current combo animation to be played */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MeleeAnimProperties", meta = (AllowPrivateAccess = "true"))
-	UAnimSequenceBase* CurrentComboAnimation = nullptr; 
-	
-	/** The next combo animation to be played */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MeleeAnimProperties", meta = (AllowPrivateAccess = "true"))
-	UAnimSequenceBase* NextComboAnimation = nullptr;
-
+    
 };
