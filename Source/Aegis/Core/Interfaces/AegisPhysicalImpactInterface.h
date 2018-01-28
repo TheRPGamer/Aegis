@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AegisHitInterface.generated.h"
+#include "AegisPhysicalImpactInterface.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
-class UAegisHitInterface : public UInterface
+class UAegisPhysicalImpactInterface : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -15,12 +15,13 @@ class UAegisHitInterface : public UInterface
 /**
  * 
  */
-class AEGIS_API IAegisHitInterface
+class AEGIS_API IAegisPhysicalImpactInterface
 {
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+    virtual void OnPhysicalImpact() PURE_VIRTUAL(IAegisPhysicalImpactInterface::OnPhysicalImpact,);
 	
 	
 };

@@ -25,6 +25,15 @@ UAnimSequenceBase* UAegisCharacterComboComponent::GetCurrentAnimation() const
     return nullptr;
 }
 
+FAegisCharacterMove UAegisCharacterComboComponent::GetCurrentMove() const
+{
+    if(CurrentComboTreeNode)
+    {
+        return CurrentComboTreeNode->GetMove();
+    }
+    return FAegisCharacterMove();
+}
+
 void UAegisCharacterComboComponent::BuildComboTree()
 {
     //Construct Root

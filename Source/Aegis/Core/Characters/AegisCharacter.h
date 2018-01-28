@@ -7,6 +7,11 @@
 #include "GameFramework/Character.h"
 #include "Core/Combat/Combo/AegisCharacterCombatState.h"
 #include "Core/Input/AegisActionInput.h"
+#include "Core/GameplayEffects/AegisGameplayEffectApplicationOrder.h"
+//Interfaces
+#include "Core/Interfaces/AegisPhysicalImpactInterface.h"
+#include "Core/Interfaces/AegisProcessGameplayEffectInterface.h"
+
 #include "AegisCharacter.generated.h"
 
 class UAegisActionInputBufferComponent;
@@ -19,7 +24,7 @@ class UAegisActionInputBufferComponent;
 */
 
 UCLASS()
-class AEGIS_API AAegisCharacter : public ACharacter
+class AEGIS_API AAegisCharacter : public ACharacter, public IAegisProcessGameplayEffectInterface, public IAegisPhysicalImpactInterface
 {
 	GENERATED_BODY()
 
@@ -48,12 +53,11 @@ public:
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	float GetMaxHP() const { return MaxHP; }
     
-    FORCEINLINE EAegisCharacterLockOnState GetLockOnState() const { return LockOnState; }
+     
     
     UFUNCTION(BlueprintCallable)
 	bool IsInAir() const;
 	
-
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	bool IsInSuperMode() const { return bInSuperMode; }
 	
@@ -65,7 +69,8 @@ public:
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	bool IsDead() const { return (CurrentHP <= 0.0f); }
 	
-	/** Returns true if the character's current state allows for any movement*/
+    FORCEINLINE EAegisCharacterLockOnState GetLockOnState() const { return LockOnState; }
+    /** Returns true if the character's current state allows for any movement*/
     UFUNCTION(BlueprintCallable)
 	bool CanMove() const;
 	
@@ -74,6 +79,15 @@ public:
 	FORCEINLINE UAegisCharacterComboComponent* GetComboComponent() const { return ComboComponent; }
     
     FORCEINLINE UAegisActionInputBufferComponent* GetInputBufferComponent() const { return InputBufferComponent;}
+    
+    //IAegisProcessGameplayEffectInterface Begin
+    virtual FAegisGameplayEffectApplicationOrder GetCurrentApplicationOrder() const override;
+
+    //IAegisProcessGameplayEffectInterfaceEnd
+    
+    //IAegisPhysicalImpactInterface Begin
+    virtual void OnPhysicalImpact() override;
+    //IAegisPhysicalImpactInterface End
 protected: 
 	/** Character's maximum HP. Must be > 0.0f*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "HP", meta = (AllowPrivateAccess = "true"))
@@ -90,7 +104,7 @@ protected:
 	
 	/** Class of weapon that the character will have equipped*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipped Weapon")
-	TSubclassOf<class AAegisWeapon> EquippedWeaponClass = nullptr; 
+	TSubclassOf<class AAegisWeapon> EquippedWeaponClass = nullptr;
 
 	/** Character's currently equipped weapon */
 	UPROPERTY()
@@ -100,14 +114,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ComboCombponent")
 	TSubclassOf<UAegisCharacterComboComponent> ComboComponentClass = UAegisCharacterComboComponent::StaticClass();
 
-	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ComboCombponent")
 	UAegisCharacterComboComponent* ComboComponent = nullptr;
 
 	/** Character's Combo Component Class to be used. Must be set in editor  */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GuardComponent")
     TSubclassOf<UAegisCharacterGuardComponent> GuardComponentClass = UAegisCharacterGuardComponent::StaticClass();
-
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GuardComponent")
 	UAegisCharacterGuardComponent* GuardComponent = nullptr;

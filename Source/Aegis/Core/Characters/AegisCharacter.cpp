@@ -113,6 +113,22 @@ void AAegisCharacter::CreatePostInitComponents()
     }
 }
 
+FAegisGameplayEffectApplicationOrder AAegisCharacter::GetCurrentApplicationOrder() const
+{
+    if(ComboComponent)
+    {
+        return ComboComponent->GetCurrentMove().GetCollisionGFX();
+    }
+    return FAegisGameplayEffectApplicationOrder();
+}
+
+//IAegisPhysicalmpactInterface Begin
+void AAegisCharacter::OnPhysicalImpact()
+{
+    UE_LOG(AegisGameplayEffectLog, Log, TEXT("Character::OnPhysicalImpact")); 
+}
+//IAegisPhysicalImpactInterface End
+
 void AAegisCharacter::ValidateCharacterComponents()
 {
     checkf(ComboComponent, TEXT("ComboComponent for is null in AegisCharacter"));

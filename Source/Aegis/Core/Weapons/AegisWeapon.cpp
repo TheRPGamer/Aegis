@@ -9,7 +9,7 @@
 AAegisWeapon::AAegisWeapon()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	
 	
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>("Mesh"); 
@@ -41,16 +41,29 @@ void AAegisWeapon::Tick(float DeltaTime)
 void AAegisWeapon::OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (!bCanDamageTargets || (OtherActor == this) || (OtherActor == GetOwner()) )
+    if ((!bCollisionActive || OtherActor == this) || (OtherActor == GetOwner()) )
 	{
 		return; 
 	}
-
-	auto overlappedTarget = Cast<AAegisCharacter>(OtherActor); 
-	auto owner = Cast<AAegisCharacter>(GetOwner());
-	if (overlappedTarget && owner)
-	{
-		overlappedTarget->TakeDamage(MeleeAttackDamage, FDamageEvent(), owner->GetController(), owner); 
-	}
-
 }
+
+FAegisGameplayEffectApplicationOrder AAegisWeapon::GetCurrentApplicationOrder() const
+{
+    AActor* owner = GetOwner();
+    auto interface = Cast<IAegisProcessGameplayEffectInterface>(owner);
+    if(interface)
+    {
+        return interface->GetCurrentApplicationOrder(); 
+    }
+    return FAegisGameplayEffectApplicationOrder();
+}
+
+
+
+
+
+
+
+
+
+

@@ -27,9 +27,6 @@ class AEGIS_API UAegisCharacterComboComponent : public UActorComponent
 
 public:
 	UAegisCharacterComboComponent();
-
-	/** Gets the Name Field from the ComparisonNode's ComboState */
-	 
     FORCEINLINE bool IsInAir() const { return CurrentCombatState.IsInAir(); }
     FORCEINLINE bool IsInSuper() const { return CurrentCombatState.IsInSuper(); }
     FORCEINLINE bool IsInMelee() const { return CurrentCombatState.IsInMelee(); }
@@ -38,8 +35,8 @@ public:
 	bool IsInCombo() const { return bInCombo; }
     /** Get the Animation associated with the current Move*/
     UAnimSequenceBase* GetCurrentAnimation() const;
-    
-	/** Sets IsInAir field of ComparisonNode's Combat State */
+    FAegisCharacterMove GetCurrentMove() const; 
+	
 	FORCEINLINE void SetInAir(bool bInValue);
     FORCEINLINE void SetInSuper(bool bInSuper) { CurrentCombatState.SetInSuper(bInSuper); }
     FORCEINLINE void SetInMelee(bool bInMelee) { CurrentCombatState.SetInMelee(bInMelee); }

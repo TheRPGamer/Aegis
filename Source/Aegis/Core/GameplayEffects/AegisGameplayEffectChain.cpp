@@ -2,7 +2,7 @@
 
 #include "Aegis.h"
 #include "AegisGameplayEffectChain.h"
-#include "Core/GameplayEffects/AegisGameplayEffectBase.h"
+#include "Core/GameplayEffects/Effects/AegisGameplayEffectBase.h"
 
 void FAegisGameplayEffectChain::Apply(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const
 {

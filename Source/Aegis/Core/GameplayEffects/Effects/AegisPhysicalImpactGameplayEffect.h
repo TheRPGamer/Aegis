@@ -3,9 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
-#include "Core/Requirements/AegisCharacterRequirementBase.h"
-#include "AegisGameplayEffectBase.generated.h"
+#include "Core/GameplayEffects/Effects/AegisGameplayEffectBase.h"
+#include "AegisPhysicalImpactGameplayEffect.generated.h"
 
 struct FAegisGameplayEffectApplicationInfo;
 
@@ -16,11 +15,11 @@ struct FAegisGameplayEffectApplicationInfo;
 //EditInlineNew allows for unique copy to be created and edited in Properties Window
 // Inherited by all child classes by default. Use NoEditInlineNew to override
 UCLASS(Abstract, EditInlineNew, BlueprintType, Blueprintable)
-class AEGIS_API UAegisGameplayEffectBase : public UObject
+class AEGIS_API UAegisPhysicalImpactGameplayEffect : public UAegisGameplayEffectBase
 {
 	GENERATED_BODY()
 public:
-    virtual void Apply(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const { }
+    virtual void Apply(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const override;
 	
 };
 

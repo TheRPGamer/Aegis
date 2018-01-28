@@ -23,6 +23,9 @@ struct AEGIS_API FAegisCharacterMove
     bool CanExecute(const AAegisCharacter* Character) const;
     bool operator==(const FAegisCharacterMove& Other) const;
     
+    const FAegisGameplayEffectApplicationOrder& GetPreCollisionGFX() const { return PreCollisionGFX; }
+    const FAegisGameplayEffectApplicationOrder GetCollisionGFX() const { return CollisionGFX; }
+    const FAegisGameplayEffectApplicationOrder GetPostCollisionGFX() const { return PostCollisionGFX; }
 protected:
     /** Name of the move */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -36,6 +39,7 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     FAegisCharacterMoveRequirement Requirement;
     
+    /** Animation played when this Move is performed */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UAnimSequenceBase* Animation = nullptr;
     

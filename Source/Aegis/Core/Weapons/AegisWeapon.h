@@ -4,11 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Core/GameplayEffects/AegisGameplayEffectApplicationOrder.h"
+//Interfaces
+#include "Core/Interfaces/AegisProcessGameplayEffectInterface.h"
 #include "AegisWeapon.generated.h"
 
 class AAegisCharacter; 
 UCLASS()
-class AEGIS_API AAegisWeapon : public AActor
+class AEGIS_API AAegisWeapon : public AActor, public IAegisProcessGameplayEffectInterface
 {
 	GENERATED_BODY()
 
@@ -21,16 +24,13 @@ protected:
 public:	
 	/** Called every frame */
 	virtual void Tick(float DeltaTime) override;
-
-	/** Returns true if the weapon is active and can damage enemies*/
-	FORCEINLINE UPROPERTY(BlueprintCallable)
-	bool CanDamageTargets(){ return bCanDamageTargets; }
-
-	FORCEINLINE UFUNCTION(BlueprintCallable)
-	void SetCanDamageTargetsTrue() { bCanDamageTargets = true; }
 	
-	FORCEINLINE UFUNCTION(BlueprintCallable)
-	void SetCanDamageTargetsFalse() { bCanDamageTargets = false; }
+    FORCEINLINE bool IsCollisionActive() const { return bCollisionActive; }
+    void SetCollisionActive(bool bInCollisionActive) { bCollisionActive = bInCollisionActive; }
+    
+    //IAegisProcessGameplayEffectInterface Begin
+    virtual FAegisGameplayEffectApplicationOrder GetCurrentApplicationOrder() const override;
+    //IAegisProcessGameplayEffectInterface End
 	
 
 protected:
@@ -40,11 +40,7 @@ protected:
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
 	/** True if the weapon is currently active and and will damage targets it overlaps with*/
-	bool bCanDamageTargets = false; 
-	
-	/** Damage this weapon deals on Melee Attack hit*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WeaponDamage")
-	float MeleeAttackDamage = 0.0f;
+	bool bCollisionActive = false;
 	
 	/** The weapon's Mesh. To be assigned in BP*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
