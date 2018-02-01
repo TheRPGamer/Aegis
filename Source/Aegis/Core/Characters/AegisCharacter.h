@@ -8,10 +8,12 @@
 #include "Core/Combat/Combo/AegisCharacterCombatState.h"
 #include "Core/Input/AegisActionInput.h"
 #include "Core/GameplayEffects/AegisGameplayEffectApplicationOrder.h"
-//Interfaces
+//Begin Interfaces
 #include "Core/Interfaces/AegisPhysicalImpactInterface.h"
 #include "Core/Interfaces/AegisProcessGameplayEffectInterface.h"
-
+#include "Core/Interfaces/AegisDamageInterface.h"
+#include "Core/Interfaces/AegisKnockbackInterface.h"
+//End Interfaces
 #include "AegisCharacter.generated.h"
 
 class UAegisActionInputBufferComponent;
@@ -24,7 +26,7 @@ class UAegisActionInputBufferComponent;
 */
 
 UCLASS()
-class AEGIS_API AAegisCharacter : public ACharacter, public IAegisProcessGameplayEffectInterface, public IAegisPhysicalImpactInterface
+class AEGIS_API AAegisCharacter : public ACharacter, public IAegisProcessGameplayEffectInterface, public IAegisPhysicalImpactInterface, public IAegisKnockbackInterface, public IAegisDamageInterface
 {
 	GENERATED_BODY()
 
@@ -85,9 +87,17 @@ public:
 
     //IAegisProcessGameplayEffectInterfaceEnd
     
-    //IAegisPhysicalImpactInterface Begin
+    // Begin IAegisPhysicalImpactInterface
     virtual void OnPhysicalImpact() override;
-    //IAegisPhysicalImpactInterface End
+    // End IAegisPhysicalImpactInterface
+    
+    // Begin IAegisKnockbackInterface
+    virtual void OnKnockback() override;
+    // End IAegisKnockbackInterface
+    
+    // Begin IAegisDamageInterface
+    virtual void OnDamage() override;
+    //End IAegisDamageInterface
 protected: 
     /** Function called when this character overlaps with another Actor */
     virtual void OnAegisCharacterBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

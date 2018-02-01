@@ -20,7 +20,7 @@ class AEGIS_API IAegisDamageInterface
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
-public:
-	
+    public:
+    virtual void OnDamage() PURE_VIRTUAL(IAegisDamageInterface::OnDamage, );
 	
 };

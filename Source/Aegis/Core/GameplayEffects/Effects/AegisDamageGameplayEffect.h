@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Core/GameplayEffects/Effects/AegisGameplayEffectBase.h"
-#include "AegisPhysicalImpactGameplayEffect.generated.h"
+#include "AegisDamageGameplayEffect.generated.h"
 
 struct FAegisGameplayEffectApplicationInfo;
 
@@ -14,7 +14,7 @@ struct FAegisGameplayEffectApplicationInfo;
 
 
 UCLASS( BlueprintType, Blueprintable)
-class AEGIS_API UAegisPhysicalImpactGameplayEffect : public UAegisGameplayEffectBase
+class AEGIS_API UAegisDamageGameplayEffect : public UAegisGameplayEffectBase
 {
 	GENERATED_BODY()
 public:

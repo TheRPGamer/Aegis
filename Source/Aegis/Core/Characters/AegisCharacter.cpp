@@ -11,6 +11,8 @@
 #include "Core/GameplayEffects/AegisGameplayEffectTargets.h"
 #include "Core/GameplayEffects/AegisGameplayEffectChain.h"
 #include "Core/GameplayEffects/Effects/AegisPhysicalImpactGameplayEffect.h"
+#include "Core/GameplayEffects/Effects/AegisKnockbackGameplayEffect.h"
+#include "Core/GameplayEffects/Effects/AegisDamageGameplayEffect.h"
 //End Debug Includes
 
 // Sets default values
@@ -132,7 +134,11 @@ FAegisGameplayEffectApplicationOrder AAegisCharacter::GetCurrentApplicationOrder
     //Start Debug Gameplay Effects
     FAegisGameplayEffectApplicationOrder debugOrder; 
     auto impact = NewObject<UAegisPhysicalImpactGameplayEffect>();
+    auto damage = NewObject<UAegisDamageGameplayEffect>();
+    auto knockback = NewObject<UAegisKnockbackGameplayEffect>();
     debugOrder.GetPreEffects().AddCauserEffect(impact);
+    debugOrder.GetEffects().AddCauserEffect(knockback);
+    debugOrder.GetPostEffects().AddTargetEffect(damage);
     return debugOrder;
     //End Debug Gameplay Effects
     if(ComboComponent)
@@ -149,6 +155,20 @@ void AAegisCharacter::OnPhysicalImpact()
     UE_LOG(AegisGameplayEffectLog, Log, TEXT("Character::OnPhysicalImpact")); 
 }
 // End IAegisPhysicalImpactInterface
+
+//Begin IAegisKnockbackInterface
+void AAegisCharacter::OnKnockback()
+{
+    UE_LOG(AegisGameplayEffectLog, Log, TEXT("Character::OnKnockback"));
+}
+//End IAegisKnockbackInterface
+
+// Begin IAegisDamageInterface
+void AAegisCharacter::OnDamage()
+{
+    UE_LOG(AegisGameplayEffectLog, Log, TEXT("Character::OnDamage"));
+}
+// End IAegisDamageInterface
 
 void AAegisCharacter::ValidateCharacterComponents()
 {

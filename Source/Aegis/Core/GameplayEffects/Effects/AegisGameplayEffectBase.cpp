@@ -2,6 +2,5 @@
 
 #include "Aegis.h"
 #include "AegisGameplayEffectBase.h"
-#include "Core/Characters/AegisCharacter.h"
 
 
