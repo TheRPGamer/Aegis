@@ -7,28 +7,28 @@
 void FAegisActorGameplayEffectApplier::Apply(const FAegisGameplayEffectApplicationOrder& InflicterOrder, const FAegisGameplayEffectApplicationOrder& ReceiverOrder, FAegisGameplayEffectApplicationInfo& ApplicationInfo) const
 {
     //Apply PreEffects
-    InflicterExecutor.Apply(InflicterOrder.GetPreEffects(), ApplicationInfo);
-    ReceiverExecutor.Apply(ReceiverOrder.GetPreEffects(), ApplicationInfo);
+    InflicterApplier.Apply(InflicterOrder.GetPreEffects(), ApplicationInfo);
+    ReceiverApplier.Apply(ReceiverOrder.GetPreEffects(), ApplicationInfo);
     //Apply Effects
-    InflicterExecutor.Apply(InflicterOrder.GetEffects(), ApplicationInfo);
-    ReceiverExecutor.Apply(ReceiverOrder.GetEffects(), ApplicationInfo);
+    InflicterApplier.Apply(InflicterOrder.GetEffects(), ApplicationInfo);
+    ReceiverApplier.Apply(ReceiverOrder.GetEffects(), ApplicationInfo);
     //Apply Post Effects
-    InflicterExecutor.Apply(InflicterOrder.GetPostEffects(), ApplicationInfo);
-    ReceiverExecutor.Apply(ReceiverOrder.GetPostEffects(), ApplicationInfo);
+    InflicterApplier.Apply(InflicterOrder.GetPostEffects(), ApplicationInfo);
+    ReceiverApplier.Apply(ReceiverOrder.GetPostEffects(), ApplicationInfo);
 }
 
 
-FAegisInstigatorGameplayEffectsExecutor::FAegisInstigatorGameplayEffectsExecutor()
+FAegisInstigatorGameplayEffectsApplier::FAegisInstigatorGameplayEffectsApplier()
 {
-    InflicterExecutor.SetApplyInstigatorEffects(true);
-    ReceiverExecutor.SetApplyInstigatorEffects(true);
+    InflicterApplier.SetApplyInstigatorEffects(true);
+    ReceiverApplier.SetApplyInstigatorEffects(true);
 }
 
 
-FAegisCauserGameplayEffectsExecutor::FAegisCauserGameplayEffectsExecutor()
+FAegisCauserGameplayEffectsApplier::FAegisCauserGameplayEffectsApplier()
 {
-    InflicterExecutor.SetApplyInstigatorEffects(false);
-    ReceiverExecutor.SetApplyInstigatorEffects(false);
+    InflicterApplier.SetApplyInstigatorEffects(false);
+    ReceiverApplier.SetApplyInstigatorEffects(false);
 }
 
 

@@ -6,7 +6,7 @@
 #include "Core/GameplayEffects/AegisGameplayEffectTargets.h"
 #include "AegisGameplayEffectApplicationOrder.generated.h"
 
-struct FAegisGameplayExecutionInfo;
+struct FAegisGameplayApplicationInfo;
 
 
 /**
@@ -25,13 +25,15 @@ struct AEGIS_API FAegisGameplayEffectApplicationOrder
 	GENERATED_BODY()
 public:
     FAegisGameplayEffectApplicationOrder() { }
-    const FAegisGameplayEffectTargets& GetPreEffects() const { return PreEffects; }
-    const FAegisGameplayEffectTargets& GetEffects() const { return Effects; }
-    const FAegisGameplayEffectTargets& GetPostEffects() const { return PostEffects; }
-
-    
-    
-    
+    FORCEINLINE const FAegisGameplayEffectTargets& GetPreEffects() const { return PreEffects; }
+    FORCEINLINE const FAegisGameplayEffectTargets& GetEffects() const { return Effects; }
+    FORCEINLINE const FAegisGameplayEffectTargets& GetPostEffects() const { return PostEffects; }
+    //Begin Debug Functions
+    //non-Const Reference Getters
+    FORCEINLINE FAegisGameplayEffectTargets& GetPreEffects()  { return PreEffects; }
+    FORCEINLINE FAegisGameplayEffectTargets& GetEffects()  { return Effects; }
+    FORCEINLINE FAegisGameplayEffectTargets& GetPostEffects()  { return PostEffects; }
+    //End Debug Functions
 protected:
     /**
      * Effects that will rum first. Put Cost Effects/Buff Effects etc here first.

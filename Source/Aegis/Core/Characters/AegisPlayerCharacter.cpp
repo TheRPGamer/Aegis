@@ -260,12 +260,15 @@ void AAegisPlayerCharacter::StartTakeDamageTimer()
 	if (!bTimerActive)
 	{
 		bTimerActive = true; 
-		GetWorldTimerManager().SetTimer(TakeDamageTimerHandle, this, &AAegisPlayerCharacter::SimulateTakeDamage, 5.0f, false);
+		GetWorldTimerManager().SetTimer(TakeDamageTimerHandle, this, &AAegisPlayerCharacter::SimulateTakeDamage, 1.0f, false);
 	}
 }
 
 void AAegisPlayerCharacter::SimulateTakeDamage()
 {
-	TakeDamage(1.0f, FDamageEvent(), GetController(), this);
+	//TakeDamage(1.0f, FDamageEvent(), GetController(), this);
+    //Test Gameplay Effect System
+    const FHitResult& hit = FHitResult();
+    OnAegisCharacterBeginOverlap(nullptr, this, nullptr, 0, false, hit);
 	bTimerActive = false; 
 }

@@ -25,10 +25,10 @@ class AEGIS_API IAegisProcessGameplayEffectInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
     virtual FAegisGameplayEffectApplicationOrder GetCurrentApplicationOrder() const PURE_VIRTUAL(IAegisProcessGameplayEffectInterface::GetCurrentApplicationOrder, return FAegisGameplayEffectApplicationOrder(); );
-    virtual void ApplyInstigatorGameplayEffects(const FAegisGameplayEffectApplicationOrder& Inflicter, FAegisGameplayEffectApplicationOrder& ReceiverOrder, FAegisGameplayEffectApplicationInfo& ApplicationInfo);
-    virtual void ApplyCauserGameplayEffects(const FAegisGameplayEffectApplicationOrder& Inflicter, FAegisGameplayEffectApplicationOrder& ReceiverOrder, FAegisGameplayEffectApplicationInfo& ApplicationInfo);
+    virtual void ApplyInstigatorGameplayEffects(const FAegisGameplayEffectApplicationOrder& InflicterOrder, FAegisGameplayEffectApplicationOrder& ReceiverOrder, FAegisGameplayEffectApplicationInfo& ApplicationInfo);
+    virtual void ApplyCauserGameplayEffects(const FAegisGameplayEffectApplicationOrder& InflicterOrder, FAegisGameplayEffectApplicationOrder& ReceiverOrder, FAegisGameplayEffectApplicationInfo& ApplicationInfo);
 
-    
+    virtual void ApplyGameplayEffects(AActor* Inflicter, AActor* Receiver, FAegisGameplayEffectApplicationInfo& ApplicationInfo);
 	
 };
 

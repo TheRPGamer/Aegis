@@ -4,6 +4,14 @@
 #include "AegisGameplayEffectChain.h"
 #include "Core/GameplayEffects/Effects/AegisGameplayEffectBase.h"
 
+void FAegisGameplayEffectChain::Add(UAegisGameplayEffectBase* InEffect)
+{
+    if(InEffect)
+    {
+        Effects.Add(InEffect);
+    }
+}
+
 void FAegisGameplayEffectChain::Apply(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const
 {
     for(auto& effect : Effects)

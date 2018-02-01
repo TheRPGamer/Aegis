@@ -17,25 +17,25 @@ public:
     virtual ~FAegisActorGameplayEffectApplier() { }
     void Apply(const FAegisGameplayEffectApplicationOrder& InflicterOrder, const FAegisGameplayEffectApplicationOrder& ReceiverOrder, FAegisGameplayEffectApplicationInfo& ApplicationInfo) const;
 protected:
-    FAegisInflicterGameplayEffectTargetsApplier InflicterExecutor;
-    FAegisReceiverGameplayEffectTargetsApplier ReceiverExecutor;
+    FAegisInflicterGameplayEffectTargetsApplier InflicterApplier;
+    FAegisReceiverGameplayEffectTargetsApplier ReceiverApplier;
 };
 
 USTRUCT()
-struct AEGIS_API FAegisInstigatorGameplayEffectsExecutor : public FAegisActorGameplayEffectApplier
+struct AEGIS_API FAegisInstigatorGameplayEffectsApplier : public FAegisActorGameplayEffectApplier
 {
     GENERATED_BODY()
 public:
-    FAegisInstigatorGameplayEffectsExecutor();
+    FAegisInstigatorGameplayEffectsApplier();
 };
 
 
 USTRUCT()
-struct AEGIS_API FAegisCauserGameplayEffectsExecutor : public FAegisActorGameplayEffectApplier
+struct AEGIS_API FAegisCauserGameplayEffectsApplier : public FAegisActorGameplayEffectApplier
 {
     GENERATED_BODY()
 public:
-    FAegisCauserGameplayEffectsExecutor();
+    FAegisCauserGameplayEffectsApplier();
 };
 
 

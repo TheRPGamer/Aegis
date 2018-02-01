@@ -36,8 +36,7 @@ public:
 protected:
 	/** Function called when the weapon overlaps with a target*/
 	UFUNCTION(BlueprintCallable)
-    virtual void OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+    virtual void OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
 	/** True if the weapon is currently active and and will damage targets it overlaps with*/
 	bool bCollisionActive = false;

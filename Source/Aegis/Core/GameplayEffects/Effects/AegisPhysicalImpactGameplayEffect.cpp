@@ -7,7 +7,6 @@
 #include "Core/GameplayEffects/AegisGameplayEffectApplicationInfo.h"
 void UAegisPhysicalImpactGameplayEffect::Apply(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const
 {
-    
     AActor* target = ApplicationInfo.GetApplicationTarget();
     auto interface = Cast<IAegisPhysicalImpactInterface>(target);
     if(interface)

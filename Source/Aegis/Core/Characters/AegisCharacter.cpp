@@ -1,9 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Aegis.h"
+#include "Core/GameplayEffects/AegisGameplayEffectApplicationInfo.h"
 #include "Core/Input/AegisActionInputBufferComponent.h"
 #include "Core/Weapons/AegisWeapon.h"
 #include "Core/Characters/AegisCharacter.h"
+
+//Start Debug Includes
+#include "Core/GameplayEffects/AegisGameplayEffectApplicationOrder.h"
+#include "Core/GameplayEffects/AegisGameplayEffectTargets.h"
+#include "Core/GameplayEffects/AegisGameplayEffectChain.h"
+#include "Core/GameplayEffects/Effects/AegisPhysicalImpactGameplayEffect.h"
+//End Debug Includes
 
 // Sets default values
 AAegisCharacter::AAegisCharacter()
@@ -15,6 +23,11 @@ AAegisCharacter::AAegisCharacter()
 		GetCapsuleComponent()->bGenerateOverlapEvents = true;
 	}
     InputBufferComponent = CreateDefaultSubobject<UAegisActionInputBufferComponent>("Input Buffer ");
+    if(GetCapsuleComponent())
+    {
+        GetCapsuleComponent()->bGenerateOverlapEvents = true;
+
+    }
 }
 
 void AAegisCharacter::PostInitProperties()
@@ -28,11 +41,13 @@ void AAegisCharacter::PostInitProperties()
 // Called when the game starts or when spawned
 void AAegisCharacter::BeginPlay()
 {
-	Super::BeginPlay();	
-
+	Super::BeginPlay();
 	ValidateSockets();
     ValidateCharacterComponents();
-    
+    if(GetCapsuleComponent())
+    {
+        GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AAegisCharacter::OnAegisCharacterBeginOverlap);
+    }
     
     
     
@@ -42,9 +57,7 @@ void AAegisCharacter::BeginPlay()
 float AAegisCharacter::TakeDamage(float DamageAmount, const struct FDamageEvent& DamageEvent,
 	AController* EventInstigagor, AActor* DamageCauser)
 {
-	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigagor, DamageCauser); 
-	//SetCurrentHP(GetCurrentHP() - DamageAmount);
-	//bIsInHitStun = true;
+	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigagor, DamageCauser);
 	UE_LOG(AegisLog, Log, TEXT("Character took damage")); 
 	return DamageAmount; 
 }
@@ -113,25 +126,45 @@ void AAegisCharacter::CreatePostInitComponents()
     }
 }
 
+// Begin IProcessGameplayEffectInterface
 FAegisGameplayEffectApplicationOrder AAegisCharacter::GetCurrentApplicationOrder() const
 {
+    //Start Debug Gameplay Effects
+    FAegisGameplayEffectApplicationOrder debugOrder; 
+    auto impact = NewObject<UAegisPhysicalImpactGameplayEffect>();
+    debugOrder.GetPreEffects().AddCauserEffect(impact);
+    return debugOrder;
+    //End Debug Gameplay Effects
     if(ComboComponent)
     {
         return ComboComponent->GetCurrentMove().GetCollisionGFX();
     }
     return FAegisGameplayEffectApplicationOrder();
 }
+//End IAegisProcessGameplayEffectInterface
 
-//IAegisPhysicalmpactInterface Begin
+//Begin IAegisPhysicalmpactInterface
 void AAegisCharacter::OnPhysicalImpact()
 {
     UE_LOG(AegisGameplayEffectLog, Log, TEXT("Character::OnPhysicalImpact")); 
 }
-//IAegisPhysicalImpactInterface End
+// End IAegisPhysicalImpactInterface
 
 void AAegisCharacter::ValidateCharacterComponents()
 {
     checkf(ComboComponent, TEXT("ComboComponent for is null in AegisCharacter"));
     checkf(GuardComponent, TEXT("Guard Component s null in AegisCharacter"));
 }
+
+void AAegisCharacter::OnAegisCharacterBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+    if(!OtherActor)
+    {
+        return;
+    }
+    FAegisGameplayEffectApplicationInfo appInfo;
+    ApplyGameplayEffects(this, OtherActor, appInfo);
+}
+
+
 

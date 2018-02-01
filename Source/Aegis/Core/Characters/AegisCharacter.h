@@ -89,7 +89,10 @@ public:
     virtual void OnPhysicalImpact() override;
     //IAegisPhysicalImpactInterface End
 protected: 
-	/** Character's maximum HP. Must be > 0.0f*/
+    /** Function called when this character overlaps with another Actor */
+    virtual void OnAegisCharacterBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+    /** Character's maximum HP. Must be > 0.0f*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "HP", meta = (AllowPrivateAccess = "true"))
 	float MaxHP = 0.0f; 
 	

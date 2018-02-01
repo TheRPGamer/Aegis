@@ -9,6 +9,7 @@
 
 
 struct FAegisGameplayEffectApplicationInfo;
+class UAegisGameplayEffectBase;
 
 /**
  * Holds the GameplayEffectChains that need to be applied to various Actors
@@ -21,10 +22,20 @@ struct AEGIS_API FAegisGameplayEffectTargets
 	GENERATED_BODY()
 public:
     FAegisGameplayEffectTargets() { }
-    void ApplyInstigatorEffects(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const { InstigatorEffects.Apply(ApplicationInfo); }
-    void ApplyCauserEffects(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const { CauserEffects.Apply(ApplicationInfo); }
-    void ApplyReceiverEffects(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const { ReceiverEffects.Apply(ApplicationInfo); }
-    void ApplyTargetEffects(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const { TargetEffects.Apply(ApplicationInfo); }
+    //Begin Debug Functions
+
+    FORCEINLINE void AddInstigatorEffect(UAegisGameplayEffectBase* InEffect) { InstigatorEffects.Add(InEffect); }
+    FORCEINLINE void AddCauserEffect(UAegisGameplayEffectBase* InEffect) { CauserEffects.Add(InEffect); }
+    FORCEINLINE void AddReceiverEffect(UAegisGameplayEffectBase* InEffect) { ReceiverEffects.Add(InEffect); }
+    FORCEINLINE void AddTargetEffect(UAegisGameplayEffectBase* InEffect) { TargetEffects.Add(InEffect); }
+
+
+    //End Debug Functions
+    
+    FORCEINLINE void ApplyInstigatorEffects(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const { InstigatorEffects.Apply(ApplicationInfo); }
+    FORCEINLINE void ApplyCauserEffects(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const { CauserEffects.Apply(ApplicationInfo); }
+    FORCEINLINE void ApplyReceiverEffects(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const { ReceiverEffects.Apply(ApplicationInfo); }
+    FORCEINLINE void ApplyTargetEffects(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const { TargetEffects.Apply(ApplicationInfo); }
 
 
 
