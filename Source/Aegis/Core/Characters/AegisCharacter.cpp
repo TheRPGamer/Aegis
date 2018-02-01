@@ -136,9 +136,9 @@ FAegisGameplayEffectApplicationOrder AAegisCharacter::GetCurrentApplicationOrder
     auto impact = NewObject<UAegisPhysicalImpactGameplayEffect>();
     auto damage = NewObject<UAegisDamageGameplayEffect>();
     auto knockback = NewObject<UAegisKnockbackGameplayEffect>();
-    debugOrder.GetPreEffects().AddCauserEffect(impact);
-    debugOrder.GetEffects().AddCauserEffect(knockback);
-    debugOrder.GetPostEffects().AddTargetEffect(damage);
+    debugOrder.GetPreEffects().AddReceiverEffect(impact);
+    debugOrder.GetPreEffects().AddInstigatorEffect(knockback);
+    debugOrder.GetPreEffects().AddInstigatorEffect(damage);
     return debugOrder;
     //End Debug Gameplay Effects
     if(ComboComponent)

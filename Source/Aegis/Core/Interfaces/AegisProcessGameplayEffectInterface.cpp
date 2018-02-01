@@ -43,7 +43,7 @@ void IAegisProcessGameplayEffectInterface::ApplyGameplayEffects(AActor* Inflicte
     }
     ApplicationInfo.SetApplicationTarget(Inflicter);
     ApplyCauserGameplayEffects(inflicterOrder, receiverOrder, ApplicationInfo);
-    /* Ignore Instigator Effects for now
+    
     AActor* instigator = Inflicter->GetOwner();
     //if inflicter's owner has this interface, it's the instigator
     //else the Inflicter is both Causer and Instigator
@@ -54,6 +54,6 @@ void IAegisProcessGameplayEffectInterface::ApplyGameplayEffects(AActor* Inflicte
     }
     ApplyInstigatorGameplayEffects(inflicterOrder, receiverOrder,
      ApplicationInfo);
-     */
+    
 }
 

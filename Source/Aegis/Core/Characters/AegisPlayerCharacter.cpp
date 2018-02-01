@@ -253,7 +253,7 @@ float AAegisPlayerCharacter::TakeDamage(float DamageAmount, const struct FDamage
 	return DamageAmount;
 }
 
-/** Debug Functions Implementations Beyond Here */
+// Begin Debug Function Implementation
 
 void AAegisPlayerCharacter::StartTakeDamageTimer()
 {
@@ -272,3 +272,4 @@ void AAegisPlayerCharacter::SimulateTakeDamage()
     OnAegisCharacterBeginOverlap(nullptr, this, nullptr, 0, false, hit);
 	bTimerActive = false; 
 }
+//End Debug Function Implementation
