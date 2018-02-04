@@ -17,17 +17,11 @@ bool FAegisCharacterGuardLevel::IsTimeSpanGreaterThanLowerBound(FTimespan timesp
 
 bool FAegisCharacterGuardLevel::operator==(const FAegisCharacterGuardLevel& Other)
 {
-	return GetParticleEffect() == Other.GetParticleEffect() &&
-		GetSoundEffect() == Other.GetSoundEffect() &&
-		GetGuardTicksTimespan() == Other.GetGuardTicksTimespan() &&
-		GetDamageReductionMultiplier() == Other.GetDamageReductionMultiplier(); 
+    return false;
 }
 bool FAegisCharacterGuardLevel::IsDefault()
 {
-    return !GetParticleEffect() &&
-    !GetSoundEffect() &&
-    GetGuardTicksTimespan() == 0 &&
-    GetDamageReductionMultiplier() == 0;
+    return false;
 }
 
 bool FAegisCharacterGuardLevel::operator!=(const FAegisCharacterGuardLevel& Other)

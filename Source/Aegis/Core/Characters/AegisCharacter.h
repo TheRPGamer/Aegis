@@ -100,6 +100,7 @@ public:
     //End IAegisDamageInterface
 protected: 
     /** Function called when this character overlaps with another Actor */
+    UFUNCTION(BlueprintCallable)
     virtual void OnAegisCharacterBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
     /** Character's maximum HP. Must be > 0.0f*/
@@ -161,7 +162,9 @@ private:
     /** Assertion checks to make sure the character has no null components*/
     void ValidateCharacterComponents();
     
-    /** Debug Stuff */
-    FAegisGameplayEffectApplicationOrder CreateDebugComboGFXApplicationOrder() const; 
+    //Begin Debug Functionality
+    FAegisGameplayEffectApplicationOrder CreateDebugComboGFXApplicationOrder() const;
+    void CreateDebugGuardComponent(); 
+    //End Debug Functionality
 
 };

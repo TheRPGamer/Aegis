@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core/Combat/Combo/AegisCharacterCombatState.h"
+#include "Core/GameplayEffects/AegisGameplayEffectApplicationOrder.h"
 #include "AegisCharacterGuardLevel.generated.h"
 
 /**
@@ -16,11 +16,9 @@ struct AEGIS_API FAegisCharacterGuardLevel
 {
 	GENERATED_BODY()
 public:
-	FName GetName() const { return Name; }
-	UParticleSystem* GetParticleEffect() const { return GuardParticleEffect; }
-	class USoundCue* GetSoundEffect() const { return GuardSoundEffect; }
-	FTimespan GetGuardTicksTimespan() const { return TicksTimespan; }
-	float GetDamageReductionMultiplier() const { return DamageReductionMultiplier; }
+	FORCEINLINE FName GetName() const { return Name; }
+	FORCEINLINE FTimespan GetGuardTicksTimespan() const { return TicksTimespan; }
+    FORCEINLINE FAegisGameplayEffectApplicationOrder GetGuardGFX() const { return GuardGFX; }
 
 	/** Returns true if the timespan argument is greather or equal to the lower bound of ticks specified by this Guard Level */
 	bool IsTimeSpanGreaterThanLowerBound(FTimespan timespan); 
@@ -30,7 +28,12 @@ public:
 	/** Converts Guard Tick Lower Bound to Timespan */
 	void ConvertTicksToTimespan();
 
-	
+	//Begin Debug Functionality
+    void SetName(FName InName) { Name = InName; }
+    int32 GetLowerBound() const { return TicksLowerBound; }
+    void SetLowerBound(int32 InLowerBound) {TicksLowerBound = InLowerBound; }
+    void SetGuardGFX(FAegisGameplayEffectApplicationOrder& InGuardGFX) { GuardGFX = InGuardGFX; }
+    //End Debug Functionality
     bool operator==(const FAegisCharacterGuardLevel& Other);
     bool operator!=(const FAegisCharacterGuardLevel& Other); 
 private: 
@@ -42,14 +45,6 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Name", meta = (AllowPrivateAccess = "true"))
 	FText DisplayName;
 	
-	/** Particle effect to be played when theis guard level is activated */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Particles", meta = (AllowPrivateAccess = "true"))
-	UParticleSystem* GuardParticleEffect = nullptr; 
-	
-	/** Sound Effect to be played when this guard level is activated */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Particles", meta = (AllowPrivateAccess = "true"))
-	class USoundCue* GuardSoundEffect = nullptr; 
-	
 	/** Upper Bound of ticks from a character guarding to the point of an attack impact that 
 	* qualifies for this guard level.
 	* Exposed to designers for easy editing. Will be converted to FTimespan in C++ 
@@ -58,10 +53,12 @@ private:
 	int32 TicksLowerBound = 0;
 
 	/** Turns Ticks Upper Bound to a FTimespan for fast comparison in Guard Component */
-	FTimespan TicksTimespan; 
+	FTimespan TicksTimespan;
+    
+    /** Gameplay Effects to be applied when this Guard Level is activated  */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Effects", meta = (AllowPrivateAccess = "true"))
+    FAegisGameplayEffectApplicationOrder GuardGFX;
 	
-	/** Amount of damage reduction if this guard level was activated */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage Reduction", meta = (AllowPrivateAccess = "true"))
-	float DamageReductionMultiplier = 0.f; 
+	
 
 };

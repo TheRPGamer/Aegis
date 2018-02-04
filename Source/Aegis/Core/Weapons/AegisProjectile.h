@@ -29,8 +29,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-    
-    
+    /** Delegate called when this projectile Hits an Actor*/
+UFUNCTION(BlueprintCallable)
     void OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
     
     // Begin IAegisProcessGameplayEffectInterface

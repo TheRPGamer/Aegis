@@ -13,6 +13,8 @@
 #include "Core/GameplayEffects/Effects/AegisPhysicalImpactGameplayEffect.h"
 #include "Core/GameplayEffects/Effects/AegisKnockbackGameplayEffect.h"
 #include "Core/GameplayEffects/Effects/AegisDamageGameplayEffect.h"
+
+#include "Core/Combat/Guard/AegisCharacterGuardLevel.h"
 //End Debug Includes
 
 // Sets default values
@@ -111,20 +113,21 @@ void AAegisCharacter::CreatePostInitComponents()
     if (ComboComponentClass)
     {
         ComboComponent = NewObject<UAegisCharacterComboComponent>(this, *ComboComponentClass);
-        
     }
     else
     {
-        
+        UE_LOG(AegisComboLog, Error, TEXT("ERROR: AAegisCharacter has invalid ComboComponentClass. Fix in editor "));
     }
     if(GuardComponentClass)
     {
         GuardComponent = NewObject<UAegisCharacterGuardComponent>(this, *GuardComponentClass);
+        //CreateDebugGuardComponent();
+        
         
     }
     else
     {
-        
+        UE_LOG(AegisGuardLog, Error, TEXT("AAegisCharacter has an invalid GuardComponentClass. Fix in Editor"));
     }
 }
 
@@ -191,6 +194,29 @@ FAegisGameplayEffectApplicationOrder AAegisCharacter::CreateDebugComboGFXApplica
     debugOrder.GetPreEffects().AddInstigatorEffect(knockback);
     debugOrder.GetPreEffects().AddInstigatorEffect(damage);
     return debugOrder;
+}
+
+void AAegisCharacter::CreateDebugGuardComponent()
+{
+    FAegisCharacterGuardLevel level1, level2, level3;
+    level3.SetName(FName("One"));
+    level3.SetLowerBound(80);
+    
+    level2.SetName(FName("Two"));
+    level2.SetLowerBound(160);
+    
+    level1.SetName(FName("Three"));
+    level1.SetLowerBound(240);
+    GuardComponent = NewObject<UAegisCharacterGuardComponent>();
+
+    if(GuardComponent)
+    {
+        GuardComponent->AddGuardLevel(level1);
+        GuardComponent->AddGuardLevel(level2);
+        GuardComponent->AddGuardLevel(level3);
+        GuardComponent->PrintGuardLevels();
+    }
+    
     
 }
 

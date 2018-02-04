@@ -6,7 +6,6 @@
 #include "Components/ActorComponent.h"
 #include "Core/Utility/AegisActionTimeTracker.h"
 #include "AegisCharacterGuardLevel.h"
-#include "AegisCharacterGuardLevelsWrapper.h"
 #include "AegisCharacterGuardComponent.generated.h"
 
 /**
@@ -30,15 +29,23 @@ public:
 	void OnEndGuard(); 
 	
 	/** Function called when the owner's guard volume is hit by an attack */
-	float OnAttackImpact(float DamageAmount, const struct FDamageEvent& DamageEvent,
-		AController* EventInstigagor, AActor* DamageCauser);
+	float OnAttackImpact(float DamageAmount, const struct FDamageEvent& DamageEvent, AController* EventInstigagor, AActor* DamageCauser);
 	
 	/** Function called when this component is registered */
 	virtual void OnRegister() override;
-
+    
+    FORCEINLINE const FAegisCharacterGuardLevel& GetCurrentGuardLevel() const { return CurrentGuardLevel; }
+    
+    // Begin Debug Functionality
 	FName GetGuardLevelName() const { return CurrentGuardLevel.GetName(); }
-private: 
-	void SetInGuard(bool bInValue) { bInGuard = bInValue; }
+    void AddGuardLevel(FAegisCharacterGuardLevel& InGuardLevel) { GuardLevels.Add(InGuardLevel); }
+    void PrintGuardLevels();
+    // End Debug Functionality
+
+private:
+    /** Sorts Guard Levels in ascending order of TicksLowerBound */
+    void SortGuardLevels();
+	FORCEINLINE void SetInGuard(bool bInValue) { bInGuard = bInValue; }
 	
 	/** Applies various Guard Level effects to the owner */
 	void DetermineCurrentGuardLevel(); 
@@ -61,7 +68,5 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GuardLevels", meta = (AllowPrivateAccess = "true"))
 	TArray<FAegisCharacterGuardLevel> GuardLevels;
     
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GuardLevels", meta = (AllowPrivateAccess = "true"))
-    UAegisCharacterGuardLevelsWrapper* GuardLevelsWrapper = nullptr;
 
 };

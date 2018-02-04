@@ -17,21 +17,13 @@ UAegisCharacterGuardComponent::UAegisCharacterGuardComponent()
 void UAegisCharacterGuardComponent::OnRegister()
 {
 	Super::OnRegister();
-	if(GuardLevelsWrapper)
-    {
-        GuardLevels = GuardLevelsWrapper->GetGuardLevels();
-    }
+	
     //Converts the number of ticks designers gave the Guard levels to Timespans
     for (auto& guardLevel : GuardLevels)
 	{
 		guardLevel.ConvertTicksToTimespan();
 	}
-	//sort the Guard Levels according to Timespan in ascending order
-	auto ascendingSortLambda = [](const FAegisCharacterGuardLevel& LHS, const FAegisCharacterGuardLevel& RHS)
-	{
-		return LHS.GetGuardTicksTimespan() < RHS.GetGuardTicksTimespan();
-	};
-	GuardLevels.Sort(ascendingSortLambda);
+    SortGuardLevels();
 }
 
 void UAegisCharacterGuardComponent::OnBeginGuard()
@@ -49,8 +41,7 @@ void UAegisCharacterGuardComponent::OnEndGuard()
     CurrentGuardLevel = FAegisCharacterGuardLevel();
 }
 
-float UAegisCharacterGuardComponent::OnAttackImpact(float DamageAmount, const struct FDamageEvent& DamageEvent,
-	AController* EventInstigagor, AActor* DamageCauser) 
+float UAegisCharacterGuardComponent::OnAttackImpact(float DamageAmount, const struct FDamageEvent& DamageEvent, AController* EventInstigagor, AActor* DamageCauser)
 {
 	//Set action end time to now
 	GuardTimeTracker.SetActionEndTime(); 
@@ -59,7 +50,7 @@ float UAegisCharacterGuardComponent::OnAttackImpact(float DamageAmount, const st
     //default constructed gurd levle represents "null"
     if(!CurrentGuardLevel.IsDefault())
 	{
-		modifiedDamage *= CurrentGuardLevel.GetDamageReductionMultiplier(); 
+        modifiedDamage *= 0.f;
 	}
 	return modifiedDamage; 
 }
@@ -111,4 +102,23 @@ void UAegisCharacterGuardComponent::ApplyGuardLevelEffectsOnOwner()
 void UAegisCharacterGuardComponent::ApplyGuardLevelEffectsOnEnemy(AController* EventInstigator, AActor* DamageCauser)
 {
 
+}
+
+void UAegisCharacterGuardComponent::PrintGuardLevels()
+{
+    for(auto level : GuardLevels)
+    {
+        UE_LOG(AegisGuardLog, Log, TEXT("Guard Level name: %s, Lower Bound: %d"), *(level.GetName().ToString() ), level.GetLowerBound() );
+    }
+}
+
+void UAegisCharacterGuardComponent::SortGuardLevels()
+{
+    //sort the Guard Levels according to Timespan in ascending order
+    auto ascendingSortLambda = [](const FAegisCharacterGuardLevel& LHS, const FAegisCharacterGuardLevel& RHS)
+    {
+        return LHS.GetGuardTicksTimespan() < RHS.GetGuardTicksTimespan();
+    };
+    GuardLevels.Sort(ascendingSortLambda);
+    PrintGuardLevels();
 }
