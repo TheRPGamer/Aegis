@@ -5,13 +5,16 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Core/GameplayEffects/AegisGameplayEffectApplicationOrder.h"
+
+//Interfaces
 #include "Core/Interfaces/AegisProcessGameplayEffectInterface.h"
+#include "Core/Interfaces/AegisReflectInterface.h"
 #include "AegisProjectile.generated.h"
-class UAegisGameplayEffectBufferComponent;
+
 
 
 UCLASS()
-class AEGIS_API AAegisProjectile : public AActor  
+class AEGIS_API AAegisProjectile : public AActor, public IAegisProcessGameplayEffectInterface, public IAegisReflectInterface
 {
 	GENERATED_BODY()
 	
@@ -28,7 +31,16 @@ public:
 	virtual void Tick(float DeltaTime) override;
     
     
-    void OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit); 
+    void OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+    
+    // Begin IAegisProcessGameplayEffectInterface
+    FORCEINLINE virtual FAegisGameplayEffectApplicationOrder GetCurrentApplicationOrder() const override { return CollisionGFX; }
+
+    // End IAegisProcessGameplayEffect Interface
+    
+    // Begin IAegisReflectInterface
+    virtual void OnReflect() override;
+    // End IAegisReflectInterface
 
 protected:
     

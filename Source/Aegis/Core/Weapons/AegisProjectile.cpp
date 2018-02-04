@@ -71,9 +71,13 @@ void AAegisProjectile::Tick(float DeltaTime)
 
 void AAegisProjectile::OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-    
+    UE_LOG(AegisGameplayEffectLog, Log, TEXT("AAegisProjectile::OnReflect"));
     
     
 }
-
-
+// Begin IAegisReflectInterface
+void AAegisProjectile::OnReflect()
+{
+    
+}
+//End IAegisReflectInterface

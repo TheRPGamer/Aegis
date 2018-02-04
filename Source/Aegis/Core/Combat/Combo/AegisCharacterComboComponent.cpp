@@ -16,7 +16,7 @@ UAegisCharacterComboComponent::UAegisCharacterComboComponent()
     PrimaryComponentTick.bCanEverTick = false;
 }
 
-UAnimSequenceBase* UAegisCharacterComboComponent::GetCurrentAnimation() const
+UAnimMontage* UAegisCharacterComboComponent::GetCurrentAnimation() const
 {
     if(CurrentComboTreeNode)
     {
@@ -144,10 +144,10 @@ void UAegisCharacterComboComponent::AdvanceCombo(UAegisCharacterComboTreeNode* I
         auto mesh = GetAegisOwnerSkeletalMesh();
         if(mesh)
         {
-            auto animInstance =  Cast<UAegisCharacterAnimInstance>(mesh->GetAnimInstance());
+            auto animInstance = mesh->GetAnimInstance(); 
             if(animInstance)
             {
-                animInstance->PlayComboAnimation(GetCurrentAnimation());
+                animInstance->Montage_Play(GetCurrentAnimation()); 
             }
         }
         

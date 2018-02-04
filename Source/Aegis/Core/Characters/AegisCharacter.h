@@ -160,5 +160,8 @@ private:
     void CreatePostInitComponents();
     /** Assertion checks to make sure the character has no null components*/
     void ValidateCharacterComponents();
+    
+    /** Debug Stuff */
+    FAegisGameplayEffectApplicationOrder CreateDebugComboGFXApplicationOrder() const; 
 
 };

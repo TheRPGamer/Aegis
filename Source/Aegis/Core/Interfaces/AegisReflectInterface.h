@@ -21,6 +21,6 @@ class AEGIS_API IAegisReflectInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	
+    virtual void OnReflect() PURE_VIRTUAL(IAegisReflectInterface::OnReflect, );
 	
 };

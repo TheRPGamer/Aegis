@@ -131,16 +131,9 @@ void AAegisCharacter::CreatePostInitComponents()
 // Begin IProcessGameplayEffectInterface
 FAegisGameplayEffectApplicationOrder AAegisCharacter::GetCurrentApplicationOrder() const
 {
-    //Start Debug Gameplay Effects
-    FAegisGameplayEffectApplicationOrder debugOrder; 
-    auto impact = NewObject<UAegisPhysicalImpactGameplayEffect>();
-    auto damage = NewObject<UAegisDamageGameplayEffect>();
-    auto knockback = NewObject<UAegisKnockbackGameplayEffect>();
-    debugOrder.GetPreEffects().AddReceiverEffect(impact);
-    debugOrder.GetPreEffects().AddInstigatorEffect(knockback);
-    debugOrder.GetPreEffects().AddInstigatorEffect(damage);
-    return debugOrder;
-    //End Debug Gameplay Effects
+    //Debug
+    return CreateDebugComboGFXApplicationOrder();
+    
     if(ComboComponent)
     {
         return ComboComponent->GetCurrentMove().GetCollisionGFX();
@@ -186,5 +179,18 @@ void AAegisCharacter::OnAegisCharacterBeginOverlap(UPrimitiveComponent* Overlapp
     ApplyGameplayEffects(this, OtherActor, appInfo);
 }
 
-
+// Begin Debug Functionality
+FAegisGameplayEffectApplicationOrder AAegisCharacter::CreateDebugComboGFXApplicationOrder() const
+{
+    
+    FAegisGameplayEffectApplicationOrder debugOrder;
+    auto impact = NewObject<UAegisPhysicalImpactGameplayEffect>();
+    auto damage = NewObject<UAegisDamageGameplayEffect>();
+    auto knockback = NewObject<UAegisKnockbackGameplayEffect>();
+    debugOrder.GetPreEffects().AddReceiverEffect(impact);
+    debugOrder.GetPreEffects().AddInstigatorEffect(knockback);
+    debugOrder.GetPreEffects().AddInstigatorEffect(damage);
+    return debugOrder;
+    
+}
 

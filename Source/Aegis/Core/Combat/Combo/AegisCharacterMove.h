@@ -18,7 +18,7 @@ struct AEGIS_API FAegisCharacterMove
 
     FORCEINLINE FName GetName() const { return Name; }
     FORCEINLINE FText GetDisplayName() const { return DisplayName; }
-    FORCEINLINE UAnimSequenceBase* GetAnimation() const { return Animation; }
+    FORCEINLINE UAnimMontage* GetAnimation() const { return Animation; }
     FORCEINLINE const FAegisCharacterMoveRequirement& GetRequirement() const { return Requirement; }
     bool CanExecute(const AAegisCharacter* Character) const;
     bool operator==(const FAegisCharacterMove& Other) const;
@@ -41,7 +41,7 @@ protected:
     
     /** Animation played when this Move is performed */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UAnimSequenceBase* Animation = nullptr;
+    UAnimMontage* Animation = nullptr;
     
     /** Gameplay Effects that will occur when this move is successfully performed before collision occurs */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay Effects")

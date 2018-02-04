@@ -34,7 +34,7 @@ public:
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	bool IsInCombo() const { return bInCombo; }
     /** Get the Animation associated with the current Move*/
-    UAnimSequenceBase* GetCurrentAnimation() const;
+    UAnimMontage* GetCurrentAnimation() const;
     FAegisCharacterMove GetCurrentMove() const; 
 	
 	FORCEINLINE void SetInAir(bool bInValue);
