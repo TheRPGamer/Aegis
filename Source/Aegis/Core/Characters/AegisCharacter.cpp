@@ -174,10 +174,22 @@ void AAegisCharacter::ValidateCharacterComponents()
 
 void AAegisCharacter::OnAegisCharacterBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    if(!OtherActor)
+    // ignore if colliding with self
+    if(!OtherActor || (GetUniqueID() == OtherActor->GetUniqueID()))
     {
         return;
     }
+    //check other actor is not a child actor of current AAegisCharacter
+    //E.g colliding with CurrentEquippedWeapon or somethign of the like 
+    AActor* otherOwner = OtherActor->GetOwner();
+    if(otherOwner)
+    {
+        if(GetUniqueID() == otherOwner->GetUniqueID())
+        {
+            return;
+        }
+    }
+    
     FAegisGameplayEffectApplicationInfo appInfo;
     ApplyGameplayEffects(this, OtherActor, appInfo);
 }

@@ -41,10 +41,21 @@ void AAegisWeapon::Tick(float DeltaTime)
 void AAegisWeapon::OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    if ((!bCollisionActive || OtherActor == this) || (OtherActor == GetOwner()) )
+    //last check is if other actor is self
+    if(!bCollisionActive || !OtherActor || (GetUniqueID() == OtherActor->GetUniqueID()) )
 	{
 		return; 
 	}
+    AActor* owner = GetOwner();
+    // check if other actor is owner. Ignore that case
+    if(owner)
+    {
+        if(owner->GetUniqueID() == OtherActor->GetUniqueID())
+        {
+            return;
+        }
+    }
+    
 }
 
 FAegisGameplayEffectApplicationOrder AAegisWeapon::GetCurrentApplicationOrder() const
