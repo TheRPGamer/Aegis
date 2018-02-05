@@ -246,7 +246,7 @@ float AAegisPlayerCharacter::TakeDamage(float DamageAmount, const struct FDamage
     bool temp = GuardComponent->IsInGuard();
     if (GuardComponent && GuardComponent->IsInGuard())
 	{
-		GuardComponent->OnAttackImpact(DamageAmount, DamageEvent, EventInstigagor, DamageCauser);
+		
 		FName guardLevel = GuardComponent->GetGuardLevelName(); 
 		UE_LOG(AegisGuardLog, Log, TEXT("Guard level is: %s"), *(guardLevel.ToString()) );
 	}
@@ -259,17 +259,54 @@ void AAegisPlayerCharacter::StartTakeDamageTimer()
 {
 	if (!bTimerActive)
 	{
-		bTimerActive = true; 
-		GetWorldTimerManager().SetTimer(TakeDamageTimerHandle, this, &AAegisPlayerCharacter::SimulateTakeDamage, 1.0f, false);
+		bTimerActive = true;
+        //Test Guard Component
+        if(GuardComponent)
+        {
+            GuardComponent->OnBeginGuard();
+        }
+		GetWorldTimerManager().SetTimer(TakeDamageTimerHandle, this, &AAegisPlayerCharacter::SimulateTakeDamage, 1.f, false);
 	}
 }
 
 void AAegisPlayerCharacter::SimulateTakeDamage()
 {
 	//TakeDamage(1.0f, FDamageEvent(), GetController(), this);
-    //Test Gameplay Effect System
+    TestGuardComponent();
+    
+	bTimerActive = false;
+}
+void AAegisPlayerCharacter::TestGameplayEffectSystem()
+{
     const FHitResult& hit = FHitResult();
     OnAegisCharacterBeginOverlap(nullptr, this, nullptr, 0, false, hit);
-	bTimerActive = false; 
+
+}
+
+
+
+void AAegisPlayerCharacter::TestGuardComponent()
+{
+    if(GuardComponent)
+    {
+        GuardComponent->OnGuardImpact();
+        FName currentGuardLevelName = GuardComponent->GetGuardLevelName();
+        auto timeDifference = GuardComponent->GetGuardTimeTracker().GetTimeDifference();
+        int64 ticks = timeDifference.GetTicks() / UAegisCharacterGuardComponent::GetTickScaleFactor();
+        UE_LOG(AegisGuardLog, Log, TEXT("Guard Level Name: %s, Time Difference: %d"),
+               *(currentGuardLevelName.ToString()), ticks);
+        FDateTime beginTime = GuardComponent->GetGuardTimeTracker().GetActionBeginTime();
+        FDateTime endTime = GuardComponent->GetGuardTimeTracker().GetActionEndTime();
+        // Scale the results to something closer to what the designers put in. Just a debug hack thing
+        int64 beginTicks = beginTime.GetTicks() / UAegisCharacterGuardComponent::GetTickScaleFactor();
+        int64 endTicks = endTime.GetTicks() / UAegisCharacterGuardComponent::GetTickScaleFactor();
+        UE_LOG(AegisGuardLog, Log, TEXT("Begin Time Ticks: %d , End Time Ticks: %d"), beginTicks, endTicks);
+        GuardComponent->OnEndGuard();
+        
+        
+
+        
+
+    }
 }
 //End Debug Function Implementation

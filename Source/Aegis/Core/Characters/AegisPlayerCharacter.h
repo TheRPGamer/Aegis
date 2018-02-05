@@ -84,7 +84,9 @@ private:
 	
 	/** Debug Functions and Variables */
 	void StartTakeDamageTimer(); 
-	void SimulateTakeDamage(); 
+	void SimulateTakeDamage();
+    void TestGuardComponent();
+    void TestGameplayEffectSystem();
 	FTimerHandle TakeDamageTimerHandle; 
 	bool bTimerActive = false; 
 };

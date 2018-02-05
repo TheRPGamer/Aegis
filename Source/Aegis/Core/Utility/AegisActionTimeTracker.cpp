@@ -10,7 +10,7 @@ void FAegisActionTimeTracker::SetActionBeginTime()
 
 void FAegisActionTimeTracker::SetActionEndTime()
 {
-	ActionBeginTime = FDateTime::Now();
+	ActionEndTime = FDateTime::Now();
 }
 
 void FAegisActionTimeTracker::CalculateTimeDifference()

@@ -22,6 +22,9 @@ public:
 	UAegisCharacterGuardComponent();
 	bool IsInGuard() const { return bInGuard; }
 	
+    /** Gives the Scale Factor used to adjust calculations done on Timings involving FDateTime and Ticks  Guard */
+    static float GetTickScaleFactor();
+    
 	/** Function called when Owner begins guarding */
 	void OnBeginGuard(); 
 	
@@ -29,7 +32,7 @@ public:
 	void OnEndGuard(); 
 	
 	/** Function called when the owner's guard volume is hit by an attack */
-	float OnAttackImpact(float DamageAmount, const struct FDamageEvent& DamageEvent, AController* EventInstigagor, AActor* DamageCauser);
+    void OnGuardImpact();
 	
 	/** Function called when this component is registered */
 	virtual void OnRegister() override;
@@ -40,6 +43,7 @@ public:
 	FName GetGuardLevelName() const { return CurrentGuardLevel.GetName(); }
     void AddGuardLevel(FAegisCharacterGuardLevel& InGuardLevel) { GuardLevels.Add(InGuardLevel); }
     void PrintGuardLevels();
+    FAegisActionTimeTracker GetGuardTimeTracker() const { return GuardTimeTracker; }
     // End Debug Functionality
 
 private:
@@ -48,14 +52,9 @@ private:
 	FORCEINLINE void SetInGuard(bool bInValue) { bInGuard = bInValue; }
 	
 	/** Applies various Guard Level effects to the owner */
-	void DetermineCurrentGuardLevel(); 
-
-	void ApplyGuardLevelEffectsOnOwner();
-
-	/** Applies various effects of guard level to the attacker */
-	void ApplyGuardLevelEffectsOnEnemy(AController* EventInstigaor, AActor* DamageCauser);
+	void DetermineCurrentGuardLevel();
 	
-	/** Keeps track of when the owner begins to guard, when the impact occurs and the 
+    /** Keeps track of when the owner begins to guard, when the impact occurs and the
 	* time difference between the events 
 	**/
 	FAegisActionTimeTracker GuardTimeTracker; 

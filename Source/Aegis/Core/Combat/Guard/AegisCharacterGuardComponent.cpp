@@ -21,9 +21,14 @@ void UAegisCharacterGuardComponent::OnRegister()
     //Converts the number of ticks designers gave the Guard levels to Timespans
     for (auto& guardLevel : GuardLevels)
 	{
-		guardLevel.ConvertTicksToTimespan();
+		guardLevel.ConvertTicksToTimespan(GetTickScaleFactor());
 	}
     SortGuardLevels();
+}
+
+float UAegisCharacterGuardComponent::GetTickScaleFactor()
+{
+    return (10000000.f / 60.0f);
 }
 
 void UAegisCharacterGuardComponent::OnBeginGuard()
@@ -41,18 +46,12 @@ void UAegisCharacterGuardComponent::OnEndGuard()
     CurrentGuardLevel = FAegisCharacterGuardLevel();
 }
 
-float UAegisCharacterGuardComponent::OnAttackImpact(float DamageAmount, const struct FDamageEvent& DamageEvent, AController* EventInstigagor, AActor* DamageCauser)
+void UAegisCharacterGuardComponent::OnGuardImpact()
 {
 	//Set action end time to now
 	GuardTimeTracker.SetActionEndTime(); 
 	DetermineCurrentGuardLevel(); 
-    float modifiedDamage = 0.0; 
-    //default constructed gurd levle represents "null"
-    if(!CurrentGuardLevel.IsDefault())
-	{
-        modifiedDamage *= 0.f;
-	}
-	return modifiedDamage; 
+    
 }
 
 void UAegisCharacterGuardComponent::DetermineCurrentGuardLevel()
@@ -90,19 +89,7 @@ void UAegisCharacterGuardComponent::DetermineCurrentGuardLevel()
     CurrentGuardLevel = GuardLevels[GuardLevels.Num()-1];
 }
 
-void UAegisCharacterGuardComponent::ApplyGuardLevelEffectsOnOwner()
-{
-	auto owner = Cast<AAegisCharacter>(GetOwner());
-	if (owner)
-	{
-		UE_LOG(AegisGuardLog, Error, TEXT("%s guard timespan did not match any assigned Guard Levels."), *(owner->GetHumanReadableName()));
-	}
-}
 
-void UAegisCharacterGuardComponent::ApplyGuardLevelEffectsOnEnemy(AController* EventInstigator, AActor* DamageCauser)
-{
-
-}
 
 void UAegisCharacterGuardComponent::PrintGuardLevels()
 {

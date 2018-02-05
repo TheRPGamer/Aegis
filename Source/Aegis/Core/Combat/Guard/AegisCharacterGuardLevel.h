@@ -19,14 +19,14 @@ public:
 	FORCEINLINE FName GetName() const { return Name; }
 	FORCEINLINE FTimespan GetGuardTicksTimespan() const { return TicksTimespan; }
     FORCEINLINE FAegisGameplayEffectApplicationOrder GetGuardGFX() const { return GuardGFX; }
-
+    
 	/** Returns true if the timespan argument is greather or equal to the lower bound of ticks specified by this Guard Level */
 	bool IsTimeSpanGreaterThanLowerBound(FTimespan timespan); 
     /** Returns true if members are the same as default constructed Guard Level*/
     bool IsDefault();
     
 	/** Converts Guard Tick Lower Bound to Timespan */
-	void ConvertTicksToTimespan();
+	void ConvertTicksToTimespan(float TickScaleFactor = 1.0f);
 
 	//Begin Debug Functionality
     void SetName(FName InName) { Name = InName; }
@@ -58,6 +58,10 @@ private:
     /** Gameplay Effects to be applied when this Guard Level is activated  */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Effects", meta = (AllowPrivateAccess = "true"))
     FAegisGameplayEffectApplicationOrder GuardGFX;
+    
+
+    
+    
 	
 	
 

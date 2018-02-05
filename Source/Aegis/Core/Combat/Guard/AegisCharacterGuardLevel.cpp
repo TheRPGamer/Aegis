@@ -3,10 +3,11 @@
 #include "Aegis.h"
 #include "AegisCharacterGuardLevel.h"
 
-void FAegisCharacterGuardLevel::ConvertTicksToTimespan()
+void FAegisCharacterGuardLevel::ConvertTicksToTimespan(float TickScaleFactor)
 {
 	//Timespan constructor only takes int64
 	int64 ticks = static_cast<int64>(TicksLowerBound);
+    ticks *= TickScaleFactor;
 	TicksTimespan = FTimespan(ticks);
 }
 

@@ -15,6 +15,10 @@ struct AEGIS_API FAegisActionTimeTracker
 public:
 	FTimespan GetTimeDifference() const { return TimeDifference; }
 	FTimespan GetTimeDifference() { return TimeDifference; }
+    
+    FDateTime GetActionBeginTime() const { return ActionBeginTime; }
+    
+    FDateTime GetActionEndTime() const { return ActionEndTime; }
 
 	/** Sets Action Begin Time To Current Time */
 	void SetActionBeginTime(); 
