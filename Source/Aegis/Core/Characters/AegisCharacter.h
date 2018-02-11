@@ -81,6 +81,7 @@ public:
 	FORCEINLINE UAegisCharacterComboComponent* GetComboComponent() const { return ComboComponent; }
     
     FORCEINLINE UAegisActionInputBufferComponent* GetInputBufferComponent() const { return InputBufferComponent;}
+
     
     //IAegisProcessGameplayEffectInterface Begin
     virtual FAegisGameplayEffectApplicationOrder GetCurrentApplicationOrder() const override;

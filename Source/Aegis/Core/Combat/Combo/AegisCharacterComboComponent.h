@@ -90,13 +90,12 @@ private:
 	/** Resets the character's Comparison Combo State after a combo */
 	void ResetComparisonComboState(); 
 	
-    /** Gets teh Aegis Character Owner */
-    AAegisCharacter* GetAegisOwner() const;
     
-    /** Gets teh Aegis Owner's Input Buffer Component. Returns null if Aegis Owner is null */
+    FORCEINLINE AAegisCharacter* GetAegisOwner() const { return Cast<AAegisCharacter>(GetOwner()); }
+    
     UAegisActionInputBufferComponent* GetAegisOwnerInputBufferComponent() const;
     
-    USkeletalMeshComponent* GetAegisOwnerSkeletalMesh() const;
+    
     
 	/** Root Node of the Combo Tree. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly , Category = "Combos", meta = (AllowPrivateAccess = "true"))

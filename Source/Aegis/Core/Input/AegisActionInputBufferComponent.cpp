@@ -31,7 +31,7 @@ void UAegisActionInputBufferComponent::TickComponent(float DeltaTime, ELevelTick
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
     //expends extra mashed inputs
-    IncrementReadIndex();
+    ExpendInput();
 }
 
 void UAegisActionInputBufferComponent::OnRegister()
@@ -44,13 +44,8 @@ void UAegisActionInputBufferComponent::OnRegister()
 
 UAegisCharacterActionBase* UAegisActionInputBufferComponent::GetAction(FName ActionName)
 {
-    /*
-    for(auto& key : ActionNameToActionMap)
-    {
-        UE_LOG(AegisInputLog, Log, TEXT("Key Name: %s"), *(key.Key.ToString()));
-    }
     //find returns a valid ptr if the value exists, else nullptr
-    UE_LOG(AegisInputLog, Log, TEXT("Action Name: %s"), *(ActionName.ToString()));
+    //UE_LOG(AegisInputLog, Log, TEXT("Action Name: %s"), *(ActionName.ToString()));
     auto action = ActionNameToActionMap.Find(ActionName);
     if(action)
     {
@@ -58,8 +53,7 @@ UAegisCharacterActionBase* UAegisActionInputBufferComponent::GetAction(FName Act
     }
     //return a default character action if the key is invalid
     return ActionNameToActionMap[NAegisCharacterAction::None];
-     */
-    return ActionNameToActionMap[ActionName];
+    
 }
 
 void UAegisActionInputBufferComponent::InitActionNameToActionMap()
@@ -72,6 +66,7 @@ void UAegisActionInputBufferComponent::AddActionPressed(FName ActionType)
 {
     AddAction(ActionType, true);
 }
+
 void UAegisActionInputBufferComponent::AddActionReleased(FName ActionType)
 {
     AddAction(ActionType, false);
@@ -103,21 +98,34 @@ void UAegisActionInputBufferComponent::Execute()
 {
     if(IsIndexValid(ReadIndex))
     {
-        auto owner = GetAegisOwner();
+        AAegisCharacter* owner = GetAegisOwner();
         InputBuffer[ReadIndex].Execute(owner); 
         ResetReadWriteIndices();
+    }
+}
+
+void UAegisActionInputBufferComponent::ExpendInput()
+{
+    if(IsIndexValid(ReadIndex))
+    {
+        InputBuffer[ReadIndex].Clear();
+        IncrementReadIndex();
     }
 }
 
 void UAegisActionInputBufferComponent::IncrementReadIndex()
 {
     //only advance read index if read index is behind write index
-    if(ReadIndex != WriteIndex)
+    int32 indexDifference = WriteIndex - ReadIndex;
+    if(indexDifference <= 0)
     {
-        ++ReadIndex;
-       //loops around like a circular buffer
-        ReadIndex %= BufferSize;
+        return;
     }
+    ++ReadIndex;
+    //loops around like a circular buffer
+    ReadIndex %= BufferSize;
+    
+    
 }
 
 void UAegisActionInputBufferComponent::IncrementWriteIndex()
@@ -132,7 +140,7 @@ void UAegisActionInputBufferComponent::ResetReadWriteIndices()
     ReadIndex = 0;
     WriteIndex = 0;
     //Clears the Action Input on Read Index in case inputs are read to prevent extra actions
-    if(InputBuffer.Num() > 0)
+    if(IsIndexValid(ReadIndex))
     {
         InputBuffer[ReadIndex].Clear(); 
     }

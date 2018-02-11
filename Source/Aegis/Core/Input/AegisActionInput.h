@@ -32,11 +32,11 @@ public:
     UPROPERTY()
     UAegisCharacterActionBase* Action = nullptr;
     
-    /** If the Input was from a Press or Release*/
-    bool bPressed = false;
-    
     /** Time the input was made*/
     FDateTime Timestamp = FDateTime::MinValue();
     
-	
+    /** If the Input was from a Press or Release*/
+    bool bPressed = false;
+    
+
 };

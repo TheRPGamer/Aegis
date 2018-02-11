@@ -55,10 +55,13 @@ protected:
     TMap<FName, UAegisCharacterActionBase*> ActionNameToActionMap;
 private:
     void IncrementReadIndex();
-    void AddAction(FName ActionType, bool Pressed);
-
-    
     void IncrementWriteIndex();
+/** Called every Tick to expend an input currently at the Read Index */
+    void ExpendInput();
+
+    /** Internal Add Action to add Action to Input Buffer*/
+void AddAction(FName ActionType, bool Pressed);
+    
     /** Resets Read and Write Indices to 0 to prevent the write index from lapping the read index*/
     void ResetReadWriteIndices();
     bool IsIndexValid(uint32 InIndex) const;
@@ -73,11 +76,11 @@ private:
     
     /** Rate in seconds the input at the read index is expended*/
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Input Buffer Parameters", meta = (AllowPrivateAccess = "true"))
-    float ExpendInputRate = 0.4f;
+    float ExpendInputRate = 0.3f;
 
     
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Input Buffer Parameters", meta = (AllowPrivateAccess = "true"))
-    int32 BufferSize = 60;
+    int32 BufferSize = 100;
 };
 
 

@@ -121,34 +121,23 @@ void UAegisCharacterComboComponent::AbortCombo()
 {
     SetCurrentNodeToRoot();
     ResetComparisonComboState();
-    //This starts transitioning the ABP from Combo back to Idle
+    // allows Update9) to process inputs again
     SetInCombo(false);
-    auto mesh = GetAegisOwnerSkeletalMesh();
-    if(mesh)
-    {
-        //return control of animations back to Anim BP
-        mesh->SetAnimationMode(EAnimationMode::AnimationBlueprint);
-    }
 }
 
 void UAegisCharacterComboComponent::AdvanceCombo(UAegisCharacterComboTreeNode* InComboTreeNode)
 {
-    
-    if (CurrentComboTreeNode)
+    if (CurrentComboTreeNode && InComboTreeNode)
     {
         SetInCombo(true);
         CurrentComboTreeNode = InComboTreeNode;
         ResetComparisonComboState();
         UE_LOG(AegisLog, Log, TEXT("Current Combo Node Name: %s"), *(CurrentComboTreeNode->GetMove().GetName().ToString()) );
-        
-        auto mesh = GetAegisOwnerSkeletalMesh();
-        if(mesh)
+        AAegisCharacter* owner = GetAegisOwner();
+        if(owner)
         {
-            auto animInstance = mesh->GetAnimInstance(); 
-            if(animInstance)
-            {
-                animInstance->Montage_Play(GetCurrentAnimation());
-            }
+            // 3rd param is the name of the section to jump to. Name_None plays montage form the start
+            owner->PlayAnimMontage(GetCurrentAnimation(), 1.0f, NAME_None);
         }
         
     }
@@ -216,7 +205,7 @@ void UAegisCharacterComboComponent::OnComboAnimationBegin()
 
 void UAegisCharacterComboComponent::OnComboAnimationEnd()
 {
-    //transitions Anim BP from Combo to Idle
+    // allows Update to process inputs again
     SetInCombo(false);
     ResetComparisonComboState();
     Update();
@@ -227,28 +216,12 @@ void UAegisCharacterComboComponent::ResetComparisonComboState()
     SetInMelee(false);
 }
 
-AAegisCharacter* UAegisCharacterComboComponent::GetAegisOwner() const
-{
-    return Cast<AAegisCharacter>(GetOwner());
-}
-
 UAegisActionInputBufferComponent* UAegisCharacterComboComponent::GetAegisOwnerInputBufferComponent() const
 {
     auto owner = GetAegisOwner();
     if(owner)
     {
         return owner->GetInputBufferComponent();
-    }
-    return nullptr;
-}
-
-USkeletalMeshComponent* UAegisCharacterComboComponent::GetAegisOwnerSkeletalMesh() const
-{
-    auto owner = GetAegisOwner();
-    if(owner)
-    {
-        return owner->GetMesh();
-        
     }
     return nullptr;
 }
