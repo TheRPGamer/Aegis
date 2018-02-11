@@ -28,7 +28,7 @@ UAegisCharacterComboComponent* UAegisCharacterAnimInstance::GetAegisCharacterCom
 }
 
 
-UAnimSequenceBase* UAegisCharacterAnimInstance::GetComboAnim() const
+UAnimMontage* UAegisCharacterAnimInstance::GetComboAnim() const
 {
 	auto comboComp = GetAegisCharacterComboComponent(); 
 	if (comboComp)

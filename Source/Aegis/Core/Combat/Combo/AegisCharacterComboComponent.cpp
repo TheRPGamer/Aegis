@@ -147,7 +147,7 @@ void UAegisCharacterComboComponent::AdvanceCombo(UAegisCharacterComboTreeNode* I
             auto animInstance = mesh->GetAnimInstance(); 
             if(animInstance)
             {
-                animInstance->Montage_Play(GetCurrentAnimation()); 
+                animInstance->Montage_Play(GetCurrentAnimation());
             }
         }
         

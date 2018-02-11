@@ -27,7 +27,7 @@ public:
     
 	/** Gets Character's current Combo Animation*/
 	UFUNCTION(BlueprintCallable)
-	UAnimSequenceBase* GetComboAnim() const;
+	UAnimMontage* GetComboAnim() const;
     /**
      * Plays the provided Combo Animation.
      * IMPORTANT: Changes EAnimationMOde of USkeletalMeshComponent to AnimationSingleNode
