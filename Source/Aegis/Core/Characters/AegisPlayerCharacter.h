@@ -90,6 +90,9 @@ protected:
 UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float DebugProjectileDisplacement = 0.f;
     
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FRotator DebugProjectileRotation = GetActorRotation();
+    
     void DebugShootProjectile();
     
     void StartTakeDamageTimer();

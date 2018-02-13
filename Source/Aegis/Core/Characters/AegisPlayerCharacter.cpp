@@ -325,9 +325,7 @@ void AAegisPlayerCharacter::DebugShootProjectile()
         if(projectile)
         {
             projectile->SetActorLocation(spawnLocation);
-            FRotator rotator = GetActorRotation();
-            rotator.Yaw = -rotator.Yaw;
-            projectile->SetActorRotation(rotator);
+            projectile->SetActorRotation(DebugProjectileRotation);
             
         }
 

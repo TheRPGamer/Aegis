@@ -41,6 +41,10 @@ void AAegisProjectile::PostInitProperties()
 {
     Super::PostInitProperties(); 
     InitialLifeSpan = LifeSpan;
+    if(ProjectileMovementComponent) {
+        ProjectileMovementComponent->InitialSpeed = InitialSpeed;
+        ProjectileMovementComponent->MaxSpeed = MaxSpeed;
+    }
 }
 
 // Called when the game starts or when spawned

@@ -68,6 +68,12 @@ protected:
     
     UPROPERTY(EditAnywhere, BLueprintReadWrite)
     bool bCollisionActive = false;
+    
+    UPROPERTY(EditAnywhere, BLueprintReadWrite)
+    float InitialSpeed = 0.f;
+    
+    UPROPERTY(EditAnywhere, BLueprintReadWrite)
+    float MaxSpeed = 0.f;
 };
 
 
