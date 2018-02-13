@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Core/Characters/AegisCharacter.h"
+#include "Core/Weapons/AegisProjectile.h"
 #include "AegisPlayerCharacter.generated.h"
 
 /**
@@ -83,7 +84,15 @@ private:
 	UCameraComponent* ThirdPersonCamera; 
 	
 	/** Debug Functions and Variables */
-	void StartTakeDamageTimer(); 
+protected:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TSubclassOf<AAegisProjectile> ProjectileClass = nullptr;
+UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float DebugProjectileDisplacement = 0.f;
+    
+    void DebugShootProjectile();
+    
+    void StartTakeDamageTimer();
 	void SimulateTakeDamage();
     void TestGuardComponent();
     void TestGameplayEffectSystem();

@@ -261,10 +261,12 @@ void AAegisPlayerCharacter::StartTakeDamageTimer()
 	{
 		bTimerActive = true;
         //Test Guard Component
+        /*
         if(GuardComponent)
         {
             GuardComponent->OnBeginGuard();
         }
+         */
 		GetWorldTimerManager().SetTimer(TakeDamageTimerHandle, this, &AAegisPlayerCharacter::SimulateTakeDamage, 1.f, false);
 	}
 }
@@ -272,7 +274,8 @@ void AAegisPlayerCharacter::StartTakeDamageTimer()
 void AAegisPlayerCharacter::SimulateTakeDamage()
 {
 	//TakeDamage(1.0f, FDamageEvent(), GetController(), this);
-    TestGuardComponent();
+    //TestGuardComponent();
+    DebugShootProjectile(); 
     
 	bTimerActive = false;
 }
@@ -307,6 +310,28 @@ void AAegisPlayerCharacter::TestGuardComponent()
 
         
 
+    }
+}
+
+void AAegisPlayerCharacter::DebugShootProjectile()
+{
+    UWorld* world = GetWorld();
+    if(ProjectileClass && world)
+    {
+        FActorSpawnParameters spawnParams;
+
+        FVector spawnLocation = GetActorLocation() + (GetActorForwardVector() * DebugProjectileDisplacement);
+        AAegisProjectile* projectile = GetWorld()->SpawnActor<AAegisProjectile>(ProjectileClass, spawnParams);
+        if(projectile)
+        {
+            projectile->SetActorLocation(spawnLocation);
+            FRotator rotator = GetActorRotation();
+            rotator.Yaw = -rotator.Yaw;
+            projectile->SetActorRotation(rotator);
+            
+        }
+
+        
     }
 }
 //End Debug Function Implementation

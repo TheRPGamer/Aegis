@@ -17,13 +17,11 @@ AAegisProjectile::AAegisProjectile()
     
     
     
-    SphereCollisionComponent = CreateDefaultSubobject<USphereComponent>("Collision Component");
-    if(SphereCollisionComponent)
+    Mesh = CreateDefaultSubobject<USkeletalMeshComponent>("Mesh");
+    if (Mesh)
     {
-        
-        RootComponent = SphereCollisionComponent;
-        SphereCollisionComponent->InitSphereRadius(SphereRadius);
-        SphereCollisionComponent->bGenerateOverlapEvents = true;
+        RootComponent = Mesh;
+        Mesh->bGenerateOverlapEvents = true;
     }
     
     ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("Projectile Movement");
@@ -36,23 +34,12 @@ AAegisProjectile::AAegisProjectile()
         ProjectileMovementComponent->bShouldBounce = true;
         ProjectileMovementComponent->ProjectileGravityScale = 0.0f; 
     }
-    InitialLifeSpan = LifeSpan;
+    
 }
 
 void AAegisProjectile::PostInitProperties()
 {
     Super::PostInitProperties(); 
-    if(Mesh)
-    {
-        //Mesh->bGenerateOverlapEvents = true;
-        //RootComponent = Mesh;
-    }
-    
-    
-    if(SphereCollisionComponent)
-    {
-        SphereCollisionComponent->SetSphereRadius(SphereRadius  );
-    }
     InitialLifeSpan = LifeSpan;
 }
 
@@ -60,6 +47,12 @@ void AAegisProjectile::PostInitProperties()
 void AAegisProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+    if(Mesh)
+    {
+        Mesh->OnComponentBeginOverlap.AddDynamic(this, &AAegisProjectile::OnProjectileBeginOverlap);
+        bCollisionActive = true; 
+
+    }
 	
 }
 
@@ -72,12 +65,32 @@ void AAegisProjectile::Tick(float DeltaTime)
 void AAegisProjectile::OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
     UE_LOG(AegisGameplayEffectLog, Log, TEXT("AAegisProjectile::OnReflect"));
-    
-    
 }
+
+
+void AAegisProjectile::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+                                        int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+    //last check is if other actor is self
+    if(!bCollisionActive || !OtherActor || (GetUniqueID() == OtherActor->GetUniqueID()) )
+    {
+        return;
+    }
+    AActor* owner = GetOwner();
+    // check if other actor is owner. Ignore that case
+    if(owner)
+    {
+        if(owner->GetUniqueID() == OtherActor->GetUniqueID())
+        {
+            return;
+        }
+    }
+    Destroy();
+}
+
 // Begin IAegisReflectInterface
 void AAegisProjectile::OnReflect()
 {
     
 }
-//End IAegisReflectInterface
+//End IAegisReflectInterfaceFVector

@@ -11,15 +11,28 @@
  * 
  */
 USTRUCT(BlueprintType)
-struct FAegisRangedAttack
+struct AEGIS_API FAegisRangedAttack
 {
     GENERATED_BODY()
+public:
+    /** Name of this Ranged Attack*/
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FName Name = NAME_None;
     
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Projectile ")
-    AAegisProjectile* Projectile = nullptr;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FText DisplayName;
     
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Projectile")
-    FVector ProjectileSpawnLocation;
+    /** Executes the Ranged Attack */
+    void Execute();
+    
+    /** An array of projectiles to spawn as part of this Ranged Attack */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TArray<FAegisProjectileSpawnParams> ProjectileSpawnParams;
+    
+    
+    
+    
+    
     
 };
 
@@ -29,13 +42,12 @@ class AEGIS_API AAegisRangedWeapon : public AAegisWeapon
 	GENERATED_BODY()
 public:
     AAegisRangedWeapon();
-    
+
+    virtual void ExecuteRangedAttack();
+
 protected:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Projectile Type")
-    TSubclassOf<AAegisProjectile> ProjectileClass  = AAegisProjectile::StaticClass();
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TArray<FAegisRangedAttack> RangedAttacks;
     
-	
-	
-	
-	
+
 };

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Core/Characters/AegisCharacter.h"
+#include "Core/Weapons/AegisProjectile.h"
 #include "AegisEnemyCharacter.generated.h"
 
 /**
@@ -17,7 +18,9 @@ public:
 	FORCEINLINE UPROPERTY(BlueprintCallable)
 	class UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
 
-protected: 
+
+protected:
+    
 	/** Behavior Tree that controls this Enemy Character */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BehaviorTree")
 	class UBehaviorTree* BehaviorTree = nullptr; 
