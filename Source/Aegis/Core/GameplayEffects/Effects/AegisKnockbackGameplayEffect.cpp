@@ -12,7 +12,7 @@ void UAegisKnockbackGameplayEffect::Apply(FAegisGameplayEffectApplicationInfo& A
     if(interface)
     {
         UE_LOG(AegisGameplayEffectLog, Log, TEXT("Knockback Apply"));
-        interface->OnKnockback(); 
+        interface->OnKnockback(ApplicationInfo.GetHitNormal(), KnockbackMagnitude); 
     }
 }
 

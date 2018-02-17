@@ -93,7 +93,7 @@ public:
     // End IAegisPhysicalImpactInterface
     
     // Begin IAegisKnockbackInterface
-    virtual void OnKnockback() override;
+    virtual void OnKnockback(FVector KnockbackDirection, float KnockbackMagnitude) override;
     // End IAegisKnockbackInterface
     
     // Begin IAegisDamageInterface

@@ -153,7 +153,7 @@ void AAegisCharacter::OnPhysicalImpact()
 // End IAegisPhysicalImpactInterface
 
 //Begin IAegisKnockbackInterface
-void AAegisCharacter::OnKnockback()
+void AAegisCharacter::OnKnockback(FVector KnockbackDirection, float KnockbackMagnitude)
 {
     UE_LOG(AegisGameplayEffectLog, Log, TEXT("Character::OnKnockback"));
 }

@@ -41,6 +41,12 @@ void AAegisWeapon::Tick(float DeltaTime)
 void AAegisWeapon::OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+    //Hack to ignore porojectiles for now
+    if(Cast<AAegisProjectile>(OtherActor))
+    {
+        return;
+    }
+    
     //last check is if other actor is self
     if(!bCollisionActive || !OtherActor || (GetUniqueID() == OtherActor->GetUniqueID()) )
 	{

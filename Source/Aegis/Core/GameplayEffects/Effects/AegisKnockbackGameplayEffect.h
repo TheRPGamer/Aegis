@@ -18,6 +18,10 @@ class AEGIS_API UAegisKnockbackGameplayEffect : public UAegisGameplayEffectBase
 	GENERATED_BODY()
 public:
     virtual void Apply(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const override;
+    
+protected:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float KnockbackMagnitude = 0.f;
 	
 };
 
