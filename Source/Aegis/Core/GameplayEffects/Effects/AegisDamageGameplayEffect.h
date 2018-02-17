@@ -19,6 +19,9 @@ class AEGIS_API UAegisDamageGameplayEffect : public UAegisGameplayEffectBase
 	GENERATED_BODY()
 public:
     virtual void Apply(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const override;
+    
+protected:
+    float DamageAmount = 0.f;
 	
 };
 

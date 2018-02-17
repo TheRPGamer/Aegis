@@ -97,7 +97,7 @@ public:
     // End IAegisKnockbackInterface
     
     // Begin IAegisDamageInterface
-    virtual void OnDamage() override;
+    virtual void OnDamage(float DamageAmount) override;
     //End IAegisDamageInterface
 protected: 
     /** Function called when this character overlaps with another Actor */

@@ -12,7 +12,7 @@ void UAegisDamageGameplayEffect::Apply(FAegisGameplayEffectApplicationInfo& Appl
     if(interface)
     {
         UE_LOG(AegisGameplayEffectLog, Log, TEXT("Damage Apply"));
-        interface->OnDamage(); 
+        interface->OnDamage(DamageAmount); 
     }
 }
 
