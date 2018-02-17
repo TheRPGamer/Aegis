@@ -5,6 +5,10 @@
 
 bool FAegisCharacterCombatState::operator==(const FAegisCharacterCombatState& Other) const
 {
-	return IsInAir() == Other.IsInAir() && IsInSuper() == Other.IsInSuper() &&
-    IsInMelee() == Other.IsInMelee() && GetLockOnState() == Other.GetLockOnState(); 
+	return IsInAir() == Other.IsInAir()
+    && IsInSuper() == Other.IsInSuper()
+    && IsInMelee() == Other.IsInMelee()
+    && GetLockOnState() == Other.GetLockOnState()
+    && IsInGuard() == Other.IsInGuard()
+    && IsInRanged() == Other.IsInRanged();
 }

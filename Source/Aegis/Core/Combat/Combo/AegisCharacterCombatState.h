@@ -18,7 +18,8 @@ public:
 	FORCEINLINE bool IsInSuper() const { return bInSuper;  }
 	FORCEINLINE bool IsInMelee() const { return bInMelee; }
 	FORCEINLINE EAegisCharacterLockOnState GetLockOnState() const { return LockOnState; }
-	
+    FORCEINLINE bool IsInGuard() const { return bInGuard; }
+    FORCEINLINE bool IsInRanged() const { return bInRanged; }
 	
 
 	/** Returns true if alk memberes besides Name and FName of this match Other */
@@ -39,6 +40,13 @@ protected:
 	/** Lock On State the character must be in to satisfy this Combo state */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo State")
 	EAegisCharacterLockOnState LockOnState = EAegisCharacterLockOnState::NotLockedOn;
+    
+    /** Guard state the character must be in to satisfy this Combat State c*/
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    bool bInGuard = false;
+    /** The Ranged Attack State the character must be in to satisfy this Combat State */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    bool bInRanged = false;
 };
 
 /**
@@ -54,5 +62,7 @@ public:
 	FORCEINLINE void SetInSuper(bool bInValue) { bInSuper = bInValue; }
 	FORCEINLINE void SetInMelee(bool bInValue) { bInMelee = bInValue; }
 	FORCEINLINE void SetLockOnState(EAegisCharacterLockOnState InLockOnState) { LockOnState = InLockOnState; }
+    FORCEINLINE void SetInGuard(bool bInValue) { bInGuard = bInValue; }
+    FORCEINLINE void SetInRanged(bool bInValue) { bInRanged = bInValue; }
 	
 };

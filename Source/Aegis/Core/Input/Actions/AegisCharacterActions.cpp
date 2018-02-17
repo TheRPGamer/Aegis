@@ -56,7 +56,8 @@ void UAegisCharacterGuardAction::OnActionPressed(const AAegisCharacter* Characte
     auto comboComp = Character->GetComboComponent();
     if(comboComp)
     {
-        //TODO: Update Guard Stuff 
+        //TODO: Update Guard Stuff
+        comboComp->SetInGuard(true);
         auto lockOn = Character->GetLockOnState();
         comboComp->SetLockOnState(lockOn);
     }
@@ -68,6 +69,12 @@ void UAegisCharacterGuardAction::OnActionReleased(const AAegisCharacter* Charact
     {
         return;
     }
+    auto comboComp = Character->GetComboComponent();
+    if(comboComp)
+    {
+        comboComp->SetInGuard(false); 
+    }
+    
 }
 
 

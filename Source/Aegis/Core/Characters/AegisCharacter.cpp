@@ -162,7 +162,7 @@ void AAegisCharacter::OnKnockback(FVector KnockbackDirection, float KnockbackMag
 // Begin IAegisDamageInterface
 void AAegisCharacter::OnDamage(float DamageAmount)
 {
-    UE_LOG(AegisGameplayEffectLog, Log, TEXT("Character::OnDamage"));
+    UE_LOG(AegisGameplayEffectLog, Log, TEXT("Character::OnDamage. Damage Amount: %f"), DamageAmount);
 }
 // End IAegisDamageInterface
 

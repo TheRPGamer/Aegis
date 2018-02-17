@@ -41,6 +41,8 @@ public:
     FORCEINLINE void SetInSuper(bool bInSuper) { CurrentCombatState.SetInSuper(bInSuper); }
     FORCEINLINE void SetInMelee(bool bInMelee) { CurrentCombatState.SetInMelee(bInMelee); }
     FORCEINLINE void SetLockOnState(EAegisCharacterLockOnState InLockOnState) { CurrentCombatState.SetLockOnState(InLockOnState); }
+    FORCEINLINE void SetInGuard(bool bInvalue) { CurrentCombatState.SetInGuard(bInvalue); }
+    FORCEINLINE void SetInRanged(bool bInValue) { CurrentCombatState.SetInRanged(bInValue); }
 	
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	void SetInCombo(bool bInValue) { bInCombo = bInValue; }

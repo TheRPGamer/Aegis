@@ -80,6 +80,9 @@ public:
 	
 	FORCEINLINE UAegisCharacterComboComponent* GetComboComponent() const { return ComboComponent; }
     
+    FORCEINLINE UAegisCharacterGuardComponent* GetGuardComponent() const { return GuardComponent; }
+
+    
     FORCEINLINE UAegisActionInputBufferComponent* GetInputBufferComponent() const { return InputBufferComponent;}
 
     
