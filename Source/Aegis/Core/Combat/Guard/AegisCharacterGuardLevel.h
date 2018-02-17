@@ -18,7 +18,7 @@ struct AEGIS_API FAegisCharacterGuardLevel
 public:
 	FORCEINLINE FName GetName() const { return Name; }
 	FORCEINLINE FTimespan GetGuardTicksTimespan() const { return TicksTimespan; }
-    FORCEINLINE FAegisGameplayEffectApplicationOrder GetGuardGFX() const { return GuardGFX; }
+    FORCEINLINE const FAegisGameplayEffectApplicationOrder& GetGuardGFX() const { return GuardGFX; }
     
 	/** Returns true if the timespan argument is greather or equal to the lower bound of ticks specified by this Guard Level */
 	bool IsTimeSpanGreaterThanLowerBound(FTimespan timespan); 

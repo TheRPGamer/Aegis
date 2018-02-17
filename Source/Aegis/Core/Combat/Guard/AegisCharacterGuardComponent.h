@@ -38,6 +38,7 @@ public:
 	virtual void OnRegister() override;
     
     FORCEINLINE const FAegisCharacterGuardLevel& GetCurrentGuardLevel() const { return CurrentGuardLevel; }
+    FORCEINLINE const FAegisGameplayEffectApplicationOrder& GetCurrentGuardGFX() const { return CurrentGuardLevel.GetGuardGFX(); }
     
     // Begin Debug Functionality
 	FName GetGuardLevelName() const { return CurrentGuardLevel.GetName(); }

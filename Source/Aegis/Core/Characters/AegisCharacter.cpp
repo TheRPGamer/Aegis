@@ -69,9 +69,9 @@ float AAegisCharacter::TakeDamage(float DamageAmount, const struct FDamageEvent&
 
 bool AAegisCharacter::CanMove() const
 {
-	if (ComboComponent)
+	if (ComboComponent && GuardComponent)
 	{
-		return !ComboComponent->IsInCombo(); 
+		return !ComboComponent->IsInCombo() && GuardComponent->IsInGuard();
 	}
 	return false; 
 }
@@ -134,10 +134,13 @@ void AAegisCharacter::CreatePostInitComponents()
 // Begin IProcessGameplayEffectInterface
 FAegisGameplayEffectApplicationOrder AAegisCharacter::GetCurrentApplicationOrder() const
 {
-    //Debug
-    return CreateDebugComboGFXApplicationOrder();
     
-    if(ComboComponent)
+    
+    if(GuardComponent && GuardComponent->IsInGuard())
+    {
+        return GuardComponent->GetCurrentGuardGFX();
+    }
+    if(ComboComponent && ComboComponent->IsInCombo())
     {
         return ComboComponent->GetCurrentMove().GetCollisionGFX();
     }
