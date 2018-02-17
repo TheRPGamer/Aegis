@@ -95,6 +95,9 @@ void AAegisProjectile::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedC
 // Begin IAegisReflectInterface
 void AAegisProjectile::OnReflect()
 {
-    
+    FVector rotatedForwardVector = -GetActorForwardVector();
+    FVector lookAtDir = rotatedForwardVector - GetActorForwardVector();
+    FRotator newRotation = FRotationMatrix::MakeFromX(lookAtDir).Rotator();
+    SetActorRotation(newRotation);
 }
 //End IAegisReflectInterfaceFVector

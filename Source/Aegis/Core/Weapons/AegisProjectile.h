@@ -69,10 +69,10 @@ protected:
     UPROPERTY(EditAnywhere, BLueprintReadWrite)
     bool bCollisionActive = false;
     
-    UPROPERTY(EditAnywhere, BLueprintReadWrite)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float InitialSpeed = 0.f;
     
-    UPROPERTY(EditAnywhere, BLueprintReadWrite)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float MaxSpeed = 0.f;
 };
 
