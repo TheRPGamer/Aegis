@@ -163,23 +163,19 @@ void AAegisPlayerCharacter::OnLockOnReleased()
 
 void AAegisPlayerCharacter::OnSuperModePressed()
 {
-	UE_LOG(AegisLog, Log, TEXT("Super Mode Pressed")); 
+	if(InputBufferComponent)
+    {
+        InputBufferComponent->AddActionPressed(NAegisCharacterAction::Super);
+        if(ComboComponent && !ComboComponent->IsInCombo())
+        {
+            ComboComponent->Update();
+        }
+    }
 }
 
 void AAegisPlayerCharacter::OnSuperModeReleased()
 {
-	UE_LOG(AegisLog, Log, TEXT("Super Mode Released")); 
-	if (ComboComponent)
-	{
-		if (ComboComponent->IsInSuper())
-		{
-			ComboComponent->SetInSuper(false); 
-		}
-		else
-		{
-			ComboComponent->SetInSuper(true); 
-		}
-	}
+	 
 }
 
 void AAegisPlayerCharacter::OnGuardPressed()

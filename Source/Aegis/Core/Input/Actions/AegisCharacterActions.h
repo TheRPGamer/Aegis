@@ -88,4 +88,22 @@ protected:
 };
 
 
+/**
+ * Default updates to AegisCharacter when Super Action is is Input
+ * Inherit from this class for custom handling of Super Inputs for different characters
+ */
+UCLASS()
+class AEGIS_API UAegisCharacterSuperAction : public UAegisCharacterActionBase
+{
+    GENERATED_BODY()
+public:
+    UAegisCharacterSuperAction() { DebugName = "Super"; }
+protected:
+    /** Updates Character's Combo Component and Guard Component*/
+    virtual void OnActionPressed(const AAegisCharacter* Character) const override;
+    /** Updates Character's Combo Component and Guard Component*/
+    virtual void OnActionReleased(const AAegisCharacter* Character) const override;
+};
+
+
 

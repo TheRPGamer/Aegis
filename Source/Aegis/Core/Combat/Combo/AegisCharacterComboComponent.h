@@ -113,7 +113,9 @@ private:
     
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combos", meta = (AllowPrivateAccess = "true"))
 	bool bInCombo = false;
-
+    
+    
+    
 	
 	 
 };

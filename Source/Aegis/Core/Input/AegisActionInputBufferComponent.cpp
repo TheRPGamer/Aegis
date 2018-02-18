@@ -7,6 +7,7 @@
 
 // Sets default values for this component's properties
 UAegisActionInputBufferComponent::UAegisActionInputBufferComponent()
+: CircularBuffer(1024)
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -15,7 +16,12 @@ UAegisActionInputBufferComponent::UAegisActionInputBufferComponent()
 	// ...
 }
 
-
+UAegisActionInputBufferComponent::UAegisActionInputBufferComponent(FVTableHelper& Helper)
+: Super(Helper)
+, CircularBuffer(1024)
+{
+    PrimaryComponentTick.bCanEverTick = true;
+}
 // Called when the game starts
 void UAegisActionInputBufferComponent::BeginPlay()
 {
@@ -61,6 +67,8 @@ void UAegisActionInputBufferComponent::InitActionNameToActionMap()
     ActionNameToActionMap.Add(NAegisCharacterAction::None, NewObject<UAegisCharacterActionBase>() );
     ActionNameToActionMap.Add(NAegisCharacterAction::Melee, NewObject<UAegisCharacterMeleeAction>() );
     ActionNameToActionMap.Add(NAegisCharacterAction::Guard, NewObject<UAegisCharacterGuardAction>() );
+    ActionNameToActionMap.Add(NAegisCharacterAction::Super, NewObject<UAegisCharacterSuperAction>() );
+
 }
 void UAegisActionInputBufferComponent::AddActionPressed(FName ActionType)
 {
@@ -111,6 +119,8 @@ void UAegisActionInputBufferComponent::ExpendInput()
         InputBuffer[ReadIndex].Clear();
         IncrementReadIndex();
     }
+    
+    
 }
 
 void UAegisActionInputBufferComponent::IncrementReadIndex()

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "Components/ActorComponent.h"
 #include "Core/Input/AegisActionInput.h"
 #include "Core/Input/Actions/AegisCharacterActions.h"
@@ -16,6 +17,8 @@ class AEGIS_API UAegisActionInputBufferComponent : public UActorComponent
 
 public:
 	UAegisActionInputBufferComponent();
+/** Created to initialise Circular Buffer that has no default constructer. Helps with Hot Reload */
+    UAegisActionInputBufferComponent(FVTableHelper& Helper);
 
 protected:
 	virtual void BeginPlay() override;
@@ -71,6 +74,8 @@ void AddAction(FName ActionType, bool Pressed);
     UPROPERTY()
     TArray<FAegisCharacterActionInput> InputBuffer;
     
+    TCircularBuffer<FAegisCharacterActionInput> CircularBuffer;
+    
     uint32 ReadIndex = 0;
     uint32 WriteIndex = 0;
     
@@ -80,8 +85,7 @@ void AddAction(FName ActionType, bool Pressed);
 
     
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Input Buffer Parameters", meta = (AllowPrivateAccess = "true"))
-    int32 BufferSize = 100;
+    int32 BufferSize = 128;
 };
-
 
 

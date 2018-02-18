@@ -78,4 +78,35 @@ void UAegisCharacterGuardAction::OnActionReleased(const AAegisCharacter* Charact
 }
 
 
+void UAegisCharacterSuperAction::OnActionPressed(const AAegisCharacter* Character) const
+{
+    if(!Character)
+    {
+        return;
+    }
+    auto comboComp = Character->GetComboComponent();
+    if(comboComp)
+    {
+        //TODO: Update Super Stuff
+        comboComp->SetInSuper(true);
+        auto lockOn = Character->GetLockOnState();
+        comboComp->SetLockOnState(lockOn);
+    }
+}
+
+void UAegisCharacterSuperAction::OnActionReleased(const AAegisCharacter* Character) const
+{
+    if(!Character)
+    {
+        return;
+    }
+    auto comboComp = Character->GetComboComponent();
+    if(comboComp)
+    {
+        
+    }
+    
+}
+
+
 
