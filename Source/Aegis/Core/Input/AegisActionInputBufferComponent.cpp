@@ -60,7 +60,7 @@ void UAegisActionInputBufferComponent::InitActionNameToActionMap()
 {
     ActionNameToActionMap.Add(NAegisCharacterAction::None, NewObject<UAegisCharacterActionBase>() );
     ActionNameToActionMap.Add(NAegisCharacterAction::Melee, NewObject<UAegisCharacterMeleeAction>() );
-    
+    ActionNameToActionMap.Add(NAegisCharacterAction::Guard, NewObject<UAegisCharacterGuardAction>() );
 }
 void UAegisActionInputBufferComponent::AddActionPressed(FName ActionType)
 {

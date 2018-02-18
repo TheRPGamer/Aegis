@@ -184,18 +184,26 @@ void AAegisPlayerCharacter::OnSuperModeReleased()
 
 void AAegisPlayerCharacter::OnGuardPressed()
 {
-	if (GuardComponent)
-	{
-		GuardComponent->OnBeginGuard(); 
-	}
+    if(InputBufferComponent)
+    {
+        InputBufferComponent->AddActionPressed(NAegisCharacterAction::Guard);
+        if(ComboComponent && !ComboComponent->IsInCombo())
+        {
+            ComboComponent->Update();
+        }
+    }
 }
 
 void AAegisPlayerCharacter::OnGuardReleased()
 {
-	if (GuardComponent)
-	{
-		GuardComponent->OnEndGuard(); 
-	}
+    if(InputBufferComponent)
+    {
+        InputBufferComponent->AddActionReleased(NAegisCharacterAction::Guard);
+    }
+    if (ComboComponent && !ComboComponent->IsInCombo())
+    {
+        
+    }
 }
 
 bool AAegisPlayerCharacter::IsInputDirectionTowardLockOnTarget()

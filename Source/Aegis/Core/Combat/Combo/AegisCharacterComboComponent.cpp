@@ -214,6 +214,7 @@ void UAegisCharacterComboComponent::OnComboAnimationEnd()
 void UAegisCharacterComboComponent::ResetComparisonComboState()
 {
     SetInMelee(false);
+    SetInGuard(false);
 }
 
 UAegisActionInputBufferComponent* UAegisCharacterComboComponent::GetAegisOwnerInputBufferComponent() const

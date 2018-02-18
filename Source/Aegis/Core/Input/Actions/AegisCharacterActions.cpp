@@ -72,7 +72,7 @@ void UAegisCharacterGuardAction::OnActionReleased(const AAegisCharacter* Charact
     auto comboComp = Character->GetComboComponent();
     if(comboComp)
     {
-        comboComp->SetInGuard(false); 
+        //comboComp->SetInGuard(false);
     }
     
 }
