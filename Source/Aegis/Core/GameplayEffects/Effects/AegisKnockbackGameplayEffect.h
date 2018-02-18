@@ -12,7 +12,7 @@ struct FAegisGameplayEffectApplicationInfo;
  * 
  */
 
-UCLASS( BlueprintType, Blueprintable)
+UCLASS( BlueprintType, Blueprintable, EditInlineNew )
 class AEGIS_API UAegisKnockbackGameplayEffect : public UAegisGameplayEffectBase
 {
 	GENERATED_BODY()

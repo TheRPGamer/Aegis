@@ -13,7 +13,7 @@ struct FAegisGameplayEffectApplicationInfo;
  */
 
 
-UCLASS( BlueprintType, Blueprintable)
+UCLASS( BlueprintType, Blueprintable, EditInlineNew )
 class AEGIS_API UAegisReflectGameplayEffect : public UAegisGameplayEffectBase
 {
 	GENERATED_BODY()

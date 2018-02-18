@@ -69,9 +69,9 @@ float AAegisCharacter::TakeDamage(float DamageAmount, const struct FDamageEvent&
 
 bool AAegisCharacter::CanMove() const
 {
-	if (ComboComponent && GuardComponent)
+	if (ComboComponent)
 	{
-		return !ComboComponent->IsInCombo() && GuardComponent->IsInGuard();
+		return !ComboComponent->IsInCombo();
 	}
 	return false; 
 }

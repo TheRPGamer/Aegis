@@ -329,12 +329,13 @@ void AAegisPlayerCharacter::DebugShootProjectile()
             FVector spawnLocation = GetActorLocation() + (rotatedForwardVector* DebugProjectileDisplacement);
             FVector projectileLookAtDir = GetActorLocation() - spawnLocation;
             projectileLookAtDir.Normalize();
-            FRotator projectileRot = FRotationMatrix::MakeFromX(projectileLookAtDir).Rotator();
+            //FRotator projectileRot = FRotationMatrix::MakeFromX(projectileLookAtDir).Rotator();
             AAegisProjectile* projectile = GetWorld()->SpawnActor<AAegisProjectile>(ProjectileClass, spawnParams);
             if(projectile)
             {
                 projectile->SetActorLocation(spawnLocation);
-                projectile->SetActorRotation(projectileRot);
+                projectile->GetProjectileMovementComponent()->Velocity = -rotatedForwardVector * 300.f;
+                //projectile->SetActorRotation(projectileRot);
                 
             }
 

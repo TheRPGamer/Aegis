@@ -37,7 +37,9 @@ UFUNCTION(BlueprintCallable)
     
     // Begin IAegisProcessGameplayEffectInterface
     FORCEINLINE virtual FAegisGameplayEffectApplicationOrder GetCurrentApplicationOrder() const override { return CollisionGFX; }
-
+    
+    FORCEINLINE virtual UProjectileMovementComponent* GetProjectileMovementComponent() { return ProjectileMovementComponent; }
+    
     // End IAegisProcessGameplayEffect Interface
     
     // Begin IAegisReflectInterface
@@ -51,7 +53,7 @@ protected:
     
     
     
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Movement")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Movement")
     UProjectileMovementComponent* ProjectileMovementComponent = nullptr;
     
     
@@ -74,6 +76,8 @@ protected:
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float MaxSpeed = 0.f;
+    
+    bool bReflected = false;
 };
 
 
@@ -88,6 +92,7 @@ FORCEINLINE     AActor* GetTarget() const { return Target; }
     
     FORCEINLINE TSubclassOf<AAegisProjectile> GetProjectileClass() const { return ProjectileClass; }
     FORCEINLINE FVector GetSpawnLocation() const { return (Target) ? Target->GetActorLocation() + LocationOffset : LocationOffset; }
+    
     //FORCEINLINE  FRotator GetSpawnRotation(); const { return (Target) ? Target->Rotaion + RotationOffset : RotationOffset; }
 protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)

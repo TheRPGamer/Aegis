@@ -89,15 +89,29 @@ void AAegisProjectile::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedC
             return;
         }
     }
-    Destroy();
+    //Destroy();
+    
+    if(bReflected) {
+        return;
+    }
+    FAegisGameplayEffectApplicationInfo appInfo;
+    ApplyGameplayEffects(this, OtherActor, appInfo);
 }
 
 // Begin IAegisReflectInterface
 void AAegisProjectile::OnReflect()
 {
+    bReflected = true;
+    UE_LOG(AegisGuardLog, Log, TEXT("Actor forward before: %s"),
+           *(GetActorForwardVector().ToString()));
+    //UE_LOG(AegisGameplayEffectLog, Log, TEXT("Actor forward before %s"), *GetActorForwardVector().toString());
     FVector rotatedForwardVector = -GetActorForwardVector();
+    ProjectileMovementComponent->Velocity = rotatedForwardVector * 300.f;
     FVector lookAtDir = rotatedForwardVector - GetActorForwardVector();
-    FRotator newRotation = FRotationMatrix::MakeFromX(lookAtDir).Rotator();
-    SetActorRotation(newRotation);
+    //FRotator newRotation = FRotationMatrix::MakeFromX(lookAtDir).Rotator();
+    //SetActorRotation(newRotation);
+    //UE_LOG(AegisGameplayEffectLog, Log, TEXT("Actor forward after %s"), *GetActorForwardVector().toString());
+    UE_LOG(AegisGuardLog, Log, TEXT("Actor forward after: %s"),
+           *(GetActorForwardVector().ToString()));
 }
 //End IAegisReflectInterfaceFVector
