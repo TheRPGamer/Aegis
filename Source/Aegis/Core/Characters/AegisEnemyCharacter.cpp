@@ -4,6 +4,8 @@
 #include "Core/Characters/AegisPlayerCharacter.h"
 #include "Core/AI/AIC/AegisEnemyAIController.h"
 #include "Core/Characters/AegisEnemyCharacter.h"
+#include "Core/Weapons/AegisWeapon.h"
+#
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -14,7 +16,10 @@ AAegisEnemyCharacter::AAegisEnemyCharacter()
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
     RootComponent = GetCapsuleComponent();
-    
+    if(GetCharacterMovement())
+    {
+        GetCharacterMovement()->bOrientRotationToMovement = true;
+    }
 }
 
 void AAegisEnemyCharacter::PostInitProperties()
@@ -27,13 +32,27 @@ void AAegisEnemyCharacter::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
     Sense();
     Think();
-    Act(); 
+    Act(DeltaTime);
 }
 
 // Called when the game starts or when spawned
 void AAegisEnemyCharacter::BeginPlay()
 {
     Super::BeginPlay();
+    //Set up weapon
+    if (EquippedWeaponClass && GetMesh() && GetWorld())
+    {
+        FActorSpawnParameters weaponSpawnInfo;
+        weaponSpawnInfo.Owner = this;
+        
+        EquippedWeapon = GetWorld()->SpawnActor<AAegisWeapon>(EquippedWeaponClass, weaponSpawnInfo);
+        if (EquippedWeapon)
+        {
+            EquippedWeapon->SetOwner(this);
+            EquippedWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, RightHandSocket);
+        }
+    }
+    
     EnemyState = EAegisEnemyState::Idle;
     // if bPUruse is false, the AI will do nothing
     if(bPursue)
@@ -79,7 +98,7 @@ void AAegisEnemyCharacter::Think()
     EnemyState = EAegisEnemyState::Pursuing;
 }
 
-void AAegisEnemyCharacter::Act()
+void AAegisEnemyCharacter::Act(float DeltaTime)
 {
 switch(EnemyState)
     {
@@ -93,6 +112,8 @@ switch(EnemyState)
             AAegisEnemyAIController*  ac = Cast<AAegisEnemyAIController>(Controller);
             if(ac && PlayerTarget)
             {
+                ac->SetFocalPoint(PlayerTarget->GetActorLocation());
+                ac->UpdateControlRotation(DeltaTime);
                 //moves to player
                 ac->MoveToActor(PlayerTarget, AttackDistanceSqThreshold - 20.0f, false, true, false, UNavigationQueryFilter::StaticClass());
             }

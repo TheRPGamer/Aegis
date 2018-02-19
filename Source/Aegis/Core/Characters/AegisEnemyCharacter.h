@@ -52,7 +52,7 @@ protected:
     virtual void Think();
     
     /** Final step in AI Tick. Acts based on the decisions made in Think()  */
-    virtual void Act();
+    virtual void Act(float DeltaTime);
     
 
     /** Player target */
