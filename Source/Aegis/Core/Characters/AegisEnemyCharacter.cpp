@@ -13,7 +13,7 @@ AAegisEnemyCharacter::AAegisEnemyCharacter()
 {
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
-    
+    RootComponent = GetCapsuleComponent();
     
 }
 
@@ -52,7 +52,7 @@ void AAegisEnemyCharacter::Sense()
 {
    if(PlayerTarget)
    {
-       DistanceSqToPlayer = FVector::DistSquared(GetActorLocation(), PlayerTarget->GetActorLocation());
+       DistanceSqToPlayer = FVector::Dist(GetActorLocation(), PlayerTarget->GetActorLocation());
    }
 }
 
@@ -71,9 +71,9 @@ void AAegisEnemyCharacter::Think()
     }
 
     //Character is in range to attack
-    if(DistanceSqToPlayer <= AttackDistanceSqThreshold)
+    if(DistanceSqToPlayer <= AttackDistanceSqThreshold && !GetCurrentMontage())
     {
-        EnemyState = EAegisEnemyState::Attacking;
+        EnemyState = EAegisEnemyState::InRange;
         return;
     }
     EnemyState = EAegisEnemyState::Pursuing;
@@ -94,7 +94,7 @@ switch(EnemyState)
             if(ac && PlayerTarget)
             {
                 //moves to player
-                ac->MoveToActor(PlayerTarget, AttackDistanceSqThreshold, false, true, false, UNavigationQueryFilter::StaticClass());
+                ac->MoveToActor(PlayerTarget, AttackDistanceSqThreshold - 20.0f, false, true, false, UNavigationQueryFilter::StaticClass());
             }
         }
         default:

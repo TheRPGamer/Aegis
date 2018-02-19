@@ -25,6 +25,11 @@ public:
     FORCEINLINE bool GetPressed() const { return bPressed; }
     FORCEINLINE FDateTime GetTimestamp() const { return Timestamp; }
     
+protected: 
+    /** Time the input was made*/
+    FDateTime Timestamp = FDateTime::MinValue();
+    
+    
     /**
      * Represents the Action that was input. E.g Melee, Guard etc
      * @ see AegisCharacterActions.h
@@ -32,8 +37,6 @@ public:
     UPROPERTY()
     UAegisCharacterActionBase* Action = nullptr;
     
-    /** Time the input was made*/
-    FDateTime Timestamp = FDateTime::MinValue();
     
     /** If the Input was from a Press or Release*/
     bool bPressed = false;
