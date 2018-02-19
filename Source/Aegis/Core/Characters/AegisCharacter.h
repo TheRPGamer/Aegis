@@ -13,6 +13,7 @@
 #include "Core/Interfaces/AegisProcessGameplayEffectInterface.h"
 #include "Core/Interfaces/AegisDamageInterface.h"
 #include "Core/Interfaces/AegisKnockbackInterface.h"
+#include "Core/Interfaces/AegisGuardStunInterface.h"
 //End Interfaces
 #include "AegisCharacter.generated.h"
 
@@ -26,7 +27,7 @@ class UAegisActionInputBufferComponent;
 */
 
 UCLASS()
-class AEGIS_API AAegisCharacter : public ACharacter, public IAegisProcessGameplayEffectInterface, public IAegisPhysicalImpactInterface, public IAegisKnockbackInterface, public IAegisDamageInterface
+class AEGIS_API AAegisCharacter : public ACharacter, public IAegisProcessGameplayEffectInterface, public IAegisPhysicalImpactInterface, public IAegisKnockbackInterface, public IAegisDamageInterface, public IAegisGuardStunInterface
 {
 	GENERATED_BODY()
 
@@ -66,15 +67,19 @@ public:
 	
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	bool IsInHitStun() const{	return bIsInHitStun; }
-	
+    FORCEINLINE bool IsInGuardStun() const { return bInGuardStun; }
+    
+    FORCEINLINE bool IsInKnockback() const { return bInKnockback; }
 	
 	FORCEINLINE UFUNCTION(BlueprintCallable)
-	bool IsDead() const { return (CurrentHP <= 0.0f); }
+	bool IsDead() const { return bDead; }
 	
     FORCEINLINE EAegisCharacterLockOnState GetLockOnState() const { return LockOnState; }
     /** Returns true if the character's current state allows for any movement*/
     UFUNCTION(BlueprintCallable)
 	bool CanMove() const;
+    
+    
 	
 	FORCEINLINE class AAegisWeapon* GetEquippedWeapon() const { return EquippedWeapon; }
 	
@@ -85,6 +90,8 @@ public:
     
     FORCEINLINE UAegisActionInputBufferComponent* GetInputBufferComponent() const { return InputBufferComponent;}
 
+    /** Resets the various Character states of the character. E.g bIsInHitStun, bInGuardStun, bInKnockback etc*/
+    void ResetStatus();
     
     //IAegisProcessGameplayEffectInterface Begin
     virtual FAegisGameplayEffectApplicationOrder GetCurrentApplicationOrder() const override;
@@ -102,6 +109,10 @@ public:
     // Begin IAegisDamageInterface
     virtual void OnDamage(float DamageAmount) override;
     //End IAegisDamageInterface
+    
+    // Begin IAegisGuardStunInterface
+    virtual void OnGuardStun() override;
+    // End IAegisGuardStunInterface
 protected: 
     /** Function called when this character overlaps with another Actor */
     UFUNCTION(BlueprintCallable)
@@ -119,6 +130,15 @@ protected:
 
 	/** True if character is currently in hit stun*/
 	bool bIsInHitStun = false;
+    
+    /** True if character is in Guard Stun*/
+    bool bInGuardStun = false;
+    
+    /** True if the character is in Knockback*/
+    bool bInKnockback = false;
+    
+    /** True if the character is dead */
+    bool bDead = false;
 	
 	/** Class of weapon that the character will have equipped*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipped Weapon")

@@ -2,7 +2,7 @@
 
 #include "Aegis.h"
 #include "AegisCharacterLockOnComponent.h"
-
+#include "Core/Interfaces/AegisLockOnInterface.h"
 // Sets default values for this component's properties
 UAegisCharacterLockOnComponent::UAegisCharacterLockOnComponent()
 {
@@ -13,3 +13,54 @@ UAegisCharacterLockOnComponent::UAegisCharacterLockOnComponent()
 	// ...
 }
 
+void UAegisCharacterLockOnComponent::Update()
+{
+    
+}
+
+void UAegisCharacterLockOnComponent::OnBeginLockOn()
+{
+    Target = FindClosestTarget();
+    State = EAegisCharacterLockOnState::NotMoving; 
+}
+
+void UAegisCharacterLockOnComponent::OnEndLockOn()
+{
+    
+}
+
+void UAegisCharacterLockOnComponent::DetermineCurrentState()
+{
+    ACharacter* owner = Cast<ACharacter>(GetOwner());
+  if(!owner)
+    {
+        return;
+    }
+    FVector ownerVelocity = owner->GetVelocity();
+    
+    
+}
+
+AActor*UAegisCharacterLockOnComponent:: FindClosestTarget()
+{
+    TArray<AActor*> result;
+    UGameplayStatics::GetAllActorsWithInterface(GetWorld(), UAegisLockOnInterface::StaticClass(), result);
+    if(result.Num() < 1 || !GetOwner())
+    {
+        return nullptr;
+    }
+    FVector ownerLocation = GetOwner()->GetActorLocation();
+    float closestDist = FVector::DistSquared2D(ownerLocation, result[0]->GetActorLocation());
+    AActor* closestActor = result[0];
+        for(const auto actor : result)
+    {
+        float dist = FVector::DistSquared2D(ownerLocation, actor->GetActorLocation());
+        if(dist < closestDist)
+        {
+            closestDist = dist;
+            closestActor = actor;
+        }
+    };
+
+    return closestActor;
+}

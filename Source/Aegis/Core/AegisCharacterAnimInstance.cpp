@@ -13,7 +13,9 @@ void UAegisCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		bFalling = character->IsInAir();
 		MovementSpeed = character->GetVelocity().Size();
 		bInHitStun = character->IsInHitStun();
-		bDead = false;
+        bDead = character->IsDead();
+        bInGuardStun = character->IsInGuardStun();
+        bInKnockback = character->IsInKnockback();
 	}
 }
 

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Core/GameplayEffects/Effects/AegisGameplayEffectBase.h"
-#include "AegisDamageGameplayEffect.generated.h"
+#include "AegisGuardStunGameplayEffect.generated.h"
 
 struct FAegisGameplayEffectApplicationInfo;
 
@@ -13,16 +13,12 @@ struct FAegisGameplayEffectApplicationInfo;
  */
 
 
-UCLASS( BlueprintType, Blueprintable)
-class AEGIS_API UAegisDamageGameplayEffect : public UAegisGameplayEffectBase
+UCLASS( BlueprintType, Blueprintable, EditInlineNew )
+class AEGIS_API UAegisGuardStunGameplayEffect : public UAegisGameplayEffectBase
 {
 	GENERATED_BODY()
 public:
     virtual void Apply(FAegisGameplayEffectApplicationInfo& ApplicationInfo) const override;
-    
-protected:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float DamageAmount = 0.f;
 	
 };
 

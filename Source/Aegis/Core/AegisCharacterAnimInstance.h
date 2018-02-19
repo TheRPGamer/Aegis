@@ -56,4 +56,12 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
 	bool bDead = false;
     
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
+    bool bInGuardStun = false;
+    
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "WalkAnimProperties", meta = (AllowPrivateAccess = "true"))
+    bool bInKnockback = false;
+    
+    
+    
 };

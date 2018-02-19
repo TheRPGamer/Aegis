@@ -131,6 +131,13 @@ void AAegisCharacter::CreatePostInitComponents()
     }
 }
 
+void AAegisCharacter::ResetStatus()
+{
+    bIsInHitStun = false;
+    bInGuardStun = false;
+    bInKnockback = false;
+}
+
 // Begin IProcessGameplayEffectInterface
 FAegisGameplayEffectApplicationOrder AAegisCharacter::GetCurrentApplicationOrder() const
 {
@@ -151,7 +158,8 @@ FAegisGameplayEffectApplicationOrder AAegisCharacter::GetCurrentApplicationOrder
 //Begin IAegisPhysicalmpactInterface
 void AAegisCharacter::OnPhysicalImpact()
 {
-    UE_LOG(AegisGameplayEffectLog, Log, TEXT("Character::OnPhysicalImpact")); 
+    UE_LOG(AegisGameplayEffectLog, Log, TEXT("Character::OnPhysicalImpact"));
+    bIsInHitStun = true;
 }
 // End IAegisPhysicalImpactInterface
 
@@ -159,6 +167,8 @@ void AAegisCharacter::OnPhysicalImpact()
 void AAegisCharacter::OnKnockback(FVector KnockbackDirection, float KnockbackMagnitude)
 {
     UE_LOG(AegisGameplayEffectLog, Log, TEXT("Character::OnKnockback"));
+    UE_LOG(AegisGameplayEffectLog, Log, TEXT("Hit Normal: %s"), *KnockbackDirection.ToString() );
+    bInKnockback = true;
 }
 //End IAegisKnockbackInterface
 
@@ -166,8 +176,19 @@ void AAegisCharacter::OnKnockback(FVector KnockbackDirection, float KnockbackMag
 void AAegisCharacter::OnDamage(float DamageAmount)
 {
     UE_LOG(AegisGameplayEffectLog, Log, TEXT("Character::OnDamage. Damage Amount: %f"), DamageAmount);
+    bDead = true;
 }
 // End IAegisDamageInterface
+
+
+// Begin IAegisGuardStunInterface
+void AAegisCharacter::OnGuardStun()
+{
+    UE_LOG(AegisGameplayEffectLog, Log, TEXT("Character::OnGuardStun.  "));
+    bInGuardStun = true;
+}
+// End IAegisGuardStunInterface
+
 
 void AAegisCharacter::ValidateCharacterComponents()
 {
@@ -194,6 +215,14 @@ void AAegisCharacter::OnAegisCharacterBeginOverlap(UPrimitiveComponent* Overlapp
     }
     
     FAegisGameplayEffectApplicationInfo appInfo;
+    FVector hitNormal = OtherActor->GetActorLocation() - GetActorLocation();
+    hitNormal.Normalize();
+    appInfo.SetHitLocation(SweepResult.Location);
+    appInfo.SetHitNormal(hitNormal);
+    UE_LOG(AegisGameplayEffectLog, Log, TEXT("Overlap Sweep Location: %s "), *SweepResult.Location.ToString());
+    UE_LOG(AegisGameplayEffectLog, Log, TEXT("Overlap Sweep Normal: %s "), *SweepResult.Normal.ToString());
+    UE_LOG(AegisGameplayEffectLog, Log, TEXT("Overlap Sweep Impact Point: %s"), *SweepResult.ImpactPoint.ToString() );
+    UE_LOG(AegisGameplayEffectLog, Log, TEXT("Overlap Sweep Impact Normal: %s"), *SweepResult.ImpactNormal.ToString());
     ApplyGameplayEffects(this, OtherActor, appInfo);
 }
 

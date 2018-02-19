@@ -32,6 +32,21 @@ class AEGIS_API UAegisCharacterLockOnComponent : public UActorComponent
 
 public:	
 	UAegisCharacterLockOnComponent();
+    
+    FORCEINLINE AActor* GetTarget() const { return Target; }
+    FORCEINLINE EAegisCharacterLockOnState GetState() const { return State; }
+    virtual void Update();
+    virtual void OnBeginLockOn();
+    virtual void OnEndLockOn();
+    
+protected:
+    /** Based on Owner's movement etc, determine  current Lock On State*/
+    void DetermineCurrentState();
+    /** Find the closest AActor to be the new Lock On Target */
+    AActor* FindClosestTarget();
+    /** The current Actor being Locked On To. The Target should have the IAegisLockOn interface*/
+    UPROPERTY()
+    AActor* Target = nullptr;
 	
-
+    EAegisCharacterLockOnState State = EAegisCharacterLockOnState::NotLockedOn;
 };
