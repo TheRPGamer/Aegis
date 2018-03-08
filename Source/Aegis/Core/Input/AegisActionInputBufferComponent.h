@@ -10,6 +10,8 @@
 #include "AegisActionInputBufferComponent.generated.h"
 
 
+class AAegisCharacter; 
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class AEGIS_API UAegisActionInputBufferComponent : public UActorComponent
 {
@@ -68,13 +70,10 @@ void AddAction(FName ActionType, bool Pressed);
     /** Resets Read and Write Indices to 0 to prevent the write index from lapping the read index*/
     void ResetReadWriteIndices();
     bool IsIndexValid(uint32 InIndex) const;
-    class AAegisCharacter* GetAegisOwner() const;
+    AAegisCharacter* GetAegisOwner() const;
     
     /** A circular buffer of FAegisCharacterActionINputs*/
-    UPROPERTY()
-    TArray<FAegisCharacterActionInput> InputBuffer;
-    
-    TCircularBuffer<FAegisCharacterActionInput> CircularBuffer;
+    TCircularBuffer<FAegisCharacterActionInput> InputBuffer;
     
     uint32 ReadIndex = 0;
     uint32 WriteIndex = 0;

@@ -7,7 +7,7 @@
 
 // Sets default values for this component's properties
 UAegisActionInputBufferComponent::UAegisActionInputBufferComponent()
-: CircularBuffer(1024)
+: InputBuffer(1024)
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -18,7 +18,7 @@ UAegisActionInputBufferComponent::UAegisActionInputBufferComponent()
 
 UAegisActionInputBufferComponent::UAegisActionInputBufferComponent(FVTableHelper& Helper)
 : Super(Helper)
-, CircularBuffer(1024)
+, InputBuffer(1024)
 {
     PrimaryComponentTick.bCanEverTick = true;
 }
@@ -31,7 +31,6 @@ void UAegisActionInputBufferComponent::BeginPlay()
 	
 }
 
-
 // Called every frame
 void UAegisActionInputBufferComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -42,8 +41,7 @@ void UAegisActionInputBufferComponent::TickComponent(float DeltaTime, ELevelTick
 
 void UAegisActionInputBufferComponent::OnRegister()
 {
-    Super::OnRegister(); 
-    InputBuffer.Init(FAegisCharacterActionInput(), BufferSize);
+    Super::OnRegister();
     InitActionNameToActionMap();
     PrimaryComponentTick.TickInterval = ExpendInputRate;
 }
@@ -64,6 +62,8 @@ UAegisCharacterActionBase* UAegisActionInputBufferComponent::GetAction(FName Act
 
 void UAegisActionInputBufferComponent::InitActionNameToActionMap()
 {
+    // every character action needs to be appended to this map
+    //@see AegisCharacterActions.h/.cpp
     ActionNameToActionMap.Add(NAegisCharacterAction::None, NewObject<UAegisCharacterActionBase>() );
     ActionNameToActionMap.Add(NAegisCharacterAction::Melee, NewObject<UAegisCharacterMeleeAction>() );
     ActionNameToActionMap.Add(NAegisCharacterAction::Guard, NewObject<UAegisCharacterGuardAction>() );
@@ -107,62 +107,46 @@ void UAegisActionInputBufferComponent::Execute()
     if(IsIndexValid(ReadIndex))
     {
         AAegisCharacter* owner = GetAegisOwner();
-        InputBuffer[ReadIndex].Execute(owner); 
+        auto input = InputBuffer[ReadIndex];
+        input.Execute(owner);
         ResetReadWriteIndices();
     }
 }
 
 void UAegisActionInputBufferComponent::ExpendInput()
 {
-    if(IsIndexValid(ReadIndex))
-    {
-        InputBuffer[ReadIndex].Clear();
-        IncrementReadIndex();
-    }
-    
-    
+    IncrementReadIndex();
 }
 
 void UAegisActionInputBufferComponent::IncrementReadIndex()
 {
     //only advance read index if read index is behind write index
-    int32 indexDifference = WriteIndex - ReadIndex;
-    if(indexDifference <= 0)
+    if(ReadIndex == WriteIndex)
     {
         return;
     }
-    ++ReadIndex;
-    //loops around like a circular buffer
-    ReadIndex %= BufferSize;
-    
+    ReadIndex = InputBuffer.GetNextIndex(ReadIndex);
     
 }
 
 void UAegisActionInputBufferComponent::IncrementWriteIndex()
 {
-    ++WriteIndex;
-    //loops around to act as circular buffer
-    WriteIndex %= BufferSize;
+    WriteIndex = InputBuffer.GetNextIndex(WriteIndex);
+    
+    
 }
 
 void UAegisActionInputBufferComponent::ResetReadWriteIndices()
 {
     ReadIndex = 0;
     WriteIndex = 0;
-    //Clears the Action Input on Read Index in case inputs are read to prevent extra actions
-    if(IsIndexValid(ReadIndex))
-    {
-        InputBuffer[ReadIndex].Clear(); 
-    }
+    //clear input at read index just in case
+    InputBuffer[ReadIndex].Clear();
 }
 
 bool UAegisActionInputBufferComponent::IsIndexValid(uint32 InIndex) const
 {
-    if(InIndex < InputBuffer.Num())
-    {
-        return true;
-    }
-    return false;
+    return InIndex < InputBuffer.Capacity();
 }
 
 

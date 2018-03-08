@@ -129,6 +129,12 @@ void AAegisCharacter::CreatePostInitComponents()
     {
         UE_LOG(AegisGuardLog, Error, TEXT("AAegisCharacter has an invalid GuardComponentClass. Fix in Editor"));
     }
+    if(LockOnComponentClass)
+    {
+        LockOnComponent = NewObject<UAegisCharacterLockOnComponent>(this, *LockOnComponentClass);
+
+    }
+    
 }
 
 void AAegisCharacter::ResetStatus()
@@ -262,5 +268,14 @@ void AAegisCharacter::CreateDebugGuardComponent()
     }
     
     
+}
+
+EAegisCharacterLockOnState AAegisCharacter::GetLockOnState() const
+{
+    if(LockOnComponent)
+    {
+        return LockOnComponent->GetState();
+    }
+    return EAegisCharacterLockOnState::NotLockedOn;
 }
 

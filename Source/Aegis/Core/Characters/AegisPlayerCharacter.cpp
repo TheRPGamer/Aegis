@@ -139,10 +139,10 @@ void AAegisPlayerCharacter::OnMeleeAttackReleased()
 
 void AAegisPlayerCharacter::OnLockOnPressed()
 {
-	if (ComboComponent)
-	{
-		ComboComponent->SetLockOnState(EAegisCharacterLockOnState::NotMoving); 
-	}
+	if(GetLockOnComponent())
+    {
+        GetLockOnComponent()->OnBeginLockOn();
+    }
 	if (GetCharacterMovement())
 	{
 		GetCharacterMovement()->bOrientRotationToMovement = false;
@@ -151,10 +151,10 @@ void AAegisPlayerCharacter::OnLockOnPressed()
 
 void AAegisPlayerCharacter::OnLockOnReleased()
 {
-	if (ComboComponent)
-	{
-		ComboComponent->SetLockOnState(EAegisCharacterLockOnState::NotLockedOn); 
-	}
+	if(GetLockOnComponent())
+    {
+        GetLockOnComponent()->OnEndLockOn();
+    }
 	if (GetCharacterMovement())
 	{
 		GetCharacterMovement()->bOrientRotationToMovement = true; 
