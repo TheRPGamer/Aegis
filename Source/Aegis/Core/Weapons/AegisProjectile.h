@@ -9,10 +9,12 @@
 //Interfaces
 #include "Core/Interfaces/AegisProcessGameplayEffectInterface.h"
 #include "Core/Interfaces/AegisReflectInterface.h"
+#include "GameplayTagAssetInterface.h"
 #include "AegisProjectile.generated.h"
 
+
 UCLASS()
-class AEGIS_API AAegisProjectile : public AActor, public IAegisProcessGameplayEffectInterface, public IAegisReflectInterface
+class AEGIS_API AAegisProjectile : public AActor, public IAegisProcessGameplayEffectInterface, public IAegisReflectInterface, public IGameplayTagAssetInterface
 {
 	GENERATED_BODY()
 	
@@ -45,12 +47,17 @@ UFUNCTION(BlueprintCallable)
     // Begin IAegisReflectInterface
     virtual void OnReflect() override;
     // End IAegisReflectInterface
+    
+    // Begin IGameplayTagAssetInterface
+    virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override { TagContainer = CharacterTagsContainer; return; }
+    // End IGameplayTagAssetInterface
 
 protected:
     UFUNCTION(BlueprintCallable)
     virtual void OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+    FGameplayTagContainer CharacterTagsContainer;
     
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Movement")

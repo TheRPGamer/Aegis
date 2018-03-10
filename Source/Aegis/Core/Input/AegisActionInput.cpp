@@ -20,7 +20,7 @@ void FAegisCharacterActionInput::Update(UAegisCharacterActionBase* InAction, boo
 
 void FAegisCharacterActionInput::Execute(const AAegisCharacter* Character) const
 {
-    if(Character && Action)
+    if(Character && Character->IsValidLowLevel() && Action && Action->IsValidLowLevel())
     {
         Action->Execute(Character, bPressed);
     }

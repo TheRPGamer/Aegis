@@ -4,18 +4,23 @@
 
 #include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 #include "Core/Combat/Guard/AegisCharacterGuardComponent.h"
+#include "Core/Combat/LockOn/AegisCharacterLockOnComponent.h"
 #include "GameFramework/Character.h"
 #include "Core/Combat/Combo/AegisCharacterCombatState.h"
 #include "Core/Input/AegisActionInput.h"
 #include "Core/GameplayEffects/AegisGameplayEffectApplicationOrder.h"
+
 //Begin Interfaces
 #include "Core/Interfaces/AegisPhysicalImpactInterface.h"
 #include "Core/Interfaces/AegisProcessGameplayEffectInterface.h"
 #include "Core/Interfaces/AegisDamageInterface.h"
 #include "Core/Interfaces/AegisKnockbackInterface.h"
 #include "Core/Interfaces/AegisGuardStunInterface.h"
+#include "GameplayTagAssetInterface.h"
 //End Interfaces
 #include "AegisCharacter.generated.h"
+
+
 
 class UAegisActionInputBufferComponent;
 
@@ -27,7 +32,7 @@ class UAegisActionInputBufferComponent;
 */
 
 UCLASS()
-class AEGIS_API AAegisCharacter : public ACharacter, public IAegisProcessGameplayEffectInterface, public IAegisPhysicalImpactInterface, public IAegisKnockbackInterface, public IAegisDamageInterface, public IAegisGuardStunInterface
+class AEGIS_API AAegisCharacter : public ACharacter, public IAegisProcessGameplayEffectInterface, public IAegisPhysicalImpactInterface, public IAegisKnockbackInterface, public IAegisDamageInterface, public IAegisGuardStunInterface, public IGameplayTagAssetInterface
 {
 	GENERATED_BODY()
 
@@ -109,6 +114,11 @@ public:
     // Begin IAegisGuardStunInterface
     virtual void OnGuardStun() override;
     // End IAegisGuardStunInterface
+    
+    // Begin IGameplayTagAssetInterface
+    virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override { TagContainer = CharacterTagsContainer; return; }
+    // End IGameplayTagAssetInterface
+
 protected: 
     /** Function called when this character overlaps with another Actor */
     UFUNCTION(BlueprintCallable)
@@ -116,7 +126,10 @@ protected:
 
     /** Character's maximum HP. Must be > 0.0f*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "HP", meta = (AllowPrivateAccess = "true"))
-	float MaxHP = 0.0f; 
+	float MaxHP = 0.0f;
+    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+    FGameplayTagContainer CharacterTagsContainer;
 	
 	/** Character's current HP. Dies if < 0.0f*/
 	float CurrentHP = 0.0f;
@@ -159,10 +172,10 @@ protected:
 	UAegisCharacterGuardComponent* GuardComponent = nullptr;
     
     /** Class of Lock On Component to be used for the Character. Must be set in Editor*/
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lock On")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LockOn")
     TSubclassOf<UAegisCharacterLockOnComponent> LockOnComponentClass = UAegisCharacterLockOnComponent::StaticClass();
     /** The Lock ON Component the Character will be using */
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lock On")
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "LockOn")
     UAegisCharacterLockOnComponent* LockOnComponent = nullptr;
     
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Input Buffer")

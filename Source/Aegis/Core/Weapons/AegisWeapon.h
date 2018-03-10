@@ -7,11 +7,12 @@
 #include "Core/GameplayEffects/AegisGameplayEffectApplicationOrder.h"
 //Interfaces
 #include "Core/Interfaces/AegisProcessGameplayEffectInterface.h"
+#include "GameplayTagAssetInterface.h"
 #include "AegisWeapon.generated.h"
 
 class AAegisCharacter; 
 UCLASS()
-class AEGIS_API AAegisWeapon : public AActor, public IAegisProcessGameplayEffectInterface
+class AEGIS_API AAegisWeapon : public AActor, public IAegisProcessGameplayEffectInterface, public IGameplayTagAssetInterface
 {
 	GENERATED_BODY()
 
@@ -32,6 +33,9 @@ public:
     virtual FAegisGameplayEffectApplicationOrder GetCurrentApplicationOrder() const override;
     //IAegisProcessGameplayEffectInterface End
 	
+    // Begin IGameplayTagAssetInterface
+    virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override { TagContainer = CharacterTagsContainer; return; }
+    // End IGameplayTagAssetInterface
 
 protected:
 	/** Function called when the weapon overlaps with a target*/
@@ -45,6 +49,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	UMeshComponent* Mesh = nullptr; 
 
-	
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+    FGameplayTagContainer CharacterTagsContainer;
 	
 };
