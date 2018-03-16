@@ -116,6 +116,7 @@ public:
     // End IAegisGuardStunInterface
     
     // Begin IGameplayTagAssetInterface
+    UFUNCTION(BlueprintCallable)
     virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override { TagContainer = CharacterTagsContainer; return; }
     // End IGameplayTagAssetInterface
 

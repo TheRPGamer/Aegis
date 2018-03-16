@@ -74,13 +74,3 @@ FAegisGameplayEffectApplicationOrder AAegisWeapon::GetCurrentApplicationOrder() 
     }
     return FAegisGameplayEffectApplicationOrder();
 }
-
-
-
-
-
-
-
-
-
-

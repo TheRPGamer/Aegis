@@ -52,7 +52,11 @@ void AAegisCharacter::BeginPlay()
     {
         GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AAegisCharacter::OnAegisCharacterBeginOverlap);
     }
-    
+    if(ComboComponent)
+    {
+        ComboComponent->BuildComboTree();
+        ComboComponent->PrintComboTree();
+    }
     
     
 
@@ -200,10 +204,13 @@ void AAegisCharacter::ValidateCharacterComponents()
 {
     checkf(ComboComponent, TEXT("ComboComponent for is null in AegisCharacter"));
     checkf(GuardComponent, TEXT("Guard Component s null in AegisCharacter"));
+    checkf(LockOnComponent, TEXT("Lock On  Component s null in AegisCharacter"));
 }
 
 void AAegisCharacter::OnAegisCharacterBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+    
+    
     // ignore if colliding with self
     if(!OtherActor || (GetUniqueID() == OtherActor->GetUniqueID()))
     {
@@ -225,10 +232,10 @@ void AAegisCharacter::OnAegisCharacterBeginOverlap(UPrimitiveComponent* Overlapp
     hitNormal.Normalize();
     appInfo.SetHitLocation(SweepResult.Location);
     appInfo.SetHitNormal(hitNormal);
-    UE_LOG(AegisGameplayEffectLog, Log, TEXT("Overlap Sweep Location: %s "), *SweepResult.Location.ToString());
-    UE_LOG(AegisGameplayEffectLog, Log, TEXT("Overlap Sweep Normal: %s "), *SweepResult.Normal.ToString());
-    UE_LOG(AegisGameplayEffectLog, Log, TEXT("Overlap Sweep Impact Point: %s"), *SweepResult.ImpactPoint.ToString() );
-    UE_LOG(AegisGameplayEffectLog, Log, TEXT("Overlap Sweep Impact Normal: %s"), *SweepResult.ImpactNormal.ToString());
+    //UE_LOG(AegisGameplayEffectLog, Log, TEXT("Overlap Sweep Location: %s "), *SweepResult.Location.ToString());
+    //UE_LOG(AegisGameplayEffectLog, Log, TEXT("Overlap Sweep Normal: %s "), *SweepResult.Normal.ToString());
+    //UE_LOG(AegisGameplayEffectLog, Log, TEXT("Overlap Sweep Impact Point: %s"), *SweepResult.ImpactPoint.ToString() );
+    //UE_LOG(AegisGameplayEffectLog, Log, TEXT("Overlap Sweep Impact Normal: %s"), *SweepResult.ImpactNormal.ToString());
     ApplyGameplayEffects(this, OtherActor, appInfo);
 }
 

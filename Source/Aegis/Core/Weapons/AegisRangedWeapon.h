@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Core/Weapons/AegisWeapon.h"
 #include "Core/Weapons/AegisProjectile.h"
+#include "Components/TimelineComponent.h"
 #include "AegisRangedWeapon.generated.h"
 
 /**
@@ -15,6 +16,8 @@ struct AEGIS_API FAegisRangedAttack
 {
     GENERATED_BODY()
 public:
+    FAegisRangedAttack();
+    
     /** Name of this Ranged Attack*/
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     FName Name = NAME_None;
@@ -28,6 +31,11 @@ public:
     /** An array of projectiles to spawn as part of this Ranged Attack */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TArray<FAegisProjectileSpawnParams> ProjectileSpawnParams;
+    
+    /** Timeline used to coordinate when the projectiles will spawn */
+    FTimeline SpawnTimeline;
+    /** Timeline used to coordinate when all the projectiles in the TArray fire*/
+    FTimeline ShootTimeline; 
     
     
     

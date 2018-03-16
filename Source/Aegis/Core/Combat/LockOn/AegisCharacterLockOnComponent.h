@@ -7,7 +7,7 @@
 #include "AegisCharacterLockOnComponent.generated.h"
 
 /**
- * Component responsible for keeping track of an AegisCharacter's Lock On defails
+ * Component responsible for keeping track of an AegisCharacter's Lock On details
 
 */
 
