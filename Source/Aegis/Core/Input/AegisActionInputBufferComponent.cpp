@@ -7,7 +7,7 @@
 
 // Sets default values for this component's properties
 UAegisActionInputBufferComponent::UAegisActionInputBufferComponent()
-: InputBuffer(1024)
+: InputBuffer(256)
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -18,7 +18,7 @@ UAegisActionInputBufferComponent::UAegisActionInputBufferComponent()
 
 UAegisActionInputBufferComponent::UAegisActionInputBufferComponent(FVTableHelper& Helper)
 : Super(Helper)
-, InputBuffer(1024)
+, InputBuffer(256)
 {
     PrimaryComponentTick.bCanEverTick = true;
 }
@@ -64,10 +64,10 @@ void UAegisActionInputBufferComponent::InitActionNameToActionMap()
 {
     // every character action needs to be appended to this map
     //@see AegisCharacterActions.h/.cpp
-    ActionNameToActionMap.Add(NAegisCharacterAction::None, NewObject<UAegisCharacterActionBase>() );
-    ActionNameToActionMap.Add(NAegisCharacterAction::Melee, NewObject<UAegisCharacterMeleeAction>() );
-    ActionNameToActionMap.Add(NAegisCharacterAction::Guard, NewObject<UAegisCharacterGuardAction>() );
-    ActionNameToActionMap.Add(NAegisCharacterAction::Super, NewObject<UAegisCharacterSuperAction>() );
+    ActionNameToActionMap.Add(NAegisCharacterAction::None, NewObject<UAegisCharacterActionBase>(this) );
+    ActionNameToActionMap.Add(NAegisCharacterAction::Melee, NewObject<UAegisCharacterMeleeAction>(this) );
+    ActionNameToActionMap.Add(NAegisCharacterAction::Guard, NewObject<UAegisCharacterGuardAction>(this) );
+    ActionNameToActionMap.Add(NAegisCharacterAction::Super, NewObject<UAegisCharacterSuperAction>(this) );
 
 }
 void UAegisActionInputBufferComponent::AddActionPressed(FName ActionType)
@@ -121,7 +121,7 @@ void UAegisActionInputBufferComponent::ExpendInput()
 void UAegisActionInputBufferComponent::IncrementReadIndex()
 {
     //only advance read index if read index is behind write index
-    if(ReadIndex == WriteIndex)
+    if(ReadIndex >= WriteIndex)
     {
         return;
     }

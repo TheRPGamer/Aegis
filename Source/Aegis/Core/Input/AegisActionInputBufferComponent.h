@@ -57,6 +57,7 @@ protected:
      * @see NAegisCharacterAction
      * @see UAegisCharacterActionBase
      */
+    UPROPERTY()
     TMap<FName, UAegisCharacterActionBase*> ActionNameToActionMap;
 private:
     void IncrementReadIndex();

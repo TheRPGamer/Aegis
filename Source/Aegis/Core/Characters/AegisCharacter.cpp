@@ -54,8 +54,8 @@ void AAegisCharacter::BeginPlay()
     }
     if(ComboComponent)
     {
-        ComboComponent->BuildComboTree();
-        ComboComponent->PrintComboTree();
+        //ComboComponent->BuildComboTree();
+        //ComboComponent->PrintComboTree();
     }
     
     
