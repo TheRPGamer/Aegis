@@ -67,6 +67,6 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GuardLevels", meta = (AllowPrivateAccess = "true"))
 	TArray<FAegisCharacterGuardLevel> GuardLevels;
-    
 
+    
 };

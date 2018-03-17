@@ -27,11 +27,7 @@ AAegisCharacter::AAegisCharacter()
 		GetCapsuleComponent()->bGenerateOverlapEvents = true;
 	}
     InputBufferComponent = CreateDefaultSubobject<UAegisActionInputBufferComponent>("Input Buffer ");
-    if(GetCapsuleComponent())
-    {
-        GetCapsuleComponent()->bGenerateOverlapEvents = true;
-
-    }
+    
 }
 
 void AAegisCharacter::PostInitProperties()
@@ -52,14 +48,6 @@ void AAegisCharacter::BeginPlay()
     {
         GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AAegisCharacter::OnAegisCharacterBeginOverlap);
     }
-    if(ComboComponent)
-    {
-        //ComboComponent->BuildComboTree();
-        //ComboComponent->PrintComboTree();
-    }
-    
-    
-
 }
 
 float AAegisCharacter::TakeDamage(float DamageAmount, const struct FDamageEvent& DamageEvent,
@@ -152,7 +140,6 @@ void AAegisCharacter::ResetStatus()
 FAegisGameplayEffectApplicationOrder AAegisCharacter::GetCurrentApplicationOrder() const
 {
     
-    
     if(GuardComponent && GuardComponent->IsInGuard())
     {
         return GuardComponent->GetCurrentGuardGFX();
@@ -232,10 +219,6 @@ void AAegisCharacter::OnAegisCharacterBeginOverlap(UPrimitiveComponent* Overlapp
     hitNormal.Normalize();
     appInfo.SetHitLocation(SweepResult.Location);
     appInfo.SetHitNormal(hitNormal);
-    //UE_LOG(AegisGameplayEffectLog, Log, TEXT("Overlap Sweep Location: %s "), *SweepResult.Location.ToString());
-    //UE_LOG(AegisGameplayEffectLog, Log, TEXT("Overlap Sweep Normal: %s "), *SweepResult.Normal.ToString());
-    //UE_LOG(AegisGameplayEffectLog, Log, TEXT("Overlap Sweep Impact Point: %s"), *SweepResult.ImpactPoint.ToString() );
-    //UE_LOG(AegisGameplayEffectLog, Log, TEXT("Overlap Sweep Impact Normal: %s"), *SweepResult.ImpactNormal.ToString());
     ApplyGameplayEffects(this, OtherActor, appInfo);
 }
 

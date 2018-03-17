@@ -45,24 +45,18 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Name", meta = (AllowPrivateAccess = "true"))
 	FText DisplayName;
 	
-	/** Upper Bound of ticks from a character guarding to the point of an attack impact that 
+	/** Lower Bound of ticks from a character guarding to the point of an attack impact that
 	* qualifies for this guard level.
 	* Exposed to designers for easy editing. Will be converted to FTimespan in C++ 
 	*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Guard Ticks", meta = (AllowPrivateAccess = "true"))
 	int32 TicksLowerBound = 0;
 
-	/** Turns Ticks Upper Bound to a FTimespan for fast comparison in Guard Component */
+	/** Turns Ticks Lower Bound to a FTimespan for fast comparison in Guard Component */
 	FTimespan TicksTimespan;
     
     /** Gameplay Effects to be applied when this Guard Level is activated  */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Effects", meta = (AllowPrivateAccess = "true"))
     FAegisGameplayEffectApplicationOrder GuardGFX;
     
-
-    
-    
-	
-	
-
 };

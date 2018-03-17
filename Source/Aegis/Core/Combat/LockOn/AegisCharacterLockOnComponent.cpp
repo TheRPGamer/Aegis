@@ -48,7 +48,7 @@ EAegisCharacterLockOnState UAegisCharacterLockOnComponent::GetState()
     ownerForward.Normalize();
     float dot = FVector::DotProduct(ownerVelocity, ownerForward);
     //check if velocity is towards or away from character's forward vector
-    return (dot > 0.f) ? EAegisCharacterLockOnState::MovingTowardsTarget :EAegisCharacterLockOnState::MovingAwayFromTarget;
+    return (dot > 0.f) ? EAegisCharacterLockOnState::MovingTowardsTarget : EAegisCharacterLockOnState::MovingAwayFromTarget;
 
 }
 
