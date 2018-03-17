@@ -4,6 +4,7 @@
 #include "Core/Weapons/AegisWeapon.h"
 #include "Core/Characters/AegisPlayerCharacter.h"
 #include "Core/Characters/AegisEnemyCharacter.h"
+#include "Core/GameplayEffects/AegisGameplayEffectApplicationInfo.h"
 
 // Sets default values
 AAegisWeapon::AAegisWeapon()
@@ -41,12 +42,6 @@ void AAegisWeapon::Tick(float DeltaTime)
 void AAegisWeapon::OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    //Hack to ignore porojectiles for now
-    if(Cast<AAegisProjectile>(OtherActor))
-    {
-        return;
-    }
-    
     //last check is if other actor is self
     if(!bCollisionActive || !OtherActor || (GetUniqueID() == OtherActor->GetUniqueID()) )
 	{
@@ -61,7 +56,11 @@ void AAegisWeapon::OnWeaponBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
             return;
         }
     }
-    
+    FVector hitDirection = GetActorLocation() - OtherActor->GetActorLocation();
+    hitDirection.Normalize();
+    FAegisGameplayEffectApplicationInfo appInfo;
+    appInfo.SetHitNormal(hitDirection);
+    ApplyGameplayEffects(this, OtherActor, appInfo);
 }
 
 FAegisGameplayEffectApplicationOrder AAegisWeapon::GetCurrentApplicationOrder() const
