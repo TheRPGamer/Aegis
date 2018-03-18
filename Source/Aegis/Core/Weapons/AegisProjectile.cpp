@@ -14,39 +14,25 @@ AAegisProjectile::AAegisProjectile()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-    
-    
-    
     Mesh = CreateDefaultSubobject<USkeletalMeshComponent>("Mesh");
     if (Mesh)
     {
         RootComponent = Mesh;
         Mesh->bGenerateOverlapEvents = true;
     }
-    
-    ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("Projectile Movement");
-    if(ProjectileMovementComponent)
+    TrajectorySplineComponent = CreateDefaultSubobject<USplineComponent>("TrajectorySpline");
+    if(TrajectorySplineComponent)
     {
-        ProjectileMovementComponent->SetUpdatedComponent(RootComponent);
-        ProjectileMovementComponent->InitialSpeed = 300.0f;
-        ProjectileMovementComponent->MaxSpeed = 300.0f;
-        ProjectileMovementComponent->bRotationFollowsVelocity = true;
-        ProjectileMovementComponent->bShouldBounce = true;
-        ProjectileMovementComponent->ProjectileGravityScale = 0.0f; 
+        //draw the trajectory on screen
+        TrajectorySplineComponent->SetDrawDebug(true);
     }
     
 }
 
 void AAegisProjectile::PostInitProperties()
 {
-    Super::PostInitProperties(); 
-    InitialLifeSpan = LifeSpan;
-    if(ProjectileMovementComponent) {
-        ProjectileMovementComponent->InitialSpeed = InitialSpeed;
-        ProjectileMovementComponent->MaxSpeed = MaxSpeed;
-    }
+    Super::PostInitProperties();
 }
-
 // Called when the game starts or when spawned
 void AAegisProjectile::BeginPlay()
 {
@@ -54,16 +40,31 @@ void AAegisProjectile::BeginPlay()
     if(Mesh)
     {
         Mesh->OnComponentBeginOverlap.AddDynamic(this, &AAegisProjectile::OnProjectileBeginOverlap);
-        bCollisionActive = true; 
-
     }
-	
+    
+    if(TrajectoryCurve)
+    {
+        //create update callback delegate
+        FOnTimelineFloat onUpdate;
+        onUpdate.BindUFunction(this, "OnUpdateTrajectory");
+        //create delegate called when timeline finishes
+        FOnTimelineEventStatic onFinished;
+        onFinished.BindUFunction(this, "OnFinishTrajectory");
+        //set delegates to timeline
+        TrajectoryTimeline.AddInterpFloat(TrajectoryCurve, onUpdate);
+        TrajectoryTimeline.SetTimelineFinishedFunc(onFinished);
+        TrajectoryTimeline.SetTimelineLength(LifeSpan);
+        TrajectoryTimeline.SetLooping(false);
+    }
+     
 }
 
 // Called every frame
 void AAegisProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+    //sets the tik rate 
+    TrajectoryTimeline.TickTimeline(DeltaTime);
 }
 
 void AAegisProjectile::OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -102,16 +103,36 @@ void AAegisProjectile::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedC
 void AAegisProjectile::OnReflect()
 {
     bReflected = true;
-    UE_LOG(AegisGuardLog, Log, TEXT("Actor forward before: %s"),
-           *(GetActorForwardVector().ToString()));
-    //UE_LOG(AegisGameplayEffectLog, Log, TEXT("Actor forward before %s"), *GetActorForwardVector().toString());
-    FVector rotatedForwardVector = -GetActorForwardVector();
-    ProjectileMovementComponent->Velocity = rotatedForwardVector * 300.f;
-    FVector lookAtDir = rotatedForwardVector - GetActorForwardVector();
-    //FRotator newRotation = FRotationMatrix::MakeFromX(lookAtDir).Rotator();
-    //SetActorRotation(newRotation);
-    //UE_LOG(AegisGameplayEffectLog, Log, TEXT("Actor forward after %s"), *GetActorForwardVector().toString());
-    UE_LOG(AegisGuardLog, Log, TEXT("Actor forward after: %s"),
-           *(GetActorForwardVector().ToString()));
+    
 }
-//End IAegisReflectInterfaceFVector
+//End IAegisReflectInterface
+
+void AAegisProjectile::ConstructTrajectory()
+{
+    if(TrajectorySplineComponent)
+    {
+        TrajectorySplineComponent->ClearSplinePoints();
+        //add start point
+        //add end point
+        
+    }
+}
+
+void AAegisProjectile::OnUpdateTrajectory(float Value)
+{
+if(TrajectorySplineComponent)
+{
+    float distanceAlongSpline = TrajectorySplineComponent->GetSplineLength() * Value;
+    FVector newLoc = TrajectorySplineComponent->GetLocationAtDistanceAlongSpline(distanceAlongSpline, ESplineCoordinateSpace::World);
+    SetActorLocation(newLoc);
+    FRotator newRot = TrajectorySplineComponent->GetRotationAtDistanceAlongSpline(distanceAlongSpline, ESplineCoordinateSpace::World);
+    SetActorRotation(newRot);
+    
+}
+}
+
+void AAegisProjectile::OnFinishTrajectory()
+{
+    //Destroy Projectile
+}
+

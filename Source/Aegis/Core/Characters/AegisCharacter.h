@@ -4,18 +4,23 @@
 
 #include "Core/Combat/Combo/AegisCharacterComboComponent.h"
 #include "Core/Combat/Guard/AegisCharacterGuardComponent.h"
+#include "Core/Combat/LockOn/AegisCharacterLockOnComponent.h"
 #include "GameFramework/Character.h"
 #include "Core/Combat/Combo/AegisCharacterCombatState.h"
 #include "Core/Input/AegisActionInput.h"
 #include "Core/GameplayEffects/AegisGameplayEffectApplicationOrder.h"
+
 //Begin Interfaces
 #include "Core/Interfaces/AegisPhysicalImpactInterface.h"
 #include "Core/Interfaces/AegisProcessGameplayEffectInterface.h"
 #include "Core/Interfaces/AegisDamageInterface.h"
 #include "Core/Interfaces/AegisKnockbackInterface.h"
 #include "Core/Interfaces/AegisGuardStunInterface.h"
+#include "GameplayTagAssetInterface.h"
 //End Interfaces
 #include "AegisCharacter.generated.h"
+
+
 
 class UAegisActionInputBufferComponent;
 
@@ -27,7 +32,7 @@ class UAegisActionInputBufferComponent;
 */
 
 UCLASS()
-class AEGIS_API AAegisCharacter : public ACharacter, public IAegisProcessGameplayEffectInterface, public IAegisPhysicalImpactInterface, public IAegisKnockbackInterface, public IAegisDamageInterface, public IAegisGuardStunInterface
+class AEGIS_API AAegisCharacter : public ACharacter, public IAegisProcessGameplayEffectInterface, public IAegisPhysicalImpactInterface, public IAegisKnockbackInterface, public IAegisDamageInterface, public IAegisGuardStunInterface, public IGameplayTagAssetInterface
 {
 	GENERATED_BODY()
 
@@ -74,22 +79,18 @@ public:
 	FORCEINLINE UFUNCTION(BlueprintCallable)
 	bool IsDead() const { return bDead; }
 	
-    FORCEINLINE EAegisCharacterLockOnState GetLockOnState() const { return LockOnState; }
     /** Returns true if the character's current state allows for any movement*/
     UFUNCTION(BlueprintCallable)
 	bool CanMove() const;
     
-    
-	
 	FORCEINLINE class AAegisWeapon* GetEquippedWeapon() const { return EquippedWeapon; }
-	
 	FORCEINLINE UAegisCharacterComboComponent* GetComboComponent() const { return ComboComponent; }
-    
     FORCEINLINE UAegisCharacterGuardComponent* GetGuardComponent() const { return GuardComponent; }
-
-    
     FORCEINLINE UAegisActionInputBufferComponent* GetInputBufferComponent() const { return InputBufferComponent;}
-
+    FORCEINLINE UAegisCharacterLockOnComponent* GetLockOnComponent() const { return LockOnComponent; }
+    
+    EAegisCharacterLockOnState GetLockOnState() const;
+    
     /** Resets the various Character states of the character. E.g bIsInHitStun, bInGuardStun, bInKnockback etc*/
     void ResetStatus();
     
@@ -113,6 +114,12 @@ public:
     // Begin IAegisGuardStunInterface
     virtual void OnGuardStun() override;
     // End IAegisGuardStunInterface
+    
+    // Begin IGameplayTagAssetInterface
+    UFUNCTION(BlueprintCallable)
+    virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override { TagContainer = CharacterTagsContainer; return; }
+    // End IGameplayTagAssetInterface
+
 protected: 
     /** Function called when this character overlaps with another Actor */
     UFUNCTION(BlueprintCallable)
@@ -120,7 +127,10 @@ protected:
 
     /** Character's maximum HP. Must be > 0.0f*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "HP", meta = (AllowPrivateAccess = "true"))
-	float MaxHP = 0.0f; 
+	float MaxHP = 0.0f;
+    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+    FGameplayTagContainer CharacterTagsContainer;
 	
 	/** Character's current HP. Dies if < 0.0f*/
 	float CurrentHP = 0.0f;
@@ -155,12 +165,19 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ComboCombponent")
 	UAegisCharacterComboComponent* ComboComponent = nullptr;
 
-	/** Character's Combo Component Class to be used. Must be set in editor  */
+	/** Character's Guard Component Class to be used. Must be set in editor  */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GuardComponent")
     TSubclassOf<UAegisCharacterGuardComponent> GuardComponentClass = UAegisCharacterGuardComponent::StaticClass();
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GuardComponent")
 	UAegisCharacterGuardComponent* GuardComponent = nullptr;
+    
+    /** Class of Lock On Component to be used for the Character. Must be set in Editor*/
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LockOn")
+    TSubclassOf<UAegisCharacterLockOnComponent> LockOnComponentClass = UAegisCharacterLockOnComponent::StaticClass();
+    /** The Lock ON Component the Character will be using */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "LockOn")
+    UAegisCharacterLockOnComponent* LockOnComponent = nullptr;
     
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Input Buffer")
     UAegisActionInputBufferComponent* InputBufferComponent = nullptr;
@@ -172,9 +189,6 @@ protected:
 	/** The right hand socket of the character */
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Sockets")
 	FName RightHandSocket = NAME_None;
-    
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lock On State")
-    EAegisCharacterLockOnState LockOnState = EAegisCharacterLockOnState::NotLockedOn;
 
 private: 
 #if !UE_BUILD_SHIPPINGB

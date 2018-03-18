@@ -7,7 +7,7 @@
 #include "AegisCharacterLockOnComponent.generated.h"
 
 /**
- * Component responsible for keeping track of an AegisCharacter's Lock On defails
+ * Component responsible for keeping track of an AegisCharacter's Lock On details
 
 */
 
@@ -33,20 +33,26 @@ class AEGIS_API UAegisCharacterLockOnComponent : public UActorComponent
 public:	
 	UAegisCharacterLockOnComponent();
     
-    FORCEINLINE AActor* GetTarget() const { return Target; }
-    FORCEINLINE EAegisCharacterLockOnState GetState() const { return State; }
+    FORCEINLINE AActor* GetTarget() const { return CurrentTarget; }
     virtual void Update();
     virtual void OnBeginLockOn();
     virtual void OnEndLockOn();
     
-protected:
     /** Based on Owner's movement etc, determine  current Lock On State*/
-    void DetermineCurrentState();
+    EAegisCharacterLockOnState GetState();
+protected:
     /** Find the closest AActor to be the new Lock On Target */
     AActor* FindClosestTarget();
+    
+    /** Orient Owner to Current Target */
+    void OrientOwnerToTarget() const; 
+    /** Array of all Actors in Range. Used in determining closest actor  */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    TArray<AActor*> Targets;
     /** The current Actor being Locked On To. The Target should have the IAegisLockOn interface*/
     UPROPERTY()
-    AActor* Target = nullptr;
-	
+    AActor* CurrentTarget = nullptr;
     EAegisCharacterLockOnState State = EAegisCharacterLockOnState::NotLockedOn;
+    
+    bool bLockOnPressed = false; 
 };

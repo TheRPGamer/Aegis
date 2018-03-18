@@ -33,8 +33,8 @@ void UAegisCharacterMeleeAction::OnActionPressed(const AAegisCharacter* Characte
     if(comboComp)
     {
         comboComp->SetInMelee(true);
-        auto lockOn = Character->GetLockOnState();
-        comboComp->SetLockOnState(lockOn);
+        EAegisCharacterLockOnState lockOnState = Character->GetLockOnState();
+        comboComp->SetLockOnState(lockOnState);
     }
 }
 
@@ -58,7 +58,7 @@ void UAegisCharacterGuardAction::OnActionPressed(const AAegisCharacter* Characte
     {
         //TODO: Update Guard Stuff
         comboComp->SetInGuard(true);
-        auto lockOn = Character->GetLockOnState();
+        EAegisCharacterLockOnState lockOn = Character->GetLockOnState();
         comboComp->SetLockOnState(lockOn);
     }
 }
@@ -89,7 +89,7 @@ void UAegisCharacterSuperAction::OnActionPressed(const AAegisCharacter* Characte
     {
         //TODO: Update Super Stuff
         comboComp->SetInSuper(true);
-        auto lockOn = Character->GetLockOnState();
+        EAegisCharacterLockOnState lockOn = Character->GetLockOnState();
         comboComp->SetLockOnState(lockOn);
     }
 }

@@ -10,6 +10,33 @@
 
 class AAegisCharacter;
 
+/**
+ * Info struct that holds information about how an Animation for Character Move should be played
+ */
+USTRUCT(BlueprintType)
+struct AEGIS_API FAegisCharacterMoveAnimData
+{
+    GENERATED_BODY()
+    FAegisCharacterMoveAnimData() { }
+    FORCEINLINE UAnimMontage* GetAnimation() const { return Animation; }
+    FORCEINLINE float GetPlayRate() const { return PlayRate; }
+protected:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UAnimMontage* Animation = nullptr;
+    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float PlayRate = 0.f;
+    
+};
+
+/**
+ * The building block for all Combos in Aegis.
+ * Anything that a Character performs that has:
+ * 1. A Requirement
+ * An Animation
+ * 3. Applies Gameplay Effects to something
+ * SI a Character Move
+ */
 USTRUCT(BlueprintType)
 struct AEGIS_API FAegisCharacterMove
 {
@@ -40,8 +67,12 @@ protected:
     FAegisCharacterMoveRequirement Requirement;
     
     /** Animation played when this Move is performed */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
     UAnimMontage* Animation = nullptr;
+    
+    /** Play Rate of the Animation */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+    float AnimationPlayRate = 1.0f;
     
     /** Gameplay Effects that will occur when this move is successfully performed before collision occurs */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay Effects")

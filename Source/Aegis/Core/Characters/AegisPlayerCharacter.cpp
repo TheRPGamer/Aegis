@@ -139,10 +139,10 @@ void AAegisPlayerCharacter::OnMeleeAttackReleased()
 
 void AAegisPlayerCharacter::OnLockOnPressed()
 {
-	if (ComboComponent)
-	{
-		ComboComponent->SetLockOnState(EAegisCharacterLockOnState::NotMoving); 
-	}
+	if(GetLockOnComponent())
+    {
+        GetLockOnComponent()->OnBeginLockOn();
+    }
 	if (GetCharacterMovement())
 	{
 		GetCharacterMovement()->bOrientRotationToMovement = false;
@@ -151,10 +151,10 @@ void AAegisPlayerCharacter::OnLockOnPressed()
 
 void AAegisPlayerCharacter::OnLockOnReleased()
 {
-	if (ComboComponent)
-	{
-		ComboComponent->SetLockOnState(EAegisCharacterLockOnState::NotLockedOn); 
-	}
+	if(GetLockOnComponent())
+    {
+        GetLockOnComponent()->OnEndLockOn();
+    }
 	if (GetCharacterMovement())
 	{
 		GetCharacterMovement()->bOrientRotationToMovement = true; 
@@ -319,32 +319,6 @@ void AAegisPlayerCharacter::TestGuardComponent()
 
 void AAegisPlayerCharacter::DebugShootProjectile()
 {
-    UWorld* world = GetWorld();
-    if(ProjectileClass && world)
-    {
-        FActorSpawnParameters spawnParams;
-        
-        for(int i=0;  i<8; ++i)
-        {
-            float projectileRotationDegrees = i * 45.0f;
-            FVector rotatedForwardVector = GetActorForwardVector();
-            rotatedForwardVector = rotatedForwardVector.RotateAngleAxis(projectileRotationDegrees, GetActorUpVector());
-            rotatedForwardVector.Normalize();
-            FVector spawnLocation = GetActorLocation() + (rotatedForwardVector* DebugProjectileDisplacement);
-            FVector projectileLookAtDir = GetActorLocation() - spawnLocation;
-            projectileLookAtDir.Normalize();
-            //FRotator projectileRot = FRotationMatrix::MakeFromX(projectileLookAtDir).Rotator();
-            AAegisProjectile* projectile = GetWorld()->SpawnActor<AAegisProjectile>(ProjectileClass, spawnParams);
-            if(projectile)
-            {
-                projectile->SetActorLocation(spawnLocation);
-                projectile->GetProjectileMovementComponent()->Velocity = -rotatedForwardVector * 300.f;
-                //projectile->SetActorRotation(projectileRot);
-                
-            }
-
-        }
-        
-    }
+    
 }
 //End Debug Function Implementation

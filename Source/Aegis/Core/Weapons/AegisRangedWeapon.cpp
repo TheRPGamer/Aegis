@@ -3,6 +3,11 @@
 #include "Aegis.h"
 #include "Core/Weapons/AegisRangedWeapon.h"
 
+FAegisRangedAttack::FAegisRangedAttack()
+{
+    
+    
+}
 
 void FAegisRangedAttack::Execute()
 {
