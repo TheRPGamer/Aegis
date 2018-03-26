@@ -4,7 +4,7 @@
 #include "AegisProjectile.h"
 #include "Core/GameplayEffects/AegisGameplayEffectApplicationInfo.h"
 #include "Core/GameplayEffects/AegisActorGameplayEffectApplier.h"
-
+#include "Core/Characters/AegisCharacter.h"
 
 
 
@@ -40,6 +40,19 @@ void AAegisProjectile::BeginPlay()
     if(Mesh)
     {
         Mesh->OnComponentBeginOverlap.AddDynamic(this, &AAegisProjectile::OnProjectileBeginOverlap);
+    }
+    
+    if(TrajectorySplineComponent) {
+        auto owner = Cast<AAegisCharacter>(GetOwner());
+        if(owner) {
+            FVector start = owner->GetActorLocation() + owner->GetActorForwardVector() * 10.0f;
+            TrajectoryParams.SetStartLocation(start);
+            AActor* target = owner->GetLockOnComponent()->GetTarget();
+            if(target) {
+                TrajectoryParams.SetEndLocation(target->GetActorLocation());
+            }
+            ConstructTrajectory();
+        }
     }
     
     if(TrajectoryCurve)
@@ -113,26 +126,32 @@ void AAegisProjectile::ConstructTrajectory()
     {
         TrajectorySplineComponent->ClearSplinePoints();
         //add start point
+        TrajectorySplineComponent->AddSplinePoint(TrajectoryParams.GetStartLocation(),ESplineCoordinateSpace::World);
         //add end point
-        
+        TrajectorySplineComponent->AddSplinePoint(TrajectoryParams.GetEndLocation(),ESplineCoordinateSpace::World);
+        // add start tangent
+        TrajectorySplineComponent->SetTangentAtSplinePoint(0, TrajectoryParams.GetStartTangent(), ESplineCoordinateSpace::World);
+        // add end tangent
+        TrajectorySplineComponent->SetTangentAtSplinePoint(1, TrajectoryParams.GetEndTangent(), ESplineCoordinateSpace::World);
     }
 }
 
 void AAegisProjectile::OnUpdateTrajectory(float Value)
 {
-if(TrajectorySplineComponent)
-{
-    float distanceAlongSpline = TrajectorySplineComponent->GetSplineLength() * Value;
-    FVector newLoc = TrajectorySplineComponent->GetLocationAtDistanceAlongSpline(distanceAlongSpline, ESplineCoordinateSpace::World);
-    SetActorLocation(newLoc);
-    FRotator newRot = TrajectorySplineComponent->GetRotationAtDistanceAlongSpline(distanceAlongSpline, ESplineCoordinateSpace::World);
-    SetActorRotation(newRot);
-    
-}
+    if(TrajectorySplineComponent)
+    {
+        float distanceAlongSpline = TrajectorySplineComponent->GetSplineLength() * Value;
+        FVector newLoc = TrajectorySplineComponent->GetLocationAtDistanceAlongSpline(distanceAlongSpline, ESplineCoordinateSpace::World);
+        SetActorLocation(newLoc);
+        FRotator newRot = TrajectorySplineComponent->GetRotationAtDistanceAlongSpline(distanceAlongSpline, ESplineCoordinateSpace::World);
+        SetActorRotation(newRot);
+        
+    }
 }
 
 void AAegisProjectile::OnFinishTrajectory()
 {
     //Destroy Projectile
+    Destroy();
 }
 

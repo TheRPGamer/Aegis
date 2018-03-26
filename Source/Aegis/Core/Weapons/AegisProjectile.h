@@ -110,8 +110,8 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trajectory")
     USplineComponent* TrajectorySplineComponent = nullptr;
     
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trjactory")
-    FAegisProjectileTrajectoryParams TrjectoryParams;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trajactory")
+    FAegisProjectileTrajectoryParams TrajectoryParams;
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Life Span")
     float LifeSpan = 0.0f;

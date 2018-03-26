@@ -104,7 +104,7 @@ switch(EnemyState)
     {
         case EAegisEnemyState::InRange:
         {
-            PlayAnimMontage(AttackMontage1);
+            //PlayAnimMontage(AttackMontage1);
             EnemyState = EAegisEnemyState::Attacking;
         }
         case EAegisEnemyState::Pursuing:
@@ -115,7 +115,7 @@ switch(EnemyState)
                 ac->SetFocalPoint(PlayerTarget->GetActorLocation());
                 ac->UpdateControlRotation(DeltaTime);
                 //moves to player
-                ac->MoveToActor(PlayerTarget, AttackDistanceSqThreshold - 20.0f, false, true, false, UNavigationQueryFilter::StaticClass());
+                //ac->MoveToActor(PlayerTarget, AttackDistanceSqThreshold - 20.0f, false, true, false, UNavigationQueryFilter::StaticClass());
             }
         }
         default:

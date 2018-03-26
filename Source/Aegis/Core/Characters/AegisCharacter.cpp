@@ -217,7 +217,6 @@ void AAegisCharacter::OnAegisCharacterBeginOverlap(UPrimitiveComponent* Overlapp
     FAegisGameplayEffectApplicationInfo appInfo;
     FVector hitNormal = GetActorLocation() - OtherActor->GetActorLocation();
     hitNormal.Normalize();
-    appInfo.SetHitLocation(SweepResult.Location);
     appInfo.SetHitNormal(hitNormal);
     ApplyGameplayEffects(this, OtherActor, appInfo);
 }
